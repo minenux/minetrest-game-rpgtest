@@ -1,21 +1,5 @@
 story = {}
 
--- string
-function string:split(inSplitPattern, outResults)
-	if not outResults then
-		outResults = {}
-	end
-	local theStart = 1
-	local theSplitStart, theSplitEnd = string.find( self, inSplitPattern, theStart )
-	while theSplitStart do
-		table.insert( outResults, string.sub( self, theStart, theSplitStart-1 ) )
-		theStart = theSplitEnd + 1
-		theSplitStart, theSplitEnd = string.find( self, inSplitPattern, theStart )
-	end
-	table.insert( outResults, string.sub( self, theStart ) )
-	return outResults
-end
-
 -- form
 
 story.talk_form = "size[8,7.5;]"
@@ -32,7 +16,7 @@ end
 function story.show_dialog(player, text)
 	local lines = text:split("\n")
 	for i,t in ipairs(lines) do
-		minetest.after((i-1)*2.3, function(player, t) 
+		minetest.after((i-1)*2.3, function(player, t)
 			cmsg.push_message_player(player, t)
 		end, player,t)
 	end
