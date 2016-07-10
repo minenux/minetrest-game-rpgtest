@@ -5,7 +5,7 @@ quests.player_quests = {}
 quests.file = minetest.get_worldpath() .. "/quests"
 quests.callback = nil
 
-function quests.load_quests()
+function quests.load()
 	local input = io.open(quests.file, "r")
 	if input then
 		local str = input:read("*all")
@@ -13,7 +13,7 @@ function quests.load_quests()
 			if minetest.deserialize(str) then
 				quests.player_quests = minetest.deserialize(str)
 			end
-		else 
+		else
 			print("[WARNING] quest file is empty")
 		end
 		io.close(input)
@@ -22,7 +22,7 @@ function quests.load_quests()
 	end
 end
 
-function quests.save_quests()
+function quests.save()
 	if quests.player_quests then
 		local output = io.open(quests.file, "w")
 		local str = minetest.serialize(quests.player_quests)
@@ -37,14 +37,18 @@ function quests.add_quest(player, quest)
 	end
 	print("[quests] add quest")
 	table.insert(quests.player_quests[player], quest)
-	quests.save_quests()
+	quests.save()
 	return #quests.player_quests[player]
 end
 
-quests.show_quests_form = "size[8,7.5;]"
-quests.show_quests_form = quests.show_quests_form..default.gui_colors
-quests.show_quests_form = quests.show_quests_form..default.gui_bg
-quests.show_quests_form = quests.show_quests_form.."label[0,0;%s]"
+function quests.finish_quest(player, quest)
+	xp.add_xp(digger, quest.xp)
+	quest.done = true
+	quests.callback(player)
+end
+
+quests.show_quests_form = "size[8,7.5;]" .. default.gui_colors ..
+		default.gui_bg .. "label[0,0;%s]"
 
 minetest.register_chatcommand("quests", {
 	params = "",
@@ -59,7 +63,7 @@ minetest.register_chatcommand("quests", {
 		end
 		local s = quests.show_quests_form
 		local txt = ""
-		for k,v in pairs(quests.player_quests[name]) do
+		for k, v in pairs(quests.player_quests[name]) do
 			txt = txt .. " -> " .. v.quest_type .. " " .. v.node .. " (" .. tostring(v.progress) .. "/" .. tostring(v.max) .. ")\n"
 		end
 		s = string.format(s, txt)
@@ -69,42 +73,36 @@ minetest.register_chatcommand("quests", {
 })
 
 minetest.register_on_dignode(function(pos, oldnode, digger)
-	if not digger or not digger:is_player() then
+	if not digger or not digger:is_player() or
+			not quests.player_quests[digger:get_player_name()] then
 		return
 	end
-	if not quests.player_quests[digger:get_player_name()] then
-		return
-	end
+
 	table.foreach(quests.player_quests[digger:get_player_name()], function(k, v)
 		print("[quests] run quest " .. v.quest_type .. ", " .. v.node)
 		if v.quest_type == "dignode" and oldnode.name == v.node then
 			v.progress = v.progress + 1
-			if v.progress > (v.max-1) and v.done == false then
-				xp.add_xp(digger, v.xp)
-				v.done = true
-				quests.callback(digger)
+			if v.progress > (v.max-1) and not v.done then
+				quests.finish_quest(digger, v)
 			end
-			quests.save_quests()
+			quests.save()
 		end
 	end)
 end)
 
 minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack, pointed_thing)
-	if not placer or not placer:is_player() then
+	if not placer or not placer:is_player() or
+			not quests.player_quests[placer:get_player_name()] then
 		return
 	end
-	if not quests.player_quests[placer:get_player_name()] then
-		return
-	end
+
 	table.foreach(quests.player_quests[placer:get_player_name()], function(k, v)
 		if v.quest_type == "placenode" and newnode.name == v.node then
 			v.progress = v.progress + 1
-			if v.progress > (v.max-1) and v.done == false then
-				xp.add_xp(placer, v.xp)
-				v.done = true
-				quests.callback(placer)
+			if v.progress > (v.max-1) and not v.done then
+				quests.finish_quest(placer, v)
 			end
-			quests.save_quests()
+			quests.save()
 		end
 	end)
 end)
@@ -113,12 +111,12 @@ minetest.register_on_newplayer(function(player)
 	quests.player_quests[player:get_player_name()] = {}
 end)
 
-quests.load_quests()
+quests.load()
 
 -- exploring
 minetest.register_node("quests:map", {
 	description = "Map",
-	tiles = {"quests_map_top.png", "quests_map_top.png", "quests_map.png", "quests_map.png", "quests_map.png", "quests_map.png"},	
+	tiles = {"quests_map_top.png", "quests_map_top.png", "quests_map.png", "quests_map.png", "quests_map.png", "quests_map.png"},
 	groups = {quest = 1, cracky = 3},
 	on_punch = function(pos, node, player, pointed_thing)
 		xp.add_xp(player, math.random(3, 30))
