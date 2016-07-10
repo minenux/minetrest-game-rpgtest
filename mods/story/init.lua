@@ -1,38 +1,19 @@
 story = {}
 
--- string
-function string:split(inSplitPattern, outResults)
-	if not outResults then
-		outResults = {}
-	end
-	local theStart = 1
-	local theSplitStart, theSplitEnd = string.find( self, inSplitPattern, theStart )
-	while theSplitStart do
-		table.insert( outResults, string.sub( self, theStart, theSplitStart-1 ) )
-		theStart = theSplitEnd + 1
-		theSplitStart, theSplitEnd = string.find( self, inSplitPattern, theStart )
-	end
-	table.insert( outResults, string.sub( self, theStart ) )
-	return outResults
-end
-
 -- form
 
-story.talk_form = "size[8,7.5;]"
-story.talk_form = story.talk_form..default.gui_colors
-story.talk_form = story.talk_form..default.gui_bg
---story.talk_form = story.talk_form.."image[0,0.0;3,8;story_player.png]"
-story.talk_form = story.talk_form.."label[0,0;%s]"
+story.talk_form = "size[8,7.5;]" ..
+		default.gui_colors .. default.gui_bg .. "label[0,0;%s]"
 --story.talk_form = story.talk_form.."image[6,0.0;3,8;story_character_1.png]"
 
-story.get_talk_form = function(text)
+function story.get_talk_form(text)
 	return string.format(story.talk_form, text)
 end
 
 function story.show_dialog(player, text)
 	local lines = text:split("\n")
 	for i,t in ipairs(lines) do
-		minetest.after((i-1)*2.3, function(player, t) 
+		minetest.after((i-1)*2.3, function(player, t)
 			cmsg.push_message_player(player, t)
 		end, player,t)
 	end
@@ -64,11 +45,12 @@ end)
 
 -- generator
 
-story.generator = {}
-story.generator.parts = {}
-story.generator.dialogs = {}
-story.generator.players_stories = {}
-story.generator.file = minetest.get_worldpath() .. "/story"
+story.generator = {
+	parts = {},
+	dialogs = {},
+	players_stories = {},
+	file = minetest.get_worldpath() .. "/story"
+}
 
 function story.generator.load_stories()
 	local input = io.open(story.generator.file, "r")
@@ -205,7 +187,7 @@ function story.generator.get_quest(player)
 	return nil
 end
 
-quests.callback = function (player)
+quests.callback = function(player)
 	print("[quest]  done")
 	if (story.generator.players_stories[player:get_player_name()].wait_for and
 			story.generator.players_stories[player:get_player_name()].wait_for == "quest") then
@@ -224,23 +206,24 @@ function story.generator.run(part, player, line_pos)
 	for k,v in pairs(lines) do
 		if i > line_pos-1 then
 			local cmd = v:split(" ")
-			if cmd[1] then
+			local operator = cmd[1]
+			if operator then
 				print("[INFO] run line... " .. v)
-				if cmd[1] == "$dialog" and cmd[2] then
+				if operator == "$dialog" and cmd[2] then
 					if story.generator.get_dialog(cmd[2], player) then
 						story.generator.players_stories[player:get_player_name()].text = story.generator.get_dialog(cmd[2], player)
 					end
-				end
-				if cmd[1] == "$create" then
+				elseif operator == "$create" then
 					story.generator.show(player, story.generator.players_stories[player:get_player_name()].pos)
-				end
-				if cmd[1] == "$place" and cmd[2] and cmd[3] then
-					if cmd[2] == "at" then
-						if places.pos[cmd[3]] then
-							story.generator.players_stories[player:get_player_name()].pos = places.pos[cmd[3]]
+				elseif operator == "$place" and cmd[2] and cmd[3] then
+					local place_mode = cmd[2]
+					local at = cmd[3]
+					if place_mode == "at" then
+						if places.pos[at] then
+							story.generator.players_stories[player:get_player_name()].pos = places.pos[at]
 						end
-					elseif cmd[2] == "near" then
-						if cmd[3] == "player" then
+					elseif place_mode == "near" then
+						if place_mode == "player" then
 							if cmd[4] then
 								local place = minetest:get_player_by_name(cmd[4]):getpos()
 								story.generator.players_stories[player:get_player_name()].pos = {x=place.x+math.random(-5, 5), y=place.y, z=place.z+math.random(-5, 5)}
@@ -248,30 +231,31 @@ function story.generator.run(part, player, line_pos)
 								local place = player:getpos()
 								story.generator.players_stories[player:get_player_name()].pos = {x=place.x+math.random(-5, 5), y=place.y, z=place.z+math.random(-5, 5)}
 							end
-						elseif places.pos[cmd[3]] then
-							local place = places.pos[cmd[3]]
+						elseif places.pos[place_mode] then
+							local place = places.pos[place_mode]
 							story.generator.players_stories[player:get_player_name()].pos = {x=place.x+math.random(-5, 5), y=place.y, z=place.z+math.random(-5, 5)}
 						end
 					else
-						if places.pos[cmd[3]] then
+						if places.pos[place_mode] then
 							story.generator.players_stories[player:get_player_name()].pos = places.pos[cmd[3]]
 						end
 					end
-				end
-				if cmd[1] == "$quest" and cmd[2] and cmd[3] and cmd[4] and cmd[5] and tonumber(cmd[4]) and tonumber(cmd[5]) then
+				elseif operator == "$quest" and cmd[2] and cmd[3] and cmd[4] and cmd[5] and tonumber(cmd[4]) and tonumber(cmd[5]) then
+					local type = cmd[2]
+					local node = cmd[3]
+					local max = tonumber(cmd[4])
+					local xp = tonumber(cmd[5])
 					local q_id = quests.add_quest(player:get_player_name(), {
-						quest_type = cmd[2],
-						node = cmd[3],
+						quest_type = type,
+						node = node,
 						progress = 0,
 						done = false,
-						max = tonumber(cmd[4]),
-						xp = tonumber(cmd[5])
+						max = max,
+						xp = xp
 					})
-				end
-				if cmd[1] == "$pos" then
+				elseif operator == "$pos" then
 					story.generator.players_stories[player:get_player_name()].pos = {x=0,y=10,z=0}
-				end
-				if cmd[1] == "$next" and cmd[2] then
+				elseif operator == "$next" and cmd[2] then
 					if cmd[2] == "rnd" then
 						if cmd[3] and cmd[4] and cmd[5] then
 							local rnd = math.random(3)
@@ -296,20 +280,16 @@ function story.generator.run(part, player, line_pos)
 						out = {part=cmd[2], wait=false}
 					end
 					return out
-				end
-				if cmd[1] == "$wait" then
+				elseif operator == "$wait" then
 					return {cmd="$wait", param=i, wait=true, param2 = cmd[2] or "talk"}
-				end
-				if cmd[1] == "$spawn" and cmd[2] and cmd[3] then
+				elseif operator == "$spawn" and cmd[2] and cmd[3] then
 					if places.pos[cmd[3]] then
 						minetest.add_entity(places.pos[cmd[3]], cmd[2])
 					end
-				end
-				if cmd[1] == "$quit" then
+				elseif operator == "$quit" then
 					out = {part="", wait=false, quit=true}
 					return out
-				end
-				if cmd[1] == "$give" and cmd[2] and cmd[3] then
+				elseif operator == "$give" and cmd[2] and cmd[3] then
 					player:get_inventory():add_item("main", cmd[2].. " " .. cmd[3])
 				end
 			end
