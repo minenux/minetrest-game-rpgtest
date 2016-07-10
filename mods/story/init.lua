@@ -245,14 +245,17 @@ function story.generator.run(part, player, line_pos)
 					local node = cmd[3]
 					local max = tonumber(cmd[4])
 					local xp = tonumber(cmd[5])
-					local q_id = quests.add_quest(player:get_player_name(), {
-						quest_type = type,
-						node = node,
-						progress = 0,
-						done = false,
-						max = max,
-						xp = xp
-					})
+
+					local quest = quests.new(player:get_player_name(), "Story")
+					quest.xp = xp
+					if type == "dignode" then
+						quests.add_dig_goal(quest, type .. " " .. node, node, max)
+					elseif type == "placenode" then
+						quests.add_place_goal(quest, type .. " " .. node, node, max)
+					else
+						error("Unknown quest type!")
+					end
+					quests.add_quest(name, quest)
 				elseif operator == "$pos" then
 					story.generator.players_stories[player:get_player_name()].pos = {x=0,y=10,z=0}
 				elseif operator == "$next" and cmd[2] then
