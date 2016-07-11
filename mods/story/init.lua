@@ -255,7 +255,7 @@ function story.generator.run(part, player, line_pos)
 					else
 						error("Unknown quest type!")
 					end
-					quests.add_quest(name, quest)
+					quests.add_quest(player:get_player_name(), quest)
 				elseif operator == "$pos" then
 					story.generator.players_stories[player:get_player_name()].pos = {x=0,y=10,z=0}
 				elseif operator == "$next" and cmd[2] then

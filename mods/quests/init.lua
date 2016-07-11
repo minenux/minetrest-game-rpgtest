@@ -45,7 +45,7 @@ function quests.finish_quest(player, quest)
 	xp.add_xp(minetest.get_player_by_name(player), quest.xp)
 	quest.done = true
 	if quests.callback then
-		quests.callback(player)
+		quests.callback(minetest.get_player_by_name(player))
 	end
 end
 
@@ -112,6 +112,7 @@ function quests.process_node_count_goals(player, type, node)
 				goal.progress = goal.progress + 1
 				if goal.progress >= goal.max then
 					goal.progress = goal.max
+					goal.done = true
 					if goal.done then
 						quests.finish_goal(player, quest, goal)
 					end
@@ -188,6 +189,9 @@ minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack
 end)
 
 minetest.register_on_newplayer(function(player)
+	if not player then
+		return
+	end
 	quests.player_quests[player:get_player_name()] = {}
 
 	local name = player:get_player_name()
