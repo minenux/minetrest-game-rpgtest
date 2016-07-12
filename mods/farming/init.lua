@@ -33,8 +33,10 @@ function farming.register_plant(name, steps, def)
 		inventory_image = def.drop_texture,
 		on_place = function(itemstack, placer, pointed_thing) 
 			if pointed_thing.above then
-				minetest.set_node(pointed_thing.above, {name="farming:"..name.."_1"})
-				itemstack:take_item()
+				if minetest.get_node(pointed_thing.above).name == "air" then
+					minetest.set_node(pointed_thing.above, {name="farming:"..name.."_1"})
+					itemstack:take_item()
+				end
 			end
 			return itemstack
 		end,

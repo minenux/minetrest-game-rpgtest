@@ -65,6 +65,13 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	output = "default:stick 2",
+	recipe = {
+		{"default:jungle_wood"},
+	}
+})
+
+minetest.register_craft({
 	output = "default:wood 3",
 	recipe = {
 		{"default:log_1"},
@@ -179,6 +186,13 @@ minetest.register_craft({
 		{"default:stone_item", "default:stone_item", "default:stone_item"},
 		{"default:stone_item", "default:stone_item", "default:stone_item"},
 		{"default:stone_item", "default:stone_item", "default:stone_item"},
+	}
+})
+
+minetest.register_craft({
+	output = "default:stone_item 4",
+	recipe = {
+		{"default:stone_tile"},
 	}
 })
 

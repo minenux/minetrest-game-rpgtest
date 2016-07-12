@@ -170,7 +170,7 @@ minetest.register_craftitem("stairs:chisel", {
 				if n.param2 > 3 then
 					n.param2 = 0;
 				end
-				minetest.set_node(pt.under, n)
+				minetest.swap_node(pt.under, n)
 			end
 		end
 		return itemstack
