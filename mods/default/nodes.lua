@@ -751,7 +751,7 @@ minetest.register_node("default:stone_with_coal", {
 	description = "Stone with Coal",
 	tiles = {"default_stone_with_coal.png"},
 	groups = {cracky = 2},
-	drops = "default:coal_lump",
+	drop = "default:coal_lump",
 	sounds = default.sounds.stone(),
 })
 
@@ -864,3 +864,7 @@ default.register_fence("default:fence_jungle_wood", {
 default.register_fence("default:fence_quartz", {
 	material = "default:quartz",
 })
+
+-- alias
+minetest.register_alias("default:dirt_with_grass", "default:grass")
+minetest.register_alias("default:dirt_with_dry_grass", "default:dry_grass")
