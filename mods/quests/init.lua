@@ -42,6 +42,9 @@ function quests.add_quest(player, quest)
 end
 
 function quests.finish_quest(player, quest)
+	if not(quest.done) then
+		cmsg.push_message_player(minetest.get_player_by_name(player), "[quest] You completed a quest!")
+	end
 	xp.add_xp(minetest.get_player_by_name(player), quest.xp)
 	quest.done = true
 	if quests.callback then
@@ -50,6 +53,9 @@ function quests.finish_quest(player, quest)
 end
 
 function quests.finish_goal(player, quest, goal)
+	if not(goal.done) then
+		cmsg.push_message_player(minetest.get_player_by_name(player), "[quest] You completed a goal!")
+	end
 	goal.done = true
 	if not quest.done then
 		local all_done = true
@@ -105,7 +111,9 @@ end
 
 function quests.process_node_count_goals(player, type, node)
 	local player_quests = quests.player_quests[player]
+	if not(player_quests) or #player_quests == 0 then return end
 	table.foreach(player_quests, function(_, quest)
+		if not(quest.goals) or #quest.goals == 0 then return end
 		table.foreach(quest.goals, function(_, goal)
 			if (not goal.requires or goal.requires.done) and
 					goal.type == type and goal.node == node then
@@ -129,10 +137,10 @@ quests.show_quests_form = "size[8,7.5;]" .. default.gui_colors ..
 function quests.format_goal(player, quest, goal)
 	-- TODO: support formatting for more than just digging and placing
 	if goal.done then
-		return "     [x] " .. goal.title .. " (" .. tostring(goal.progress) ..
+		return "     [x] " .. (goal.title or "[NO TITLE]") .. " (" .. tostring(goal.progress) ..
 		   	"/" .. tostring(goal.max) .. ")\n"
 	else
-		return "     [ ] " .. goal.title .. " (" .. tostring(goal.progress) ..
+		return "     [ ] " .. (goal.title or "[NO TITLE]") .. " (" .. tostring(goal.progress) ..
 		   "/" .. tostring(goal.max) .. ")\n"
 	end
 end
@@ -154,9 +162,9 @@ minetest.register_chatcommand("quests", {
 		local txt = ""
 		for _, quest in pairs(player_quests) do
 			if quest.done then
-				txt = txt .. " -> " .. quest.title .. " (Completed)\n"
+				txt = txt .. " -> " .. (quest.title or "[NO TITLE]") .. " (Completed)\n"
 			else
-				txt = txt .. " -> " .. quest.title .. "\n"
+				txt = txt .. " -> " .. (quest.title or "[NO TITLE]") .. "\n"
 				for _, goal in pairs(quest.goals) do
 					if not goal.requires or goal.requires.done then
 						txt = txt .. quests.format_goal(name, quest, goal)
