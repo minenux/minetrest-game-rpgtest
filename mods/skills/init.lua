@@ -161,6 +161,7 @@ skills.register_skill("farmer")
 skills.register_skill("warrior")
 skills.register_skill("thief")
 skills.register_skill("miner")
+skills.register_skill("hunter")
 
 skills.load_skills()
 
@@ -227,41 +228,12 @@ skills.register_weapon("sword",20, 30, {
 	}
 })
 
-
-skills.register_weapon("hoe",2, 20, {
-	description = "Hoe",
-	inventory_image = "skills_hoe.png",
-	wield_scale = {x = 1, y=1, z = 1},
-	damage_m = 0.9,
-	damage_d = 1,
-	skill = "farmer",
-	recipe = {
-		{"", "furnace:iron_rod", "default:blade"},
-		{"", "default:string_strong", ""},
-		{"", "default:stick", ""},
-	}
-})
-
-skills.register_weapon("pitchfork",15, 30, {
-	description = "Pitchfork",
-	inventory_image = "skills_pitchfork.png",
-	wield_scale = {x = 1, y=1, z = 1},
-	damage_m = 0.95,
-	damage_d = 0,
-	skill = "farmer",
-	recipe = {
-		{"furnace:iron_rod", "furnace:iron_rod", "furnace:iron_rod"},
-		{"", "default:string_strong", ""},
-		{"", "default:stick", ""},
-	}
-})
-
 skills.register_tool("bow", {
 	description = "Bow",
 	inventory_image = "skills_bow.png",
 	wield_image = "skills_bow_wield.png",
 	wield_scale = {x = 2.5, y=2.5, z = 1},
-	skill = "farmer",
+	skill = "hunter",
 	lvl = 0,
 	range = 20,
 	on_use = function(itemstack, user, pointed_thing)
@@ -289,33 +261,6 @@ skills.register_tool("bow", {
 			})
 		end
 	end
-})
-
-skills.register_weapon("stick",2, 30, {
-	description = "Stick",
-	inventory_image = "skills_stick.png",
-	wield_scale = {x = 1, y=1, z = 1},
-	damage_m = 0.8,
-	damage_d = 1,
-	skill = "thief",
-	recipe = {
-		{"", "default:stick", ""},
-		{"", "default:stick", ""},
-	}
-})
-
-skills.register_weapon("long_stick",20, 60, {
-	description = "Long Stick",
-	inventory_image = "skills_stick.png",
-	wield_scale = {x = 2, y=2, z = 1},
-	damage_m = 0.8,
-	damage_d = 1,
-	skill = "thief",
-	recipe = {
-		{"", "default:stick", ""},
-		{"", "default:stick", ""},
-		{"", "default:stick", ""},
-	}
 })
 
 
