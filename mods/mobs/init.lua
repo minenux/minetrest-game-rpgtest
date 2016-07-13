@@ -11,7 +11,7 @@ function mobs.register_mob(name, def)
 
 	if not def.hp then
 		if def.lvl and def.hits then
-			def.hp = classes.get_dmg(def.lvl)*def.hits
+			def.hp = skills.get_dmg(def.lvl)*def.hits
 		end
 	end
 

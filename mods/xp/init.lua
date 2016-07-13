@@ -8,6 +8,12 @@ xp.level_hud = {}
 xp.xp_file = minetest.get_worldpath() .. "/xp"
 xp.lvl_file = minetest.get_worldpath() .. "/levels"
 
+xp.custom_level_system = false
+
+function xp.set_level_hud_text(player, str)
+	player:hud_change(xp.level_hud[player:get_player_name()], "text", str)
+end
+
 function xp.get_xp(lvl, x)
 	return (xp.lvl * lvl) / x
 end
@@ -45,7 +51,9 @@ function xp.add_lvl(player)
 		xp.player_levels[player:get_player_name()] = 1
 	end
 	xp.save_levels()
-	player:hud_change(xp.level_hud[player:get_player_name()], "text", xp.player_levels[player:get_player_name()])
+	if not(xp.custom_level_system) then
+		player:hud_change(xp.level_hud[player:get_player_name()], "text", xp.player_levels[player:get_player_name()])
+	end
 	cmsg.push_message_player(player, "Level up! You are now Level " .. tostring(xp.player_levels[player:get_player_name()]))
 end
 

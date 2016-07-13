@@ -3,12 +3,12 @@ legendary_items.rare_weapons = {}
 legendary_items.register_rare_weapon = function(name, forlevel, def)
 	table.insert(legendary_items.rare_weapons, name)
 	minetest.register_tool(":legendary_items:"..name, {
-		description = def.description.."\n For Level: ".. tostring(forlevel).. "\n Damage: " .. tostring(def.damage+classes.get_dmg(forlevel)) .. "\n Rare Item",
+		description = def.description.."\n For Level: ".. tostring(forlevel).. "\n Damage: " .. tostring(def.damage+skills.get_dmg(forlevel)) .. "\n Rare Item",
 		inventory_image = def.inventory_image,
 		wield_scale = def.wield_scale,
 		tool_capabilities = {
 			max_drop_level=3,
-			damage_groups = {fleshy=def.damage+classes.get_dmg(forlevel)},
+			damage_groups = {fleshy=def.damage+skills.get_dmg(forlevel)},
 		},
 		on_use = function(itemstack, user, pointed_thing)
 			if user == nil then return end
@@ -26,7 +26,7 @@ legendary_items.register_rare_weapon = function(name, forlevel, def)
 	})
 	table.insert(def.materials, "default:ruby")
 	blueprint.register_blueprint(name, {
-		description = def.description .. "\n For Level: ".. tostring(forlevel).. "\n Damage: " .. tostring(def.damage+classes.get_dmg(forlevel)) .. "\n Rare Item",
+		description = def.description .. "\n For Level: ".. tostring(forlevel).. "\n Damage: " .. tostring(def.damage+skills.get_dmg(forlevel)) .. "\n Rare Item",
 		materials = def.materials,
 		out = "legendary_items:"..name,
 		color = "yellow"
