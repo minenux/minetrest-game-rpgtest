@@ -83,7 +83,7 @@ minetest.register_craftitem("skills:skill_book", {
 table.insert(default.treasure_chest_items, "skills:skill_book")
 
 skills.abilities.register_skill("super_jump", {
-	description = "Super Jump\nLevel: 15\nskill: thief\nTime: 7.0\nEffect: gravity = 0.1\nEnergy: 10",
+	description = "Super Jump\nLevel: 15\nSkill: thief\nTime: 7.0\nEffect: gravity = 0.1\nEnergy: 10",
 	img = "skills_abilities_super_jump.png",
 	skill = "thief",
 	lvl = 15,
@@ -107,7 +107,7 @@ skills.abilities.register_skill("super_jump", {
 })
 
 skills.abilities.register_skill("lift", {
-	description = "Lift\nLevel: 25\nskill: thief\nTime: 2.0\nEffect: gravity = -0.5\nEnergy: 20",
+	description = "Lift\nLevel: 25\nSkill: thief\nTime: 2.0\nEffect: gravity = -0.5\nEnergy: 20",
 	img = "skills_abilities_lift.png",
 	skill = "thief",
 	lvl = 25,
@@ -131,7 +131,7 @@ skills.abilities.register_skill("lift", {
 })
 
 skills.abilities.register_skill("heal", {
-	description = "Heal\nLevel: 13\nskill: farmer\nEffect: hp + 4\nEnergy: 15",
+	description = "Heal\nLevel: 13\nSkill: farmer\nEffect: hp + 4\nEnergy: 15",
 	img = "skills_abilities_heal.png",
 	skill = "farmer",
 	lvl = 13,
@@ -139,6 +139,23 @@ skills.abilities.register_skill("heal", {
 	on_use = function(itemstack, user, pointed_thing)
 		user:set_hp(user:get_hp()+4)
 		cmsg.push_message_player(user, "[skill][hp] + 4")
+	end
+})
+
+skills.abilities.register_skill("grow", {
+	description = "Grow\nLevel: 6\nSkill: farmer\nEffect: -\nEnergy: 30",
+	img = "skills_abilities_grow.png",
+	skill = "farmer",
+	lvl = 6,
+	energy = 30,
+	on_use = function(itemstack, user, pointed_thing)
+		if minetest.get_node(pointed_thing.under).name == "default:dirt" then
+			minetest.set_node(pointed_thing.under, {name = "default:grass"})
+		elseif minetest.get_node(pointed_thing.under).name == "default:dry_grass" then
+			minetest.set_node(pointed_thing.under, {name = "default:grass"})
+		elseif minetest.get_node(pointed_thing.above).name == "air" then
+			minetest.set_node(pointed_thing.above, {name = "default:plant_grass_5"})
+		end
 	end
 })
 

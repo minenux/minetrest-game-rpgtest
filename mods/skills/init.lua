@@ -152,6 +152,23 @@ minetest.register_chatcommand("skill", {
 	end,
 })
 
+minetest.register_chatcommand("reset_skills", {
+	params = "<player>",
+	description = "Resets <player>'s skills",
+	privs = {server=true},
+	func = function(name, param)
+		if minetest.get_player_by_name(param) then
+			skills.lvls[param] = {}
+			for s,a in pairs(skills.all_skills) do
+				skills.lvls[param][s] = 1
+			end
+			skills.save_skills()
+		else
+			return false,"Player " .. param .. "doesnt exist."
+		end
+	end,
+})
+
 skills.register_skill = function(name)
 	skills.all_skills[name] = true
 end
@@ -165,7 +182,7 @@ skills.register_skill("hunter")
 
 skills.load_skills()
 
-skills.register_weapon("spear",2, 12, {
+skills.register_weapon("spear",1, 12, {
 	description = "Spear",
 	inventory_image = "skills_spear.png",
 	wield_scale = {x = 2, y=2, z = 1},
@@ -234,7 +251,7 @@ skills.register_tool("bow", {
 	wield_image = "skills_bow_wield.png",
 	wield_scale = {x = 2.5, y=2.5, z = 1},
 	skill = "hunter",
-	lvl = 0,
+	lvl = 30,
 	range = 20,
 	on_use = function(itemstack, user, pointed_thing)
 		local p = user:getpos()
