@@ -3,6 +3,13 @@ minetest.register_node("default:dirt", {
 	tiles = {"default_dirt.png"},
 	groups = {crumbly = 3},
 	sounds = default.sounds.dirt(),
+	drop = {
+		max_items = 1,
+		items = {
+			{items = {'default:stone_item'},rarity = 5},
+			{items = {'default:dirt'}},
+		}
+	},
 })
 
 
@@ -25,6 +32,13 @@ minetest.register_node("default:wet_grass", {
 	tiles = {"default_grass_wet.png"},
 	groups = {crumbly = 3},
 	sounds = default.sounds.dirt(),
+	drop = {
+		max_items = 1,
+		items = {
+			{items = {'default:stone_item'},rarity = 5},
+			{items = {'default:wet_grass'}},
+		}
+	},
 })
 
 minetest.register_node("default:grass_flowers", {
@@ -39,6 +53,13 @@ minetest.register_node("default:grass", {
 	tiles = {"default_grass.png"},
 	groups = {crumbly = 3},
 	sounds = default.sounds.dirt(),
+	drop = {
+		max_items = 1,
+		items = {
+			{items = {'default:stone_item'},rarity = 5},
+			{items = {'default:grass'}},
+		}
+	},
 })
 
 minetest.register_node("default:dry_grass", {
