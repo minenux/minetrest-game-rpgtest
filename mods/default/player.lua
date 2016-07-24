@@ -1,21 +1,43 @@
+default.gui_color_theme = 2
+
 function default.itemslot_bg(x,y,w,h)
-	local imgs = ""
-	for i = 0, w-1,1 do
-		for j=0, h-1,1 do
-			imgs = imgs .."image["..x+i..","..y+j..";1,1;gui_itemslot_bg.png]"
+	if default.gui_color_theme == 1 then
+		local imgs = ""
+		for i = 0, w-1,1 do
+			for j=0, h-1,1 do
+				imgs = imgs .."image["..x+i..","..y+j..";1,1;gui_itemslot_bg.png]"
+			end
 		end
+		return imgs
+	else
+		return ""
 	end
-	return imgs
 end
 
-default.gui_bg = "bgcolor[#a88e69FF;false]"
-default.gui_colors = "listcolors[#00000000;#10101030;#00000000;#68B259;#FFF]"
+if default.gui_color_theme == 1 then
+	default.gui_bg = "bgcolor[#a88e69FF;false]"
+	default.gui_colors = "listcolors[#00000000;#10101030;#00000000;#68B259;#FFF]"
+	default.text_color = "#FFF"
+elseif default.gui_color_theme == 2 then
+	default.gui_bg = "bgcolor[#333333FF;false]"
+	default.gui_colors = "listcolors[#222222FF;#333333FF;#000000FF;#444444FF;#FFF]"
+	default.text_color = "#FFF"
+elseif default.gui_color_theme == 3 then
+	default.gui_bg = "bgcolor[#CCCCCCFF;false]"
+	default.gui_colors = "listcolors[#AAAAAAFF;#777777FF;#666666FF;#444444FF;#FFF]"
+	default.text_color = "#000"
+elseif default.gui_color_theme == 4 then
+	default.gui_bg = "bgcolor[#00000000;false]"
+	default.gui_colors = "listcolors[#00000022;#44444477;#000000FF;#444444FF;#FFF]"
+	default.text_color = "#FFF"
+end
 
 default.inv_form = "size[8,7.5;]"
 default.inv_form = default.inv_form..default.gui_colors
 default.inv_form = default.inv_form..default.gui_bg
 default.inv_form = default.inv_form.."list[current_player;main;0,3.5;8,4;]"
 default.inv_form = default.inv_form..default.itemslot_bg(0,3.5,8,4)
+default.inv_form = default.inv_form.."label[2.5,0;Crafting:]"
 default.inv_form = default.inv_form.."list[current_player;craft;2.5,0.5;3,1;]"
 default.inv_form = default.inv_form..default.itemslot_bg(2.5,0.5,3,1)
 default.inv_form = default.inv_form.."list[current_player;craftpreview;3.5,1.5;1,1;]"

@@ -75,8 +75,8 @@ creative_inventory.set_creative_formspec = function(player, start_i, pagenum)
 	player:set_inventory_formspec(
 			"size[13,7.5]"..
 			--"image[6,0.6;1,2;player.png]"..
-			"listcolors[#00000000;#10101030;#00000000;#68B259;#FFF]"..
-			"bgcolor[#a88e69FF;false]"..
+			default.gui_colors..
+			default.gui_bg..
 			"list[current_player;main;5,3.5;8,1;]"..
 			default.itemslot_bg(5,3.5,8,1)..
 			"list[current_player;main;5,4.75;8,3;8]"..
