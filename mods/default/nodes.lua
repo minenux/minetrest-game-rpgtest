@@ -356,6 +356,13 @@ minetest.register_node("default:wooden_planks_2_jungle", {
 
 -- log
 
+minetest.register_node("default:log", {
+	description = "Log",
+	tiles = {"default_log_top.png","default_log_top.png","default_log.png"},
+	groups = {choppy = 3},
+	sounds = default.sounds.wood(),
+})
+
 minetest.register_node("default:log_1", {
 	description = "Log (thick)",
 	tiles = {"default_log_top.png","default_log_top.png","default_log.png"},
