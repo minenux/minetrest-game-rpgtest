@@ -9,7 +9,7 @@ function dialogue.ask(name, question, answers)
 
 	-- generate formspec and show
 	local arrays = {
-		"size[8,3]",
+		"size[8," .. tostring(#answers*0.75+0.75) .. "]",
 		default.gui_colors,
 		default.gui_bg,
 		"label[0,0;",
