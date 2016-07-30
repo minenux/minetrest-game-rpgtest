@@ -212,6 +212,8 @@ end)
 
 quests.load()
 
+
+
 -- exploring
 minetest.register_node("quests:map", {
 	description = "Map",
