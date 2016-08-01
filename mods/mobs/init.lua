@@ -67,7 +67,7 @@ function mobs.register_mob(name, def)
 						self.object:setyaw(yaw)
 
 
-						if minetest.line_of_sight(self.object:getpos(), obj:getpos(), 1) then
+						if minetest.line_of_sight(vector.add(self.object:getpos(), vector.new(0, 0.5, 0)), vector.add(obj:getpos(), vector.new(0, 0.5, 0)), 1) then
 							obj:punch(self.object, 10, def.dmg, nil)
 							found = true
 							break
