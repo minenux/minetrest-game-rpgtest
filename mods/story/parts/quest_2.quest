@@ -1,5 +1,0 @@
-$dialog quest_2
-$wait
-$quest dignode default:stone_with_iron 2 10
-$wait quest
-$quit

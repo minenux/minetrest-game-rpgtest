@@ -1,5 +1,0 @@
-$dialog quest_3
-$wait
-$quest dignode default:stone_with_coal 10 10
-$wait quest
-$quit
