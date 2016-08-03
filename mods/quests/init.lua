@@ -31,6 +31,16 @@ function quests.save()
 	end
 end
 
+function quests.show_text(text, player)
+	local parts = text:split("\n")
+	for i,txt in ipairs(parts) do
+		minetest.after(2.9*i, function (txt, player)
+			if not(minetest.get_player_by_name(player)) then return end
+			cmsg.push_message_player(minetest.get_player_by_name(player), txt)
+		end, txt, player)
+	end
+end
+
 function quests.add_quest(player, quest)
 	if not quests.player_quests[player] then
 		quests.player_quests[player] = {}
@@ -38,12 +48,19 @@ function quests.add_quest(player, quest)
 	print("[quests] add quest")
 	table.insert(quests.player_quests[player], quest)
 	quests.save()
+
+	if #quest.goals > 0 then
+		quests.show_text(quest.text .. "\n" .. quest.goals[1].description, player)
+	else
+		quests.show_text(quest.text, player)
+	end
+
 	return #quests.player_quests[player]
 end
 
 function quests.finish_quest(player, quest)
 	if not(quest.done) then
-		cmsg.push_message_player(minetest.get_player_by_name(player), "[quest] You completed a quest!")
+		cmsg.push_message_player(minetest.get_player_by_name(player), "[quest] You completed " .. quest.title)
 	end
 	xp.add_xp(minetest.get_player_by_name(player), quest.xp)
 	quest.done = true
@@ -54,8 +71,22 @@ end
 
 function quests.finish_goal(player, quest, goal)
 	if not(goal.done) then
-		cmsg.push_message_player(minetest.get_player_by_name(player), "[quest] You completed a goal!")
+		for i = 1, #quest.goals do
+			if quest.goals[i].requires and quest.goals[i].requires.title == goal.title then
+				if quest.goals[i].description then
+					quests.show_text(quest.goals[i].description, player)
+				end
+			end
+		end
+		
+		if goal.reward then
+			minetest.get_player_by_name(player):get_inventory():add_item("main", goal.reward)
+			cmsg.push_message_player(minetest.get_player_by_name(player), goal.ending or "[quest] You completed a goal and you got a reward!")
+		else
+			cmsg.push_message_player(minetest.get_player_by_name(player), goal.ending or "[quest] You completed a goal!")
+		end
 	end
+
 	goal.done = true
 	if not quest.done then
 		local all_done = true
@@ -72,38 +103,45 @@ function quests.finish_goal(player, quest, goal)
 	quests.save()
 end
 
-function quests.new(player, title)
+function quests.new(player, title, text)
 	local quest = {
 		title = title,
 		done = false,
 		goals = {},
-		xp = 0
+		xp = 0,
+		text = text or "",
 	}
 
 	return quest
 end
 
-function quests.add_dig_goal(quest, title, node, number)
+function quests.add_dig_goal(quest, title, node, number, description, ending)
 	local goal = {
 		title = title,
 		type = "dig",
 		node = node,
 		max = number,
 		progress = 0,
-		done = false
+		done = false,
+
+		description = description or "",
+		ending = ending or nil
 	}
 	table.insert(quest.goals, goal)
 	return goal
 end
 
-function quests.add_place_goal(quest, title, node, number)
+function quests.add_place_goal(quest, title, node, number, description, ending)
 	local goal = {
 		title = title,
 		type = "placenode",
 		node = node,
 		max = number,
 		progress = 0,
-		done = false
+		done = false,
+
+		description = description or "",
+		ending = ending or nil
 	}
 	table.insert(quest.goals, goal)
 	return goal
@@ -116,16 +154,19 @@ function quests.process_node_count_goals(player, type, node)
 		if not(quest.goals) or #quest.goals == 0 then return end
 		table.foreach(quest.goals, function(_, goal)
 			if (not goal.requires or goal.requires.done) and
-					goal.type == type and goal.node == node then
-				goal.progress = goal.progress + 1
-				if goal.progress >= goal.max then
-					goal.progress = goal.max
-					goal.done = true
-					if goal.done then
-						quests.finish_goal(player, quest, goal)
+					goal.type == type then
+				for i=1,#goal.node do
+					if goal.node[i] == node then
+						goal.progress = goal.progress + 1
+						if goal.progress >= goal.max then
+							goal.progress = goal.max
+
+							quests.finish_goal(player, quest, goal)
+							goal.done = true
+						end
+						quests.save()
 					end
 				end
-				quests.save()
 			end
 		end)
 	end)
@@ -202,11 +243,23 @@ minetest.register_on_newplayer(function(player)
 	end
 	quests.player_quests[player:get_player_name()] = {}
 
+	--tutorial
 	local name = player:get_player_name()
-	local quest = quests.new(name, "Quest 1")
-	local q1 = quests.add_dig_goal(quest, "Harvest dirt", "default:dirt", 5)
-	local q2 = quests.add_dig_goal(quest, "Harvest sand", "default:sand", 5)
+	local quest = quests.new(name, "Tutorial", "Hey you!\nI didnt see you before. Are you new here?\nOh, Ok.\nI will help you to find the city \"NAME HERE\".\nYou will be save there.\n But first you need some basic equipment!")
+	local q1 = quests.add_dig_goal(quest, "Harvest dirt", {"default:dirt"}, 10, "You need to harvest some Dirt to get stones!")
+	local q2 = quests.add_dig_goal(quest, "Harvest Grass", {"default:plant_grass", "default:plant_grass_2", "default:plant_grass_3", "default:plant_grass_4", "default:plant_grass_5"}, 12, "Now you need to get some Grass to craft strings.")
+	local q3 = quests.add_dig_goal(quest, "Harvest Leaves", {"default:leaves_1", "default:leaves_2", "default:leaves_3" ,"default:leaves_4"}, 6, "Harvest some leaves to craft twigs.")
+	
+	local q4 = quests.add_place_goal(quest, "Place Workbench", {"default:workbench"}, 1, "You should craft a workbench and place it in front of you!", "Great! The tutorial ends here. If you want to know how to craft things just goto the RPGtest wiki.\nBut I think cdqwertz will add a crafting guide soon.")
+
+	q3.reward = "default:wood 3"
+
 	q2.requires = q1
+	q3.requires = q2
+	q4.requires = q3
+
+	quest.xp = 10
+
 	quests.add_quest(name, quest)
 end)
 
