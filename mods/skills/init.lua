@@ -281,6 +281,37 @@ skills.register_tool("bow", {
 })
 
 
+minetest.override_item("default:stone_with_coal", {
+	on_dig = function(pos, node, player)
+		if skills.lvls[player:get_player_name()] then
+			xp.add_xp(player,xp.get_xp(xp.player_levels[player:get_player_name()], 50)*(skills.lvls[player:get_player_name()]["miner"]-1))
+		end
+		minetest.node_dig(pos, node, player)
+	end,
+})
+
+minetest.override_item("default:stone_with_diamond", {
+	on_dig = function(pos, node, player)
+		if skills.lvls[player:get_player_name()] then
+			xp.add_xp(player,xp.get_xp(xp.player_levels[player:get_player_name()], 10))
+		end
+		minetest.node_dig(pos, node, player)
+	end,
+})
+
+minetest.override_item("default:stone", {
+	on_dig = function(pos, node, player)
+		if skills.lvls[player:get_player_name()]["miner"] then
+			if skills.lvls[player:get_player_name()]["miner"] > 1 then
+				if math.random(0, 20) == 1 then
+					xp.add_xp(player,10)
+				end
+			end
+		end
+		minetest.node_dig(pos, node, player)
+	end,
+})
+
 local modpath = minetest.get_modpath("skills")
 
 dofile(modpath.."/abilities.lua")
