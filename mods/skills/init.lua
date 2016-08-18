@@ -53,6 +53,11 @@ function skills.register_weapon(name, fromLevel, levels, def)
 				end
 			end
 		})
+		minetest.register_craft({
+			output = "skills:"..name .. "_lvl_" .. tostring(i),
+			recipe = {"skills:"..name .. "_lvl_" .. tostring(i), "skills:"..name .. "_lvl_" ..tostring(i)},
+			type = "toolrepair",
+		})
 		if i < levels then
 			minetest.register_craft({
 				output = "skills:"..name .. "_lvl_" .. tostring(i+1),
@@ -68,11 +73,6 @@ function skills.register_weapon(name, fromLevel, levels, def)
 			recipe = def.recipe,
 		})
 	end
-	minetest.register_craft({
-		output = "skills:"..name .. "_lvl_" .. tostring(i),
-		recipe = {"skills:"..name .. "_lvl_" .. tostring(i), "skills:"..name .. "_lvl_" ..tostring(i)},
-		type = "toolrepair",
-	})
 end
 
 function skills.register_tool(name, def)
