@@ -186,35 +186,39 @@ function quests.format_goal(player, quest, goal)
 	end
 end
 
+function quests.get_formspec(name)
+	local player_quests = quests.player_quests[name]
+	if not player_quests or #player_quests == 0 then
+		local s = quests.show_quests_form
+		s = string.format(s, "You have not got any quests yet.")
+		return s
+	end
+
+	local s = quests.show_quests_form
+	local txt = ""
+	for _, quest in pairs(player_quests) do
+		if quest.done then
+			txt = txt .. " -> " .. (quest.title or "[NO TITLE]") .. " (Completed)\n"
+		else
+			txt = txt .. " -> " .. (quest.title or "[NO TITLE]") .. "\n"
+			for _, goal in pairs(quest.goals) do
+				if not goal.requires or goal.requires.done then
+					txt = txt .. quests.format_goal(name, quest, goal)
+				end
+			end
+		end
+	end
+	s = string.format(s, minetest.formspec_escape(txt))
+
+	return s
+end
+
 minetest.register_chatcommand("quests", {
 	params = "",
 	description = "Shows your quests",
 	privs = {},
 	func = function(name, text)
-		local player_quests = quests.player_quests[name]
-		if not player_quests or #player_quests == 0 then
-			local s = quests.show_quests_form
-			s = string.format(s, "You have not got any quests yet.")
-			minetest.show_formspec(name, "quests:show_quests", s)
-			return
-		end
-
-		local s = quests.show_quests_form
-		local txt = ""
-		for _, quest in pairs(player_quests) do
-			if quest.done then
-				txt = txt .. " -> " .. (quest.title or "[NO TITLE]") .. " (Completed)\n"
-			else
-				txt = txt .. " -> " .. (quest.title or "[NO TITLE]") .. "\n"
-				for _, goal in pairs(quest.goals) do
-					if not goal.requires or goal.requires.done then
-						txt = txt .. quests.format_goal(name, quest, goal)
-					end
-				end
-			end
-		end
-		s = string.format(s, minetest.formspec_escape(txt))
-		minetest.show_formspec(name, "quests:show_quests", s)
+		minetest.show_formspec(name, "quests:show_quests", quests.get_formspec(name))
 		return true, ""
 	end,
 })
@@ -246,13 +250,14 @@ minetest.register_on_newplayer(function(player)
 	--tutorial
 	local name = player:get_player_name()
 	local quest = quests.new(name, "Tutorial", "Hey you!\nI didnt see you before. Are you new here?\nOh, Ok.\nI will help you to find the city \"NAME HERE\".\nYou will be save there.\n But first you need some basic equipment!")
-	local q1 = quests.add_dig_goal(quest, "Harvest dirt", {"default:dirt"}, 10, "You need to harvest some Dirt to get stones!")
+	local q1 = quests.add_dig_goal(quest, "Harvest dirt", {"default:dirt", "default:grass"}, 10, "You need to harvest some Dirt to get stones!")
 	local q2 = quests.add_dig_goal(quest, "Harvest Grass", {"default:plant_grass", "default:plant_grass_2", "default:plant_grass_3", "default:plant_grass_4", "default:plant_grass_5"}, 12, "Now you need to get some Grass to craft strings.")
 	local q3 = quests.add_dig_goal(quest, "Harvest Leaves", {"default:leaves_1", "default:leaves_2", "default:leaves_3" ,"default:leaves_4"}, 6, "Harvest some leaves to craft twigs.")
 	
-	local q4 = quests.add_place_goal(quest, "Place Workbench", {"default:workbench"}, 1, "You should craft a workbench and place it in front of you!", "Great! The tutorial ends here. If you want to know how to craft things just goto the RPGtest wiki.\nBut I think cdqwertz will add a crafting guide soon.")
+	local q4 = quests.add_place_goal(quest, "Place Workbench", {"default:workbench"}, 1, "You should craft a workbench and place it in front of you!", "Great! The tutorial ends here. If you want to know how to craft things,\n just open the crafting guide I gave you.\nYou can find all craftable items there!")
 
 	q3.reward = "default:wood 3"
+	q4.reward = "crafting_guide:book"
 
 	q2.requires = q1
 	q3.requires = q2

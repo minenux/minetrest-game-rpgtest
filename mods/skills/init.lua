@@ -9,6 +9,7 @@ minetest.register_on_newplayer(function(player)
 	for s,a in pairs(skills.all_skills) do
 		skills.lvls[player:get_player_name()][s] = 1
 	end
+	skills.save_skills()
 end)
 
 function skills.get_dmg(lvl)
@@ -301,7 +302,7 @@ minetest.override_item("default:stone_with_diamond", {
 
 minetest.override_item("default:stone", {
 	on_dig = function(pos, node, player)
-		if skills.lvls[player:get_player_name()]["miner"] then
+		if skills.lvls[player:get_player_name()] and skills.lvls[player:get_player_name()]["miner"] then
 			if skills.lvls[player:get_player_name()]["miner"] > 1 then
 				if math.random(0, 20) == 1 then
 					xp.add_xp(player,10)

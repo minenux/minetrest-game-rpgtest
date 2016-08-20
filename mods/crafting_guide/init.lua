@@ -3,7 +3,7 @@ crafting_guide = {}
 crafting_guide.form = "size[3,3;]"..default.gui_colors..default.gui_bg;
 crafting_guide.form_back = "size[3,4;]"..default.gui_colors..default.gui_bg.."button[0,3;3,1;btn_back;Back]";
 
-crafting_guide.form_items = "size[8,7]"..default.gui_colors..default.gui_bg.."button[0,6;3,1;btn_left;<]button[5,6;3,1;btn_right;>]"
+crafting_guide.form_items = "size[8,7]"..default.gui_colors..default.gui_bg.."button[0,6;3,1;btn_left;<]button[5,6;3,1;btn_right;>]button[3,6;2,1;btn_quests;Quests]"
 
 crafting_guide.pages = {}
 
@@ -89,6 +89,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		elseif fields.btn_right then
 			crafting_guide.pages[player:get_player_name()] = crafting_guide.pages[player:get_player_name()] +1
 			minetest.show_formspec(player:get_player_name(), "crafting_guide:book_items", crafting_guide.get_item_formspec(crafting_guide.pages[player:get_player_name()]))
+		elseif fields.btn_quests then
+			minetest.show_formspec(player:get_player_name(), "quests:show_quests", quests.get_formspec(player:get_player_name()))
 		elseif fields.quit then
 			crafting_guide.pages[player:get_player_name()] = nil		
 		else
