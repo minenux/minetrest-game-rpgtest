@@ -1,5 +1,7 @@
 mobs = {}
 mobs.mobs = {}
+mobs.count = 0
+
 function mobs.get_velocity(v, yaw, y)
 	local x = -math.sin(yaw) * v
 	local z =  math.cos(yaw) * v
@@ -40,6 +42,7 @@ function mobs.register_mob(name, def)
 					else
 						minetest.spawn_item(self.object:getpos(), "money:silver_coin")
 					end
+					mobs.count = mobs.count - 1
 					self.object:remove()
 				end
 			end
@@ -170,7 +173,14 @@ end
 local timer = 0
 minetest.register_globalstep(function(dtime)
 	timer = timer + dtime;
-	if timer >= 5 then
+	if timer >= 10 then
+		print("[mobs] mob count = " .. tostring(mobs.count))
+		if mobs.count > (#minetest.get_connected_players())*2 then
+			print("[mobs] canceled spawning")
+			timer = 0	
+			return
+		end
+		
 		for _, player in pairs(minetest.get_connected_players()) do
 			local p = player:getpos()
 			local a = {-1, 1}
@@ -179,6 +189,7 @@ minetest.register_globalstep(function(dtime)
 			if minetest.get_node(vector.new(x, p.y+2, z)).name == "air" then
 				local n = mobs.get_mob(xp.player_levels[player:get_player_name()])
 				minetest.add_entity(vector.new(x, p.y+2, z), n)
+				mobs.count = mobs.count +1
 			end
 		end
 		timer = 0
