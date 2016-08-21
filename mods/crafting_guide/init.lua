@@ -64,6 +64,32 @@ function crafting_guide.get_item_formspec(page)
 			i = i +1
 		end
 	end
+
+	if page == -1 then
+		str = str .. "label[0,0;Mining :]"
+		str = str .. "item_image_button[0,0.5;1,1;default:axe_stone;default:axe_stone;]"
+		str = str .. "item_image_button[1,0.5;1,1;default:simple_hammer;default:simple_hammer;]"
+		str = str .. "item_image_button[2,0.5;1,1;default:flint_pick;default:flint_pick;]"
+		str = str .. "item_image_button[3,0.5;1,1;default:pick;default:pick;]"
+		str = str .. "item_image_button[4,0.5;1,1;default:pick_copper;default:pick_copper;]"
+		str = str .. "item_image_button[5,0.5;1,1;default:pick_diamond;default:pick_diamond;]"
+		str = str .. "item_image_button[7,0.5;1,1;torch:torch;torch:torch;]"
+		
+		str = str .. "label[0,2;Weapons :]"
+		str = str .. "item_image_button[0,2.5;1,1;skills:spear_lvl_1;skills:spear_lvl_1;]"
+		str = str .. "item_image_button[1,2.5;1,1;skills:sword_lvl_20;skills:sword_lvl_20;]"
+		str = str .. "item_image_button[2,2.5;1,1;skills:bow;skills:bow;]"
+
+		str = str .. "label[0,4;Furnace :]"
+		str = str .. "item_image_button[0,4.5;1,1;furnace:furnace;furnace:furnace;]"
+		str = str .. "item_image_button[1,4.5;1,1;furnace:pattern_rod;furnace:pattern_rod;]"
+		str = str .. "item_image_button[2,4.5;1,1;default:coalblock_glowing;default:coalblock_glowing;]"
+
+		str = str .. "label[4,4;Workbench :]"
+		str = str .. "item_image_button[4,4.5;1,1;default:workbench;default:workbench;]"
+		str = str .. "item_image_button[5,4.5;1,1;default:workbench_v2;default:workbench_v2;]"
+	end
+
 	return str
 end
 
