@@ -70,6 +70,9 @@ minetest.register_abm({
 				elseif myinv:contains_item("main", {name = "default:stone_with_copper"}) then
 					minetest.get_meta(patternpos):get_inventory():add_item("main", {name = "furnace:copper_plate"})
 					myinv:remove_item("main", {name = "default:stone_with_copper"})
+				elseif myinv:contains_item("main", {name = "default:sand"}) then
+					minetest.get_meta(patternpos):get_inventory():add_item("main", {name = "default:glass"})
+					myinv:remove_item("main", {name = "default:sand"})
 				end
 			end
 		end

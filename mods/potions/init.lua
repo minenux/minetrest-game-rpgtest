@@ -89,7 +89,7 @@ potions.register_potion("potions:running", {
 })
 
 minetest.register_craftitem("potions:strange", {
-	description = "strange Potion",
+	description = "Strange Potion",
 	inventory_image = "potions_black.png",
 })
 
