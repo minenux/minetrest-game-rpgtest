@@ -67,7 +67,7 @@ function skills.abilities.register_skill(name, def)
 		end
 	})
 	
-	table.insert(skills.abilities.all, "skills:abilities_" .. name)
+	table.insert(skills.abilities.all, "skills:ability_" .. name)
 end
 
 minetest.register_craftitem("skills:skill_book", {
