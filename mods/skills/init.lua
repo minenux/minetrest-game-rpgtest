@@ -293,8 +293,8 @@ minetest.override_item("default:stone_with_coal", {
 
 minetest.override_item("default:stone_with_diamond", {
 	on_dig = function(pos, node, player)
-		if skills.lvls[player:get_player_name()] then
-			xp.add_xp(player,xp.get_xp(xp.player_levels[player:get_player_name()], 10))
+		if skills.lvls[player:get_player_name()] and skills.lvls[player:get_player_name()]["miner"] > 5 then
+			xp.add_xp(player,xp.get_xp(xp.player_levels[player:get_player_name()], 7))
 		end
 		minetest.node_dig(pos, node, player)
 	end,

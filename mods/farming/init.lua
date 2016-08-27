@@ -15,6 +15,13 @@ function farming.register_plant(name, steps, def)
 				type = "fixed",
 				fixed = {-0.5, -0.5, -0.5, 0.5, -0.4, 0.5},
 			},
+
+			on_dig = function(pos, node, player)
+				if skills.lvls[player:get_player_name()] and skills.lvls[player:get_player_name()]["farmer"] and skills.lvls[player:get_player_name()]["farmer"] > 4 then
+					xp.add_xp(player,xp.get_xp(xp.player_levels[player:get_player_name()], 100)*(i-1))
+				end
+				minetest.node_dig(pos, node, player)
+			end,
 		})
 		minetest.register_abm({
 			nodenames = {"farming:"..name.."_"..tostring(i)},
