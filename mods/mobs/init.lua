@@ -37,10 +37,14 @@ function mobs.register_mob(name, def)
 			if self.object:get_hp() <= 0 then
 				if player and player:is_player() then
 					xp.add_xp(player, def.xp or xp.get_xp(def.lvl, 10))
-					if def.drops then
-						minetest.spawn_item(self.object:getpos(), def.drops[math.random(1, #def.drops)])
+					if math.random(0,20) == 10 then
+						minetest.spawn_item(self.object:getpos(),"potions:upgrading")
 					else
-						minetest.spawn_item(self.object:getpos(), "money:silver_coin")
+						if def.drops then
+							minetest.spawn_item(self.object:getpos(), def.drops[math.random(1, #def.drops)])
+						else
+							minetest.spawn_item(self.object:getpos(), "money:silver_coin")
+						end
 					end
 					mobs.count = mobs.count - 1
 					self.object:remove()
