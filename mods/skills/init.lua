@@ -177,7 +177,7 @@ end
 
 skills.register_skill("farmer")
 skills.register_skill("warrior")
-skills.register_skill("thief")
+skills.register_skill("cook")
 skills.register_skill("miner")
 skills.register_skill("hunter")
 

@@ -38,34 +38,34 @@ end
 
 function crafting_guide.get_item_formspec(page)
 	page = page or 0
-
 	local str = crafting_guide.form_items
-	local i = 0
-	local x = 0
-	local y = 0
 
-	local items = {}
-	for name,def in pairs(minetest.registered_items) do
-		table.insert(items,name)
-	end
+	if page > -1 then
+		local i = 0
+		local x = 0
+		local y = 0
 
-	table.sort(items)
-
-	for _,name in ipairs(items) do
-		if minetest.get_all_craft_recipes(name) and i < (8*6)*(page+1) then
-			if i > (8*6)*(page)-1 then
-				str = str .. "item_image_button["..x..","..y..";1,1;"..name..";"..name..";]"
-				x = x + 1
-				if x > 7 then
-					x = 0
-					y = y +1
-				end
-			end
-			i = i +1
+		local items = {}
+		for name,def in pairs(minetest.registered_items) do
+			table.insert(items,name)
 		end
-	end
 
-	if page == -1 then
+		table.sort(items)
+
+		for _,name in ipairs(items) do
+			if minetest.get_all_craft_recipes(name) and i < (8*6)*(page+1) then
+				if i > (8*6)*(page)-1 then
+					str = str .. "item_image_button["..x..","..y..";1,1;"..name..";"..name..";]"
+					x = x + 1
+					if x > 7 then
+						x = 0
+						y = y +1
+					end
+				end
+				i = i +1
+			end
+		end
+	elseif page == -1 then
 		str = str .. "label[0,0;Mining :]"
 		str = str .. "item_image_button[0,0.5;1,1;default:axe_stone;default:axe_stone;]"
 		str = str .. "item_image_button[1,0.5;1,1;default:simple_hammer;default:simple_hammer;]"
@@ -88,6 +88,77 @@ function crafting_guide.get_item_formspec(page)
 		str = str .. "label[4,4;Workbench :]"
 		str = str .. "item_image_button[4,4.5;1,1;default:workbench;default:workbench;]"
 		str = str .. "item_image_button[5,4.5;1,1;default:workbench_v2;default:workbench_v2;]"
+	elseif page == -2 then
+		local x = 0
+		local y = 0
+		str = str .. "label[0,0;Mobs :]"
+		for i,v in ipairs(mobs.mobs) do
+			local name = v[1]
+			str = str .. "item_image_button[".. x ..",".. y+0.5 ..";1,1;"..name..";"..name..";]"
+			x = x + 1
+			if x > 7 then
+				x = 0
+				y = y +1
+			end
+		end
+
+		local ores = {}
+		local a = {}
+		for _,v in pairs(minetest.registered_ores) do
+			if not(a[v.ore]) then
+				table.insert(ores, v.ore)
+				a[v.ore] = true
+			end
+		end
+		str = str .. "label[0,2.5;Ores :]"
+		x = 0
+		y = 3
+		for _,name in ipairs(ores) do
+			str = str .. "item_image_button[".. x ..",".. y ..";1,1;"..name..";"..name..";]"
+			x = x + 1
+			if x > 7 then
+				x = 0
+				y = y +1
+			end
+		end
+	elseif page == -3 then
+		local x = 0
+		local y = 0
+		str = str .. "label[0,0;Treasure Chest Loot :]"
+		for i,name in ipairs(default.treasure_chest_items) do
+			str = str .. "item_image_button[".. x ..",".. y+0.5 ..";1,1;"..name..";"..name..";]"
+			x = x + 1
+			if x > 7 then
+				x = 0
+				y = y +1
+			end
+		end
+
+		str = str .. "label[0,1.5;Abilities :]"
+		x = 0
+		y = 2
+		for _,name in ipairs(skills.abilities.all) do
+			str = str .. "item_image_button[".. x ..",".. y ..";1,1;"..name..";"..name..";]"
+			x = x + 1
+			if x > 7 then
+				x = 0
+				y = y +1
+			end
+		end
+		
+		str = str .. "label[0,3;Blueprints :]"
+		x = 0
+		y = 3
+		for _,name in ipairs(blueprint.all) do
+			str = str .. "item_image_button[".. x ..",".. y+0.5 ..";1,1;"..name..";"..name..";]"
+			x = x + 1
+			if x > 7 then
+				x = 0
+				y = y +1
+			end
+		end
+	elseif page == -4 then
+		
 	end
 
 	return str

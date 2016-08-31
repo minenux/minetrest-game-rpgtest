@@ -46,7 +46,7 @@ minetest.register_globalstep(function(dtime)
 	end
 end)
 
-function skills.abilities.register_skill(name, def)
+function skills.abilities.register_ability(name, def)
 	minetest.register_craftitem("skills:ability_" .. name, {
 		description = def.description,
 		inventory_image = def.img,
@@ -70,7 +70,7 @@ function skills.abilities.register_skill(name, def)
 	table.insert(skills.abilities.all, "skills:ability_" .. name)
 end
 
-minetest.register_craftitem("skills:skill_book", {
+minetest.register_craftitem("skills:ability_book", {
 	description = "Ability Book",
 	inventory_image = "skills_abilities_book.png",
 	on_use = function(itemstack, user, pointed_thing)
@@ -80,19 +80,19 @@ minetest.register_craftitem("skills:skill_book", {
 		return itemstack
 	end
 })
-table.insert(default.treasure_chest_items, "skills:skill_book")
+table.insert(default.treasure_chest_items, "skills:ability_book")
 
-skills.abilities.register_skill("super_jump", {
-	description = "Super Jump\nLevel: 15\nSkill: thief\nTime: 7.0\nEffect: gravity = 0.1\nEnergy: 10",
+skills.abilities.register_ability("super_jump", {
+	description = "Super Jump\nLevel: 8\nSkill: hunter\nTime: 7.0\nEffect: gravity = 0.1\nEnergy: 10",
 	img = "skills_abilities_super_jump.png",
-	skill = "thief",
-	lvl = 15,
+	skill = "hunter",
+	lvl = 8,
 	energy = 10,
 	on_use = function(itemstack, user, pointed_thing)
 		user:set_physics_override({
 			gravity = 0.1,
 		})
-		cmsg.push_message_player(user, "[skill] + super jump")
+		cmsg.push_message_player(user, "[ability] + super jump")
 		
 		minetest.after(7.0, function(player)
 			if not player or not player:is_player() then
@@ -101,22 +101,22 @@ skills.abilities.register_skill("super_jump", {
 			player:set_physics_override({
 				gravity = 1,
 			})
-			cmsg.push_message_player(player, "[skill] - super jump")
+			cmsg.push_message_player(player, "[ability] - super jump")
 		end, user)
 	end
 })
 
-skills.abilities.register_skill("lift", {
-	description = "Lift\nLevel: 25\nSkill: thief\nTime: 2.0\nEffect: gravity = -0.5\nEnergy: 20",
+skills.abilities.register_ability("lift", {
+	description = "Lift\nLevel: 12\nSkill: hunter\nTime: 2.0\nEffect: gravity = -0.5\nEnergy: 20",
 	img = "skills_abilities_lift.png",
-	skill = "thief",
-	lvl = 25,
+	skill = "hunter",
+	lvl = 12,
 	energy = 20,
 	on_use = function(itemstack, user, pointed_thing)
 		user:set_physics_override({
 			gravity = -0.5,
 		})
-		cmsg.push_message_player(user, "[skill] + lift")
+		cmsg.push_message_player(user, "[ability] + lift")
 		
 		minetest.after(2.0, function(player)
 			if not player or not player:is_player() then
@@ -125,28 +125,76 @@ skills.abilities.register_skill("lift", {
 			player:set_physics_override({
 				gravity = 1,
 			})
-			cmsg.push_message_player(player, "[skill] - lift")
+			cmsg.push_message_player(player, "[ability] - lift")
 		end, user)
 	end
 })
 
-skills.abilities.register_skill("heal", {
-	description = "Heal\nLevel: 13\nSkill: farmer\nEffect: hp + 4\nEnergy: 15",
-	img = "skills_abilities_heal.png",
-	skill = "farmer",
-	lvl = 13,
-	energy = 15,
+skills.abilities.register_ability("run", {
+	description = "Run\nLevel: 2\nSkill: hunter\nTime: 5.0\nEffect: speed = 2\nEnergy: 20",
+	img = "skills_abilities_run.png",
+	skill = "hunter",
+	lvl = 2,
+	energy = 20,
 	on_use = function(itemstack, user, pointed_thing)
-		user:set_hp(user:get_hp()+4)
-		cmsg.push_message_player(user, "[skill][hp] + 4")
+		user:set_physics_override({
+			speed = 2,
+		})
+		cmsg.push_message_player(user, "[ability] + run")
+		
+		minetest.after(5.0, function(player)
+			if not player or not player:is_player() then
+				return
+			end
+			player:set_physics_override({
+				speed = 1,
+			})
+			cmsg.push_message_player(player, "[ability] - run")
+		end, user)
 	end
 })
 
-skills.abilities.register_skill("grow", {
-	description = "Grow\nLevel: 6\nSkill: farmer\nEffect: -\nEnergy: 30",
+skills.abilities.register_ability("sprint", {
+	description = "Sprint\nLevel: 4\nSkill: hunter\nTime: 5.0\nEffect: speed = 3\nEnergy: 20",
+	img = "skills_abilities_run.png",
+	skill = "hunter",
+	lvl = 1,
+	energy = 20,
+	on_use = function(itemstack, user, pointed_thing)
+		user:set_physics_override({
+			speed = 3,
+		})
+		cmsg.push_message_player(user, "[ability] + sprint")
+		
+		minetest.after(5.0, function(player)
+			if not player or not player:is_player() then
+				return
+			end
+			player:set_physics_override({
+				speed = 1,
+			})
+			cmsg.push_message_player(player, "[ability] - sprint")
+		end, user)
+	end
+})
+
+skills.abilities.register_ability("heal", {
+	description = "Heal\nLevel: 7\nSkill: farmer\nEffect: hp + 4\nEnergy: 15",
+	img = "skills_abilities_heal.png",
+	skill = "farmer",
+	lvl = 7,
+	energy = 15,
+	on_use = function(itemstack, user, pointed_thing)
+		user:set_hp(user:get_hp()+4)
+		cmsg.push_message_player(user, "[ability][hp] + 4")
+	end
+})
+
+skills.abilities.register_ability("grow", {
+	description = "Grow\nLevel: 3\nSkill: farmer\nEffect: -\nEnergy: 30",
 	img = "skills_abilities_grow.png",
 	skill = "farmer",
-	lvl = 6,
+	lvl = 3,
 	energy = 30,
 	on_use = function(itemstack, user, pointed_thing)
 		if minetest.get_node(pointed_thing.under).name == "default:dirt" then
