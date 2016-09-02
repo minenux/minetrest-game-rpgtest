@@ -152,11 +152,19 @@ minetest.register_node("default:rope", {
 	paramtype = "light",
 	drawtype = "nodebox",
 	node_box = {
-		type = "fixed",
-		fixed = {
-				{-0.1, -0.5, -0.1, 0.1, 0.5, 0.1},
-			},
+		type = "connected",
+		fixed = {{-2/16, -2/16, -2/16, 2/16, 2/16, 2/16},},
+		
+		connect_front = {{-2/16, -2/16, -0.5, 2/16, 2/16, 2/16}},
+		connect_back = {{-2/16, -2/16, -2/16, 2/16, 2/16, 0.5}},
+
+		connect_left = {{-0.5, -2/16, -2/16, 2/16, 2/16, 2/16}},
+		connect_right = {{-2/16, -2/16, -2/16, 0.5, 2/16, 2/16}},
+
+		connect_top = {{-2/16, -2/16, -2/16, 2/16, 0.5, 2/16}},
+		connect_bottom = {{-2/16, -0.5, -2/16, 2/16, 2/16, 2/16}},
 	},
+	connects_to = {"default:rope", "group:cracky", "group:choppy"},
 	walkable = false,
 	climbable = true,
 })
