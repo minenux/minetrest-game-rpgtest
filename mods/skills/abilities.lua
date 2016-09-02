@@ -83,7 +83,7 @@ minetest.register_craftitem("skills:ability_book", {
 table.insert(default.treasure_chest_items, "skills:ability_book")
 
 skills.abilities.register_ability("super_jump", {
-	description = "Super Jump\nLevel: 8\nSkill: hunter\nTime: 7.0\nEffect: gravity = 0.1\nEnergy: 10",
+	description = "Super Jump\n Level: 8\n Skill: hunter\n Time: 7.0\n Effect: gravity = 0.1\n Energy: 10",
 	img = "skills_abilities_super_jump.png",
 	skill = "hunter",
 	lvl = 8,
@@ -107,7 +107,7 @@ skills.abilities.register_ability("super_jump", {
 })
 
 skills.abilities.register_ability("lift", {
-	description = "Lift\nLevel: 12\nSkill: hunter\nTime: 2.0\nEffect: gravity = -0.5\nEnergy: 20",
+	description = "Lift\n Level: 12\n Skill: hunter\n Time: 2.0\n Effect: gravity = -0.5\n Energy: 20",
 	img = "skills_abilities_lift.png",
 	skill = "hunter",
 	lvl = 12,
@@ -131,7 +131,7 @@ skills.abilities.register_ability("lift", {
 })
 
 skills.abilities.register_ability("run", {
-	description = "Run\nLevel: 2\nSkill: hunter\nTime: 5.0\nEffect: speed = 2\nEnergy: 20",
+	description = "Run\n Level: 2\n Skill: hunter\n Time: 5.0\n Effect: speed = 2\n Energy: 20",
 	img = "skills_abilities_run.png",
 	skill = "hunter",
 	lvl = 2,
@@ -155,7 +155,7 @@ skills.abilities.register_ability("run", {
 })
 
 skills.abilities.register_ability("sprint", {
-	description = "Sprint\nLevel: 4\nSkill: hunter\nTime: 5.0\nEffect: speed = 3\nEnergy: 20",
+	description = "Sprint\n Level: 4\n Skill: hunter\n Time: 5.0\n Effect: speed = 3\n Energy: 20",
 	img = "skills_abilities_run.png",
 	skill = "hunter",
 	lvl = 1,
@@ -179,7 +179,7 @@ skills.abilities.register_ability("sprint", {
 })
 
 skills.abilities.register_ability("heal", {
-	description = "Heal\nLevel: 7\nSkill: farmer\nEffect: hp + 4\nEnergy: 15",
+	description = "Heal\n Level: 7\n Skill: farmer\n Effect: hp + 4\n Energy: 15",
 	img = "skills_abilities_heal.png",
 	skill = "farmer",
 	lvl = 7,
@@ -191,7 +191,7 @@ skills.abilities.register_ability("heal", {
 })
 
 skills.abilities.register_ability("grow", {
-	description = "Grow\nLevel: 3\nSkill: farmer\nEffect: -\nEnergy: 30",
+	description = "Grow\n Level: 3\n Skill: farmer\n Effect: -\n Energy: 30",
 	img = "skills_abilities_grow.png",
 	skill = "farmer",
 	lvl = 3,
