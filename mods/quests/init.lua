@@ -147,6 +147,23 @@ function quests.add_place_goal(quest, title, node, number, description, ending)
 	return goal
 end
 
+function quests.add_craft_goal(quest, title, item, number, description, ending)
+	local goal = {
+		title = title,
+		type = "craft",
+		item = item,
+		node = item,
+		max = number,
+		progress = 0,
+		done = false,
+
+		description = description or "",
+		ending = ending or nil
+	}
+	table.insert(quest.goals, goal)
+	return goal
+end
+
 function quests.process_node_count_goals(player, type, node)
 	local player_quests = quests.player_quests[player]
 	if not(player_quests) or #player_quests == 0 then return end
@@ -241,31 +258,72 @@ minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack
 	quests.process_node_count_goals(placer:get_player_name(), "placenode", newnode.name)
 end)
 
+minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
+	if not player or not player:is_player() or
+			not quests.player_quests[player:get_player_name()] then
+		return
+	end
+
+	for i=1,itemstack:get_count() do
+		quests.process_node_count_goals(player:get_player_name(), "craft", itemstack:get_name())
+	end
+end)
+
 minetest.register_on_newplayer(function(player)
 	if not player then
 		return
 	end
 	quests.player_quests[player:get_player_name()] = {}
-
-	--tutorial
 	local name = player:get_player_name()
-	local quest = quests.new(name, "Tutorial", "Hey you!\nI didnt see you before. Are you new here?\nOh, Ok.\nI will help you to find the city \"NAME HERE\".\nYou will be save there.\n But first you need some basic equipment!")
-	local q1 = quests.add_dig_goal(quest, "Harvest dirt", {"default:dirt", "default:grass"}, 10, "You need to harvest some Dirt to get stones!")
-	local q2 = quests.add_dig_goal(quest, "Harvest Grass", {"default:plant_grass", "default:plant_grass_2", "default:plant_grass_3", "default:plant_grass_4", "default:plant_grass_5"}, 12, "Now you need to get some Grass to craft strings.")
-	local q3 = quests.add_dig_goal(quest, "Harvest Leaves", {"default:leaves_1", "default:leaves_2", "default:leaves_3" ,"default:leaves_4"}, 6, "Harvest some leaves to craft twigs.")
 	
-	local q4 = quests.add_place_goal(quest, "Place Workbench", {"default:workbench"}, 1, "You should craft a workbench and place it in front of you!", "Great! The tutorial ends here. If you want to know how to craft things,\n just open the crafting guide I gave you.\nYou can find all craftable items there!")
+	--tutorial
+	do
+		local quest = quests.new(name, "Tutorial", "Hey you!\nI didnt see you before. Are you new here?\nOh, Ok.\nI will help you to find the city \"NAME HERE\".\nYou will be save there.\n But first you need some basic equipment!")
+		local q1 = quests.add_dig_goal(quest, "Harvest Dirt/Grass", {"default:dirt", "default:grass", "default:wet_grass"}, 10, "You need to harvest some Dirt to get stones!")
+		local q2 = quests.add_dig_goal(quest, "Harvest Grass", {"default:plant_grass", "default:plant_grass_2", "default:plant_grass_3", "default:plant_grass_4", "default:plant_grass_5"}, 12, "Now you need to get some Grass to craft strings.")
+		local q3 = quests.add_dig_goal(quest, "Harvest Leaves", {"default:leaves_1", "default:leaves_2", "default:leaves_3" ,"default:leaves_4"}, 6, "Harvest some leaves to craft twigs.")
+	
+		local q4 = quests.add_place_goal(quest, "Place Workbench", {"default:workbench"}, 1, "You should craft a workbench and place it in front of you!", "If you want to know how to craft things,\n just open the crafting guide I gave you.\nYou can find all craftable items there!")
+		local q5 = quests.add_craft_goal(quest, "Craft Stone Axe", {"default:axe_stone"}, 1, "Now you can craft a Stone Axe.")
+		local q6 = quests.add_dig_goal(quest, "Harvest Logs", {"default:log","default:log_1","default:log_2","default:log_3", "default:jungle_tree"}, 20, "You can use the Stone Axe to harvest logs.")
+		local q7 = quests.add_dig_goal(quest, "Mine Stone", {"default:stone"}, 20, "You can also mine Stone with your Stone Axe.")
+		local q8 = quests.add_craft_goal(quest, "Craft Flint Pick", {"default:flint_pick"}, 1, "Craft a Flint Pick!")
 
-	q3.reward = "default:wood 3"
-	q4.reward = "crafting_guide:book"
+		q3.reward = "default:wood 3"
+		q4.reward = "crafting_guide:book"
 
-	q2.requires = q1
-	q3.requires = q2
-	q4.requires = q3
+		q2.requires = q1
+		q3.requires = q2
+		q4.requires = q3
+		q5.requires = q4
 
-	quest.xp = 10
+		q6.requires = q5
+		q7.requires = q5
+	
+		q8.requires = q7
 
-	quests.add_quest(name, quest)
+		quest.xp = 10
+
+		quests.add_quest(name, quest)
+	end
+
+	do
+		local quest = quests.new(name, "Lets mine!", "")
+		local q1 = quests.add_dig_goal(quest, "Mine Stone", {"default:stone"}, 10, "")
+		local q2 = quests.add_dig_goal(quest, "Mine Coal", {"default:stone_with_coal"}, 10, "")
+		local q3 = quests.add_dig_goal(quest, "Mine Iron", {"default:stone_with_iron"}, 10, "")
+		local q4 = quests.add_dig_goal(quest, "Mine Copper", {"default:stone_with_copper"}, 10, "")
+		local q5 = quests.add_dig_goal(quest, "Mine Diamond", {"default:stone_with_diamond"}, 10, "")
+	
+		q1.reward = "default:torch 10"
+		q2.reward = "default:apple 30"
+		q3.reward = "default:pick"
+		q4.reward = "default:torch 99"
+		q5.reward = "default:torch 99"
+
+		quest.xp = 0
+		quests.add_quest(name, quest)
+	end
 end)
 
 quests.load()

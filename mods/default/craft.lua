@@ -293,6 +293,15 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craft({
+	output = "default:rope",
+	recipe = {
+		{"", "default:liana", ""},
+		{"", "default:liana", ""},
+		{"", "default:liana", ""},
+	}
+})
+
 
 
 -- grass
@@ -301,6 +310,13 @@ minetest.register_craft({
 	output = "default:plant_grass 3",
 	recipe = {
 		{"default:grass"},
+	}
+})
+
+minetest.register_craft({
+	output = "default:plant_grass 3",
+	recipe = {
+		{"default:wet_grass"},
 	}
 })
 
