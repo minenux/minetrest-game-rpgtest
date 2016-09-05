@@ -7,7 +7,11 @@ skills.skills_file = minetest.get_worldpath() .. "/skills"
 minetest.register_on_newplayer(function(player)
 	skills.lvls[player:get_player_name()] = {}
 	for s,a in pairs(skills.all_skills) do
-		skills.lvls[player:get_player_name()][s] = 1
+		if s == "miner" then
+			skills.lvls[player:get_player_name()][s] = 2
+		else
+			skills.lvls[player:get_player_name()][s] = 1
+		end
 	end
 	skills.save_skills()
 end)

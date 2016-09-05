@@ -286,7 +286,7 @@ minetest.register_on_newplayer(function(player)
 		local q5 = quests.add_craft_goal(quest, "Craft Stone Axe", {"default:axe_stone"}, 1, "Now you can craft a Stone Axe.")
 		local q6 = quests.add_dig_goal(quest, "Harvest Logs", {"default:log","default:log_1","default:log_2","default:log_3", "default:jungle_tree"}, 20, "You can use the Stone Axe to harvest logs.")
 		local q7 = quests.add_dig_goal(quest, "Mine Stone", {"default:stone"}, 20, "You can also mine Stone with your Stone Axe.")
-		local q8 = quests.add_craft_goal(quest, "Craft Flint Pick", {"default:flint_pick"}, 1, "Craft a Flint Pick!")
+		local q8 = quests.add_craft_goal(quest, "Craft Flint Pick", {"default:flint_pick"}, 1, "Craft a Flint Pick!", "You can use the flint pick to dig harder blocks.")
 
 		q3.reward = "default:wood 3"
 		q4.reward = "crafting_guide:book"
@@ -314,8 +314,8 @@ minetest.register_on_newplayer(function(player)
 		local q4 = quests.add_dig_goal(quest, "Mine Copper", {"default:stone_with_copper"}, 10, "")
 		local q5 = quests.add_dig_goal(quest, "Mine Diamond", {"default:stone_with_diamond"}, 10, "")
 	
-		q1.reward = "default:torch 10"
-		q2.reward = "default:apple 30"
+		q1.reward = "torch:torch 10"
+		q2.reward = "farming:apple 30"
 		q3.reward = "default:pick"
 		q4.reward = "default:torch 99"
 		q5.reward = "default:torch 99"

@@ -158,7 +158,7 @@ skills.abilities.register_ability("sprint", {
 	description = "Sprint\n Level: 4\n Skill: hunter\n Time: 5.0\n Effect: speed = 3\n Energy: 20",
 	img = "skills_abilities_run.png",
 	skill = "hunter",
-	lvl = 1,
+	lvl = 4,
 	energy = 20,
 	on_use = function(itemstack, user, pointed_thing)
 		user:set_physics_override({
