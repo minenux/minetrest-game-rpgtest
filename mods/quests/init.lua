@@ -164,7 +164,8 @@ function quests.add_craft_goal(quest, title, item, number, description, ending)
 	return goal
 end
 
-function quests.process_node_count_goals(player, type, node)
+function quests.process_node_count_goals(player, type, node, count)
+	count = count or 1
 	local player_quests = quests.player_quests[player]
 	if not(player_quests) or #player_quests == 0 then return end
 	table.foreach(player_quests, function(_, quest)
@@ -174,7 +175,7 @@ function quests.process_node_count_goals(player, type, node)
 					goal.type == type then
 				for i=1,#goal.node do
 					if goal.node[i] == node then
-						goal.progress = goal.progress + 1
+						goal.progress = goal.progress + count
 						if goal.progress >= goal.max then
 							goal.progress = goal.max
 
@@ -264,9 +265,7 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 		return
 	end
 
-	for i=1,itemstack:get_count() do
-		quests.process_node_count_goals(player:get_player_name(), "craft", itemstack:get_name())
-	end
+	quests.process_node_count_goals(player:get_player_name(), "craft", itemstack:get_name(),itemstack:get_count())
 end)
 
 minetest.register_on_newplayer(function(player)
@@ -280,7 +279,7 @@ minetest.register_on_newplayer(function(player)
 	do
 		local quest = quests.new(name, "Tutorial", "Hey you!\nI didnt see you before. Are you new here?\nOh, Ok.\nI will help you to find the city \"NAME HERE\".\nYou will be save there.\n But first you need some basic equipment!")
 		local q1 = quests.add_dig_goal(quest, "Harvest Dirt/Grass", {"default:dirt", "default:grass", "default:wet_grass"}, 10, "You need to harvest some Dirt to get stones!")
-		local q2 = quests.add_dig_goal(quest, "Harvest Grass", {"default:plant_grass", "default:plant_grass_2", "default:plant_grass_3", "default:plant_grass_4", "default:plant_grass_5"}, 12, "Now you need to get some Grass to craft strings.")
+		local q2 = quests.add_dig_goal(quest, "Harvest Grass", {"default:plant_grass", "default:plant_grass_2", "default:plant_grass_3", "default:plant_grass_4", "default:plant_grass_5", "default:liana"}, 12, "Now you need to get some Grass to craft strings.")
 		local q3 = quests.add_dig_goal(quest, "Harvest Leaves", {"default:leaves_1", "default:leaves_2", "default:leaves_3" ,"default:leaves_4"}, 6, "Harvest some leaves to craft twigs.")
 	
 		local q4 = quests.add_place_goal(quest, "Place Workbench", {"default:workbench"}, 1, "You should craft a workbench and place it in front of you!", "If you want to know how to craft things,\n just open the crafting guide I gave you.\nYou can find all craftable items there!")
