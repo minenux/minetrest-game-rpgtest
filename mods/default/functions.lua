@@ -1,18 +1,39 @@
 default.LIGHT_MAX = 14
+default.log = {}
+default.log.level = 0
+default.log.mods = {}
+
+function default.log.log(mod, level, message)
+	if level > default.log.level then
+		local level_name = ({"[info]", "[warning]", "[ERROR]"})[level]
+		print("[" .. mod .. "]" .. level_name .. " " .. message)
+		if default.log.mods[mod] then
+			local color = ({"#00FF00", "#FFFF00", "#FF0000"})[level]
+			minetest.chat_send_all(core.colorize(color, "[" .. mod .. "]" .. level_name .. " " .. message))
+		end
+	end
+end
+
+function default.log.register_mod(name)
+	default.log.mods[name] = true
+end
+
+function default.drop_item(pos,stack)
+	if not(stack:is_empty()) then
+		local p = vector.new(pos.x + math.random(0,10)/10-0.5, pos.y, pos.z+math.random(0,10)/10-0.5)
+		minetest.add_item(p,stack)
+		return true
+	else
+		return false
+	end
+end
 
 function default.drop_items(pos, oldnode, oldmetadata, digger)
 	local meta = minetest.get_meta(pos)
 	meta:from_table(oldmetadata)
 	local inv = meta:get_inventory()
 	for i = 1, inv:get_size("main") do
-		local stack = inv:get_stack("main", i)
-		if not stack:is_empty() then
-			local p = {	x = pos.x + math.random(0, 5)/5 - 0.5,
-					y = pos.y, 
-					z = pos.z + math.random(0, 5)/5 - 0.5
-				  }
-			minetest.add_item(p, stack)
-		end
+		default.drop_item(pos,inv:get_stack("main", i))
 	end
 end
 

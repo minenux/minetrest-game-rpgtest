@@ -207,36 +207,16 @@ minetest.register_node("default:box", {
 	after_dig_node = default.drop_items,
 })
 
-default.treasure_chest_items = {"money:coin", "money:silver_coin", "default:ruby"}
+default.treasure_chest_items = {"money:coin", "money:silver_coin"}
 minetest.register_node("default:treasure_chest", {
 	description = "Treasure Chest",
 	tiles = {"default_treasure_chest.png"},
 	groups = {choppy = 3},
 	drop = "default:box",
-	on_construct = function(pos)
-		local meta = minetest.get_meta(pos)
-		local inv = meta:get_inventory()
-		inv:set_size("main", 8*4)
-		local items = default.treasure_chest_items
-		local item = items[math.random(#items)]
-		inv:add_item("main", {name = item, count = math.random(1,3)})
-		local item = items[math.random(#items)]
-		inv:add_item("main", {name = item, count = math.random(1,3)})
-	end,
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
-		local meta = minetest.get_meta(pos)
-		meta:from_table(oldmetadata)
-		local inv = meta:get_inventory()
-		for i = 1, inv:get_size("main") do
-			local stack = inv:get_stack("main", i)
-			if not stack:is_empty() then
-				local p = {	x = pos.x + math.random(0, 5)/5 - 0.5,
-						y = pos.y, 
-						z = pos.z + math.random(0, 5)/5 - 0.5
-					  }
-				minetest.add_item(p, stack)
-			end
-		end
+		local items = default.treasure_chest_items
+		minetest.add_item(pos, {name = items[math.random(#items)], count = math.random(1,3)})
+		minetest.add_item(pos, {name = items[math.random(#items)], count = math.random(1,3)})
 	end
 })
 

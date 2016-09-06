@@ -2,6 +2,7 @@ places = {}
 places.pos = {}
 places.places_file = minetest.get_worldpath() .. "/places"
 places.show_places = false
+
 function places.register_place(name, pos)
 	places.pos[name] = pos
 end
@@ -11,16 +12,16 @@ function places.load_places()
 	if input then
 		local str = input:read()
 		if str then
-			print("[INFO] places string : " .. str)
+			print("[info] places string : " .. str)
 			if minetest.deserialize(str) then
 				places.pos = minetest.deserialize(str)
 			end
 		else 
-			print("[WARNING] places file is empty")
+			print("[warning] places file is empty")
 		end
 		io.close(input)
 	else
-		print("[error] couldnt find places file")
+		print("[ERROR] couldnt find places file")
 	end
 end
 
@@ -33,23 +34,39 @@ function places.save_places()
 	end
 end
 
-minetest.register_chatcommand("setplace", {
+minetest.register_chatcommand("add_place", {
 	params = "<name>",
-	description = "Set a place",
+	description = "Add a place",
 	privs = {server=true},
 	func = function(name, text)
 		if places.pos[text] then 
 			return true, "There already is a place named " .. text
 		end	
 		local player = minetest.get_player_by_name(name)
-		if player then	
-			local pos = player:getpos()
-			pos = {x=math.floor(pos.x), y=math.floor(pos.y), z=math.floor(pos.z)}
-			places.pos[text] = pos
-			places.save_places()
-			return true, "Added a place named " .. text
+		if not(player) then
+			return true, "Error couldnt find player " .. name
 		end
-		return true, "Error couldnt find player " .. name
+		places.pos[text] = player:getpos()
+		places.save_places()
+		return true, "Added a place named " .. text
+	end,
+})
+
+minetest.register_chatcommand("goto_place", {
+	params = "<name>",
+	description = "Goto a place",
+	privs = {},
+	func = function(name, text)
+		if not(places.pos[text]) then 
+			return true, "There is no place named " .. text
+		end	
+		local player = minetest.get_player_by_name(name)
+		if not(player) then
+			return true, "Error couldnt find player " .. name
+		end
+		player:setpos(places.pos[text])
+
+		return true, "Teleported to " .. text
 	end,
 })
 

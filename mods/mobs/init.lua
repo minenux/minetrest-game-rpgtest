@@ -37,7 +37,7 @@ function mobs.register_mob(name, def)
 			if self.object:get_hp() <= 0 then
 				if player and player:is_player() then
 					xp.add_xp(player, def.xp or xp.get_xp(def.lvl, 10))
-					if math.random(0,20) == 10 then
+					if math.random(0,10) == 5 then
 						minetest.spawn_item(self.object:getpos(),"potions:upgrading")
 					else
 						if def.drops then
