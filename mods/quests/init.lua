@@ -78,12 +78,16 @@ function quests.finish_goal(player, quest, goal)
 				end
 			end
 		end
-		
+
 		if goal.reward then
 			minetest.get_player_by_name(player):get_inventory():add_item("main", goal.reward)
 			cmsg.push_message_player(minetest.get_player_by_name(player), goal.ending or "[quest] You completed a goal and you got a reward!")
 		else
 			cmsg.push_message_player(minetest.get_player_by_name(player), goal.ending or "[quest] You completed a goal!")
+		end
+
+		if goal.xp then
+			xp.add_xp(minetest.get_player_by_name(player), goal.xp)
 		end
 	end
 
@@ -123,6 +127,7 @@ function quests.add_dig_goal(quest, title, node, number, description, ending)
 		max = number,
 		progress = 0,
 		done = false,
+		xp = 0,
 
 		description = description or "",
 		ending = ending or nil
@@ -139,6 +144,7 @@ function quests.add_place_goal(quest, title, node, number, description, ending)
 		max = number,
 		progress = 0,
 		done = false,
+		xp = 0,
 
 		description = description or "",
 		ending = ending or nil
@@ -156,6 +162,7 @@ function quests.add_craft_goal(quest, title, item, number, description, ending)
 		max = number,
 		progress = 0,
 		done = false,
+		xp = 0,
 
 		description = description or "",
 		ending = ending or nil
@@ -279,7 +286,7 @@ minetest.register_on_newplayer(function(player)
 	do
 		local quest = quests.new(name, "Tutorial", "Hey you!\nI didnt see you before. Are you new here?\nOh, Ok.\nI will help you to find the city \"NAME HERE\".\nYou will be save there.\n But first you need some basic equipment!")
 		local q1 = quests.add_dig_goal(quest, "Harvest Dirt/Grass", {"default:dirt", "default:grass", "default:wet_grass"}, 10, "You need to harvest some Dirt to get stones!")
-		local q2 = quests.add_dig_goal(quest, "Harvest Grass", {"default:plant_grass", "default:plant_grass_2", "default:plant_grass_3", "default:plant_grass_4", "default:plant_grass_5", "default:liana"}, 12, "Now you need to get some Grass to craft strings.")
+		local q2 = quests.add_dig_goal(quest, "Harvest Grass", {"default:plant_grass", "default:plant_grass_2", "default:plant_grass_3", "default:plant_grass_4", "default:plant_grass_5", "default:liana", "default:grass", "default:wet_grass"}, 12, "Now you need to get some Grass to craft strings.")
 		local q3 = quests.add_dig_goal(quest, "Harvest Leaves", {"default:leaves_1", "default:leaves_2", "default:leaves_3" ,"default:leaves_4"}, 6, "Harvest some leaves to craft twigs.")
 	
 		local q4 = quests.add_place_goal(quest, "Place Workbench", {"default:workbench"}, 1, "You should craft a workbench and place it in front of you!", "If you want to know how to craft things,\n just open the crafting guide I gave you.\nYou can find all craftable items there!")
@@ -315,10 +322,15 @@ minetest.register_on_newplayer(function(player)
 		local q5 = quests.add_dig_goal(quest, "Mine Diamond", {"default:stone_with_diamond"}, 10, "")
 	
 		q1.reward = "torch:torch 10"
+		q1.xp = 10
 		q2.reward = "farming:apple 30"
+		q2.xp = 15
 		q3.reward = "default:pick"
+		q3.xp = 30
 		q4.reward = "default:torch 99"
+		q4.xp = 40
 		q5.reward = "default:torch 99"
+		q5.xp = xp.get_xp(5, 1)
 
 		quest.xp = 0
 		quests.add_quest(name, quest)
