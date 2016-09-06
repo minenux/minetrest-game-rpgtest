@@ -1,7 +1,7 @@
 -- workbench
 
 minetest.register_node("default:workbench", {
-	description = "Workbench v1",
+	description = "Workbench",
 	tiles = {"default_workbench_top.png", "default_wooden_planks.png"},
 	groups = {choppy = 3},
 	on_construct = function(pos)
@@ -26,7 +26,7 @@ default.craft_form_v2 = default.craft_form_v2.."list[current_player;craftpreview
 default.craft_form_v2 = default.craft_form_v2..default.itemslot_bg(6,1,1,1)
 
 minetest.register_node("default:workbench_v2", {
-	description = "Workbench V2",
+	description = "Stone Workbench",
 	tiles = {"default_workbench_v2_top.png", "default_small_stone_tile.png"},
 	groups = {choppy = 3},
 	on_construct = function(pos)
@@ -252,6 +252,13 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	output = "default:workbench",
+	recipe = {
+		{"default:jungle_wood", "default:jungle_wood", "default:jungle_wood"},
+	}
+})
+
+minetest.register_craft({
 	output = "default:workbench_v2",
 	recipe = {
 		{"default:stone_tile", "default:stone_tile", "default:stone_tile"},
@@ -285,7 +292,7 @@ minetest.register_craft({
 -- rope
 
 minetest.register_craft({
-	output = "default:rope",
+	output = "default:rope 4",
 	recipe = {
 		{"", "default:string_strong", ""},
 		{"", "default:string_strong", ""},
@@ -294,7 +301,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "default:rope",
+	output = "default:rope 4",
 	recipe = {
 		{"", "default:liana", ""},
 		{"", "default:liana", ""},
