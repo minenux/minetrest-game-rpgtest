@@ -196,6 +196,33 @@ minetest.register_craft({
 	}
 })
 
+-- sandstone
+
+minetest.register_craft({
+	output = "default:sandstone",
+	recipe = {
+		{"default:sand", "default:sand"},
+		{"default:sand", "default:sand"},
+	}
+})
+
+minetest.register_craft({
+	output = "default:compressed_sandstone",
+	recipe = {
+		{"default:sand", "default:sand", "default:sand"},
+		{"default:sand", "default:sand", "default:sand"},
+		{"default:sand", "default:sand", "default:sand"},
+	}
+})
+
+minetest.register_craft({
+	output = "default:sandstone_brick 4",
+	recipe = {
+		{"default:sandstone", "default:sandstone"},
+		{"default:sandstone", "default:sandstone"},
+	}
+})
+
 -- coal
 
 
@@ -398,5 +425,13 @@ minetest.register_craft({
 		{"default:blade", "furnace:iron_plate", ""},
 		{"", "default:string_strong", ""},
 		{"", "default:stick", ""},
+	}
+})
+
+minetest.register_craft({
+	output = "default:shears",
+	recipe = {
+		{"default:blade", ""},
+		{"", "default:blade"},
 	}
 })
