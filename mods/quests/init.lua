@@ -198,16 +198,16 @@ function quests.process_node_count_goals(player, type, node, count)
 end
 
 quests.show_quests_form = "size[8,7.5;]" .. default.gui_colors ..
-		default.gui_bg .. "label[0,0;%s]"
+		default.gui_bg .. "textlist[-0.1,-0.1;8,7.75;quests;%s]"
 
 function quests.format_goal(player, quest, goal)
 	-- TODO: support formatting for more than just digging and placing
 	if goal.done then
-		return "     [x] " .. (goal.title or "[NO TITLE]") .. " (" .. tostring(goal.progress) ..
-		   	"/" .. tostring(goal.max) .. ")\n"
+		return "#999999     \\[x\\] " .. (goal.title or "\\[NO TITLE\\]") .. " (" .. tostring(goal.progress) ..
+		   	"/" .. tostring(goal.max) .. ")"
 	else
-		return "     [ ] " .. (goal.title or "[NO TITLE]") .. " (" .. tostring(goal.progress) ..
-		   "/" .. tostring(goal.max) .. ")\n"
+		return "     \\[ \\] " .. (goal.title or "\\[NO TITLE\\]") .. " (" .. tostring(goal.progress) ..
+		   "/" .. tostring(goal.max) .. ")"
 	end
 end
 
@@ -223,18 +223,17 @@ function quests.get_formspec(name)
 	local txt = ""
 	for _, quest in pairs(player_quests) do
 		if quest.done then
-			txt = txt .. " -> " .. (quest.title or "[NO TITLE]") .. " (Completed)\n"
+			txt = txt .. "#999999 -> " .. (quest.title or "\\[NO TITLE\\]") .. " (Completed),"
 		else
-			txt = txt .. " -> " .. (quest.title or "[NO TITLE]") .. "\n"
+			txt = txt .. " -> " .. (quest.title or "\\[NO TITLE\\]") .. ","
 			for _, goal in pairs(quest.goals) do
 				if not goal.requires or goal.requires.done then
-					txt = txt .. quests.format_goal(name, quest, goal)
+					txt = txt .. quests.format_goal(name, quest, goal) .. ","
 				end
 			end
 		end
 	end
-	s = string.format(s, minetest.formspec_escape(txt))
-
+	s = string.format(s, txt)
 	return s
 end
 
@@ -293,7 +292,9 @@ minetest.register_on_newplayer(function(player)
 		local q5 = quests.add_craft_goal(quest, "Craft Stone Axe", {"default:axe_stone"}, 1, "Now you can craft a Stone Axe.")
 		local q6 = quests.add_dig_goal(quest, "Harvest Logs", {"default:log","default:log_1","default:log_2","default:log_3", "default:jungle_tree"}, 20, "You can use the Stone Axe to harvest logs.")
 		local q7 = quests.add_dig_goal(quest, "Mine Stone", {"default:stone"}, 20, "You can also mine Stone with your Stone Axe.")
-		local q8 = quests.add_craft_goal(quest, "Craft Flint Pick", {"default:flint_pick"}, 1, "Craft a Flint Pick!", "You can use the flint pick to dig harder blocks.")
+		local q8 = quests.add_craft_goal(quest, "Craft a Flint Pick", {"default:flint_pick"}, 1, "Craft a Flint Pick!", "You can use the flint pick to dig harder blocks.")
+		local q9 = quests.add_dig_goal(quest, "Mine Iron", {"default:stone_with_iron"}, 2, "Your Flint Pick is strong enough to mine Iron.", "Great! You should be on level 2 now.\nEvery time you level up you can upgrade on of your skills.\nTry out /skill warrior or /skill miner\n")
+		
 
 		q3.reward = "default:wood 3"
 		q4.reward = "crafting_guide:book"
@@ -302,12 +303,13 @@ minetest.register_on_newplayer(function(player)
 		q3.requires = q2
 		q4.requires = q3
 		q5.requires = q4
-
 		q6.requires = q5
-		q7.requires = q5
-	
+		q7.requires = q6
 		q8.requires = q7
+		q9.requires = q8
 
+		q5.xp = 10
+		q9.xp = 10
 		quest.xp = 10
 
 		quests.add_quest(name, quest)
