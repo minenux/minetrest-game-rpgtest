@@ -5,29 +5,57 @@ armor.data = {}
 armor.armor_file = minetest.get_worldpath() .. "/armor"
 
 function armor.register_armor(name, def)
-	minetest.register_craftitem(name .. "_chestplate", {
+	minetest.register_craftitem("armor:" .. name .. "_chestplate", {
 		description = def.description .. " Chestplate",
 		inventory_image = def.tex .. "_chestplate.png",
 		protection = def.protection,
 		skin = def.skin .. "_chestplate.png",
 	})
-	minetest.register_craftitem(name .. "_boots", {
+	minetest.register_craftitem("armor:" .. name .. "_boots", {
 		description = def.description .. " Boots",
 		inventory_image = def.tex .. "_boots.png",
 		protection = def.protection,
 		skin = def.skin .. "_boots.png",
 	})
-	minetest.register_craftitem(name .. "_leggings", {
+	minetest.register_craftitem("armor:" .. name .. "_leggings", {
 		description = def.description .. " Leggings",
 		inventory_image = def.tex .. "_leggings.png",
 		protection = def.protection,
 		skin = def.skin .. "_leggings.png",
 	})
-	minetest.register_craftitem(name .. "_helm", {
+	minetest.register_craftitem("armor:" .. name .. "_helm", {
 		description = def.description .. " Helm",
 		inventory_image = def.tex .. "_helm.png",
 		protection = def.protection,
 		skin = def.skin .. "_helm.png",
+	})
+
+	blueprint.register_blueprint("armor_" .. name .. "_chestplate", {
+		description = def.description .. " Chestplate",
+		materials = {def.material, def.material, def.material2 or def.material, def.material2 or def.material},
+		out = "armor:" .. name .. "_chestplate",
+		color = "red"
+	})
+
+	blueprint.register_blueprint("armor_" .. name .. "_leggings", {
+		description = def.description .." Leggings",
+		materials = {def.material, def.material2 or def.material},
+		out = "armor:" .. name .. "_leggings",
+		color = "red"
+	})
+
+	blueprint.register_blueprint("armor_" .. name .. "_boots", {
+		description = def.description .." Boots",
+		materials = {def.material, def.material2 or def.material},
+		out = "armor:" .. name .. "_boots",
+		color = "red"
+	})
+
+	blueprint.register_blueprint("armor_" .. name .. "_helm", {
+		description = def.description .." Helm",
+		materials = {def.material, def.material2 or def.material},
+		out = "armor:" .. name .. "_helm",
+		color = "red"
 	})
 end
 
@@ -109,55 +137,32 @@ minetest.register_on_leaveplayer(function(player)
 	armor.save_armor()
 end)
 
-armor.register_armor("armor:iron", {
+armor.register_armor("iron", {
 	description = "Iron",
 	tex = "armor_iron",
 	protection = 12,
-	skin = "armor_skin_iron"
+	skin = "armor_skin_iron",
+
+	material = "furnace:iron_plate"
 })
 
-armor.register_armor("armor:copper", {
+armor.register_armor("copper", {
 	description = "Copper",
 	tex = "armor_copper",
 	protection = 15,
-	skin = "armor_skin_copper"
+	skin = "armor_skin_copper",
+
+	material = "furnace:iron_plate",
 })
 
-armor.register_armor("armor:diamond", {
+armor.register_armor("diamond", {
 	description = "Diamond",
 	tex = "armor_diamond",
 	protection = 20,
-	skin = "armor_skin_diamond"
-})
+	skin = "armor_skin_diamond",
 
-
---craft
-blueprint.register_blueprint("armor_diamond_chestplate", {
-	description = "Diamond Chestplate",
-	materials = {"furnace:iron_plate", "furnace:iron_plate", "default:diamond", "default:diamond"},
-	out = "armor:diamond_chestplate",
-	color = "red"
-})
-
-blueprint.register_blueprint("armor_diamond_leggings", {
-	description = "Diamond Leggings",
-	materials = {"furnace:iron_plate", "default:diamond"},
-	out = "armor:diamond_leggings",
-	color = "red"
-})
-
-blueprint.register_blueprint("armor_diamond_boots", {
-	description = "Diamond Boots",
-	materials = {"furnace:iron_plate", "default:diamond"},
-	out = "armor:diamond_boots",
-	color = "red"
-})
-
-blueprint.register_blueprint("armor_diamond_helm", {
-	description = "Diamond Helm",
-	materials = {"furnace:iron_plate", "default:diamond"},
-	out = "armor:diamond_helm",
-	color = "red"
+	material = "furnace:iron_plate",
+	material2 = "default:diamond"
 })
 
 armor.load_armor()
