@@ -94,6 +94,7 @@ minetest.register_node("default:leaves_1", {
 		max_items = 1,
 		items = {
 			{items = {"default:sapling 2"},rarity = 3},
+			{items = {"farming:apple"},rarity = 5},
 			{items = {'default:leaves_1'}},
 		}
 	},
@@ -437,6 +438,33 @@ minetest.register_abm({
 			local path = minetest.get_modpath("default") .. "/schematics/tree1.mts"
 			minetest.place_schematic({x = pos.x - 2, y = pos.y - 0, z = pos.z - 2}, path, 0, nil, false)
 		end
+	end,
+})
+
+minetest.register_node("default:sapling_2", {
+	description = "Sapling",
+	tiles = {"default_sapling_2.png"},
+	drawtype = "plantlike",
+	paramtype = "light",
+	inventory_image = "default_sapling_2.png",
+	buildable_to = true,
+	walkable = false,
+	groups = {crumbly = 3, sapling = 1},
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.5, -0.5, -0.5, 0.5, -0.4, 0.5},
+	},
+})
+
+minetest.register_abm({
+	nodenames = {"default:sapling_2"},
+	neighbors = {"default:grass", "default:dirt"},
+	interval = 1.0,
+	chance = 1,
+	action = function(pos, node, active_object_count, active_object_count_wider)
+		minetest.set_node(pos, {name = "air"})
+		local path = minetest.get_modpath("default") .. "/schematics/pinetree1.mts"
+		minetest.place_schematic({x = pos.x - 2, y = pos.y - 0, z = pos.z - 2}, path, 0, nil, false)
 	end,
 })
 

@@ -19,15 +19,6 @@ minetest.register_craftitem("juice:water", {
 	stack_max = 1,
 })
 
-minetest.register_craftitem("juice:water_sugar", {
-	description = "Water with Sugar",
-	inventory_image = "juice_water_sugar.png",
-	on_use = function(itemstack, user, pointed_thing)
-		return juice.drink(user, itemstack, -2)
-	end,
-	stack_max = 1,
-})
-
 minetest.register_craftitem("juice:cactus", {
 	description = "Cactus Juice",
 	inventory_image = "juice_cactus.png",
@@ -72,8 +63,8 @@ minetest.register_craft({
 
 minetest.register_craft({
 	type = "shapeless",
-	output = "juice:water_sugar",
-	recipe = {"juice:water", "farming:sugar"},
+	output = "juice:apple",
+	recipe = {"juice:water", "farming:apple"},
 })
 
 minetest.register_craft({

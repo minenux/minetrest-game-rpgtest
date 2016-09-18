@@ -119,22 +119,21 @@ minetest.register_craft({
 minetest.register_craft({
 	type = "shapeless",
 	output = "potions:running",
-	recipe = {"juice:water_sugar", "juice:water_sugar", "juice:water_sugar", "potions:glass"},
+	recipe = {"juice:water", "juice:water", "farming:sugar", "potions:glass"},
 	replacements = {
-		{"juice:water_sugar", "juice:glass"},
-		{"juice:water_sugar", "juice:glass"},
-		{"juice:water_sugar", "juice:glass"}
+		{"juice:water", "juice:glass"},
+		{"juice:water", "juice:glass"}
 	}
 })
 
 minetest.register_craft({
 	type = "shapeless",
 	output = "potions:jumping",
-	recipe = {"juice:water_sugar", "juice:water_sugar", "juice:water", "potions:glass"},
+	recipe = {"juice:water", "juice:water", "juice:apple", "potions:glass"},
 	replacements = {
-		{"juice:water_sugar", "juice:glass"},
-		{"juice:water_sugar", "juice:glass"},
-		{"juice:water", "juice:glass"}
+		{"juice:water", "juice:glass"},
+		{"juice:water", "juice:glass"},
+		{"juice:apple", "juice:glass"}
 	}
 })
 
