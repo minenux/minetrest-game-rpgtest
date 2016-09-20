@@ -4,6 +4,7 @@ quests = {}
 quests.player_quests = {}
 quests.file = minetest.get_worldpath() .. "/quests"
 quests.callback = nil
+quests.hud = {}
 
 function quests.load()
 	local input = io.open(quests.file, "r")
@@ -48,6 +49,8 @@ function quests.add_quest(player, quest)
 	print("[quests] add quest")
 	table.insert(quests.player_quests[player], quest)
 	quests.save()
+	
+	quests.update_hud(minetest.get_player_by_name(player),player)
 
 	if #quest.goals > 0 then
 		quests.show_text(quest.text .. "\n" .. quest.goals[1].description, player)
@@ -189,6 +192,7 @@ function quests.process_node_count_goals(player, type, node, count)
 							quests.finish_goal(player, quest, goal)
 							goal.done = true
 						end
+						quests.update_hud(minetest.get_player_by_name(player),player)
 						quests.save()
 					end
 				end
@@ -209,6 +213,31 @@ function quests.format_goal(player, quest, goal)
 		return "     \\[ \\] " .. (goal.title or "\\[NO TITLE\\]") .. " (" .. tostring(goal.progress) ..
 		   "/" .. tostring(goal.max) .. ")"
 	end
+end
+
+function quests.update_hud(player,name)
+	if quests.hud[name] == nil then return end
+
+	local player_quests = quests.player_quests[name]
+	if not player_quests or #player_quests == 0 then
+		player:hud_change(quests.hud[name], "text", "")
+		return
+	end
+
+	local txt = ""
+	for _, quest in pairs(player_quests) do
+		if not(quest.done) then
+			txt = txt .. " -> " .. (quest.title or "[NO TITLE]") .. "\n"
+			for _, goal in pairs(quest.goals) do
+				if (not goal.requires or goal.requires.done) and not(goal.done) then
+					txt = txt .. "     [ ] " .. (goal.title or "[NO TITLE]") .. " (" .. tostring(goal.progress) ..
+		   					"/" .. tostring(goal.max) .. ")\n"
+				end
+			end
+		end
+	end
+
+	player:hud_change(quests.hud[name], "text", txt)
 end
 
 function quests.get_formspec(name)
@@ -272,6 +301,27 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 	end
 
 	quests.process_node_count_goals(player:get_player_name(), "craft", itemstack:get_name(),itemstack:get_count())
+end)
+
+minetest.register_on_joinplayer(function(player)
+	if not player then
+		return
+	end
+	local name = player:get_player_name()
+
+	quests.hud[name] = player:hud_add({
+		hud_elem_type = "text",
+		name = "quests",
+		text = "",
+		position = {x = 1, y = 0},
+		alignment = {x = -1, y = 1},
+		offset = {x=-10,y=10},
+		number = "0xFFFFFF",
+	})
+
+	minetest.after(1, function(player,name)
+		quests.update_hud(player,name)
+	end, player, name)
 end)
 
 minetest.register_on_newplayer(function(player)

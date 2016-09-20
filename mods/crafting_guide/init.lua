@@ -121,44 +121,6 @@ function crafting_guide.get_item_formspec(page)
 				y = y +1
 			end
 		end
-	elseif page == -3 then
-		local x = 0
-		local y = 0
-		str = str .. "label[0,0;Treasure Chest Loot :]"
-		for i,name in ipairs(default.treasure_chest_items) do
-			str = str .. "item_image_button[".. x ..",".. y+0.5 ..";1,1;"..name..";"..name..";]"
-			x = x + 1
-			if x > 7 then
-				x = 0
-				y = y +1
-			end
-		end
-
-		str = str .. "label[0,1.5;Abilities :]"
-		x = 0
-		y = 2
-		for _,name in ipairs(skills.abilities.all) do
-			str = str .. "item_image_button[".. x ..",".. y ..";1,1;"..name..";"..name..";]"
-			x = x + 1
-			if x > 7 then
-				x = 0
-				y = y +1
-			end
-		end
-		
-		str = str .. "label[0,3;Blueprints :]"
-		x = 0
-		y = 3
-		for _,name in ipairs(blueprint.all) do
-			str = str .. "item_image_button[".. x ..",".. y+0.5 ..";1,1;"..name..";"..name..";]"
-			x = x + 1
-			if x > 7 then
-				x = 0
-				y = y +1
-			end
-		end
-	elseif page == -4 then
-		
 	end
 
 	return str
