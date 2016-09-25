@@ -1,4 +1,76 @@
 default.gui_color_theme = 2
+default.player_inventory = {}
+default.player_inventory.tabs = {}
+default.player_inventory.contexts = {}
+
+function default.player_inventory.register_tab(def)
+	table.insert(default.player_inventory.tabs, def)
+end
+
+function default.player_inventory.get_formspec(tab)
+	if not(default.player_inventory.tabs[tab]) then
+		return ""
+	end
+
+	local formspec = default.player_inventory.tabs[tab].formspec
+	local tabs = {}
+
+	for i,v in ipairs(default.player_inventory.tabs) do
+		table.insert(tabs, v.name) 
+	end
+
+	formspec = formspec .. "tabheader[0,0;tabs;"..table.concat(tabs, ",")..";" .. tostring(tab) .. ";true;false]"
+	return formspec
+end
+
+function default.player_inventory.set_tab(name, i)
+	if not(default.player_inventory.contexts[name]) then
+		default.player_inventory.contexts[name] = {
+			tab = 1
+		}
+	end
+
+	default.player_inventory.contexts[name].tab = i
+end
+
+function default.player_inventory.update(player)
+	if not(player) then
+		return
+	end
+
+	local name = player:get_player_name()
+
+	if not(default.player_inventory.contexts[name]) then
+		default.player_inventory.contexts[name] = {
+			tab = 1
+		}
+	end
+
+	local tab = default.player_inventory.contexts[name].tab or 1
+	local formspec = default.player_inventory.get_formspec(tab)
+	player:set_inventory_formspec(string.format(formspec, player:get_player_name()))
+end
+
+function default.player_inventory.get_default_inventory_formspec()
+	local formspec = "size[8,7.5;]" .. 
+		   default.gui_colors .. 
+		   default.gui_bg ..
+		   "list[current_player;main;0,3.5;8,4;]" .. 
+		   default.itemslot_bg(0,3.5,8,4)
+	return formspec
+end
+
+minetest.register_on_player_receive_fields(function(player, formname, fields)
+	if not(formname == "") then
+		return
+	end
+
+	local name = player:get_player_name()
+	if fields.tabs then
+		default.player_inventory.set_tab(name, tonumber(fields.tabs))
+		default.player_inventory.update(player)
+	end
+end)
 
 function default.itemslot_bg(x,y,w,h)
 	if default.gui_color_theme == 1 then
@@ -32,16 +104,17 @@ elseif default.gui_color_theme == 4 then
 	default.text_color = "#FFF"
 end
 
-default.inv_form = "size[8,7.5;]"
-default.inv_form = default.inv_form..default.gui_colors
-default.inv_form = default.inv_form..default.gui_bg
-default.inv_form = default.inv_form.."list[current_player;main;0,3.5;8,4;]"
-default.inv_form = default.inv_form..default.itemslot_bg(0,3.5,8,4)
-default.inv_form = default.inv_form.."label[2.5,0;Crafting:]"
-default.inv_form = default.inv_form.."list[current_player;craft;2.5,0.5;3,1;]"
-default.inv_form = default.inv_form..default.itemslot_bg(2.5,0.5,3,1)
-default.inv_form = default.inv_form.."list[current_player;craftpreview;3.5,1.5;1,1;]"
-default.inv_form = default.inv_form..default.itemslot_bg(3.5,1.5,1,1)
+default.inv_form = default.player_inventory.get_default_inventory_formspec()
+default.inv_form = default.inv_form.."list[current_player;craft;1.5,1;3,1;]"
+default.inv_form = default.inv_form..default.itemslot_bg(1.5,1,3,1)
+default.inv_form = default.inv_form.."list[current_player;craftpreview;5.5,1;1,1;]"
+default.inv_form = default.inv_form..default.itemslot_bg(5.5,1,1,1)
+
+default.player_inventory.register_tab({
+	name = "Crafting",
+	formspec = default.inv_form
+})
+
 
 default.craft_form = "size[8,7.5;]"
 default.craft_form = default.craft_form..default.gui_colors
@@ -56,9 +129,13 @@ default.craft_form = default.craft_form..default.itemslot_bg(5,1,1,1)
 default.player_anim = {}
 
 minetest.register_on_joinplayer(function(player)
+	local name = player:get_player_name()
+
 	player:hud_set_hotbar_image("gui_hotbar.png")
 	player:hud_set_hotbar_selected_image("gui_hotbar_selected.png")
-	player:set_inventory_formspec(default.inv_form:format(player:get_player_name()))
+
+	default.player_inventory.set_tab(name, 1)
+	default.player_inventory.update(player)
 	
 	player:set_properties({
 		mesh = "character.x",

@@ -73,8 +73,14 @@ function armor.update_armor(name, pl)
 	armor.save_armor()
 end
 
-default.inv_form = default.inv_form .. "list[detached:armor_%s;main;0,0.5;2,2;]"
-default.inv_form = default.inv_form.. default.itemslot_bg(0,0.5,2,2)
+
+default.player_inventory.register_tab({
+	name = "Armor",
+	formspec = default.player_inventory.get_default_inventory_formspec() .. 
+		   "list[detached:armor_%s;main;3,0.5;2,2;]" .. 
+		   default.itemslot_bg(3,0.5,2,2)
+})
+
 
 function armor.load_armor()
 	local input = io.open(armor.armor_file, "r")
