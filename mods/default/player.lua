@@ -4,15 +4,22 @@ default.player_inventory.tabs = {}
 default.player_inventory.contexts = {}
 
 function default.player_inventory.register_tab(def)
+	def.type = def.type or "normal"
 	table.insert(default.player_inventory.tabs, def)
 end
 
-function default.player_inventory.get_formspec(tab)
+function default.player_inventory.get_formspec(tab, name)
 	if not(default.player_inventory.tabs[tab]) then
 		return ""
 	end
 
-	local formspec = default.player_inventory.tabs[tab].formspec
+	local formspec = ""
+	if default.player_inventory.tabs[tab].type == "function" then
+		formspec = default.player_inventory.tabs[tab].get_formspec(name)
+	else
+		formspec = default.player_inventory.tabs[tab].formspec
+	end
+
 	local tabs = {}
 
 	for i,v in ipairs(default.player_inventory.tabs) do
@@ -47,7 +54,7 @@ function default.player_inventory.update(player)
 	end
 
 	local tab = default.player_inventory.contexts[name].tab or 1
-	local formspec = default.player_inventory.get_formspec(tab)
+	local formspec = default.player_inventory.get_formspec(tab, name)
 	player:set_inventory_formspec(string.format(formspec, player:get_player_name()))
 end
 
@@ -69,6 +76,11 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.tabs then
 		default.player_inventory.set_tab(name, tonumber(fields.tabs))
 		default.player_inventory.update(player)
+	else
+		if not(default.player_inventory.contexts[name]) then return end
+		if not(default.player_inventory.tabs[default.player_inventory.contexts[name].tab]) then return end
+		if not(default.player_inventory.tabs[default.player_inventory.contexts[name].tab]).on_event then return end
+		default.player_inventory.tabs[default.player_inventory.contexts[name].tab].on_event(player, fields)
 	end
 end)
 
@@ -86,23 +98,38 @@ function default.itemslot_bg(x,y,w,h)
 	end
 end
 
-if default.gui_color_theme == 1 then
-	default.gui_bg = "bgcolor[#a88e69FF;false]"
-	default.gui_colors = "listcolors[#00000000;#10101030;#00000000;#68B259;#FFF]"
-	default.text_color = "#FFF"
-elseif default.gui_color_theme == 2 then
-	default.gui_bg = "bgcolor[#333333FF;false]"
-	default.gui_colors = "listcolors[#222222FF;#333333FF;#000000FF;#444444FF;#FFF]"
-	default.text_color = "#FFF"
-elseif default.gui_color_theme == 3 then
-	default.gui_bg = "bgcolor[#CCCCCCFF;false]"
-	default.gui_colors = "listcolors[#AAAAAAFF;#777777FF;#666666FF;#444444FF;#FFF]"
-	default.text_color = "#000"
-elseif default.gui_color_theme == 4 then
-	default.gui_bg = "bgcolor[#00000000;false]"
-	default.gui_colors = "listcolors[#00000022;#44444477;#000000FF;#444444FF;#FFF]"
-	default.text_color = "#FFF"
+default.gui_color_themes = {}
+
+function default.register_gui_color_theme(def)
+	table.insert(default.gui_color_themes, def)
 end
+
+function default.set_gui_color_theme(x)
+	default.gui_bg = default.gui_color_themes[x].background
+	default.gui_colors = default.gui_color_themes[x].colors
+end
+
+default.register_gui_color_theme({
+	background = "bgcolor[#a88e69FF;false]",
+	colors = "listcolors[#00000000;#10101030;#00000000;#68B259;#FFF]"
+})
+
+default.register_gui_color_theme({
+	background = "bgcolor[#333333FF;false]",
+	colors = "listcolors[#222222FF;#333333FF;#000000FF;#444444FF;#FFF]"
+})
+
+default.register_gui_color_theme({
+	background = "bgcolor[#CCCCCCFF;false]",
+	colors = "listcolors[#AAAAAAFF;#777777FF;#666666FF;#444444FF;#FFF]"
+})
+
+default.register_gui_color_theme({
+	background = "bgcolor[#99999933;false]",
+	colors = "listcolors[#00000022;#44444477;#000000FF;#444444FF;#FFF]"
+})
+
+default.set_gui_color_theme(default.gui_color_theme)
 
 default.inv_form = default.player_inventory.get_default_inventory_formspec()
 default.inv_form = default.inv_form.."list[current_player;craft;1.5,1;3,1;]"
