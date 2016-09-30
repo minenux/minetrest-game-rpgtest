@@ -26,6 +26,7 @@ function pets.register_pet(name, def)
 		pl = nil,
 		is_pet = false,
 		anim = "stand",
+		stepheight = 1.1,
 
 		on_rightclick = function(self, clicker)
 			if not clicker or not clicker:is_player() then
@@ -57,18 +58,9 @@ function pets.register_pet(name, def)
 					t.z = t.z + 1.5
 					if vector.distance(self.object:getpos(), t) > 2 then 
 						local vec = vector.direction(self.object:getpos(), t)
-						--vec.y = vec.y * 10
-						if self.object:getpos().y < t.y+0.5 then
-							vec.y= vec.y + 2
-						else
-							vec.y= -3
-						end
+						vec.y= -3
 						self.object:setvelocity(vector.multiply(vec, 3))
-						local yaw = math.atan(vec.z/vec.x)+math.pi/2
-						yaw = yaw+(math.pi/2)
-						if t.x > t.z then
-							yaw = yaw+math.pi
-						end
+						local yaw = math.atan(vec.z/vec.x)
 						self.object:setyaw(yaw)
 						if def.animations then
 							if self.anim ~= "walk" then

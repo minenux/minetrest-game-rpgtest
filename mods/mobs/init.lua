@@ -29,6 +29,7 @@ function mobs.register_mob(name, def)
 		is_visible = true,
 		makes_footstep_sound = false,
 		automatic_rotate = true,
+		stepheight = 1.1,
 		speed = 0,
 		anim = "",
 		t = 0.0,
@@ -90,11 +91,7 @@ function mobs.register_mob(name, def)
 							local p = self.object:getpos()
 							local v = vector.multiply(vector.direction(p, obj_p), 4)
 							local d = obj_p.y - p.y
-							if d > 0 and d < 2 then
-								v.y = 2
-							else
-								v.y = (def.gravity or -9.2)
-							end
+							v.y = (def.gravity or -9.2)
 							self.object:setvelocity(v)
 
 							local yaw = math.atan(v.z/v.x)+math.pi/2
