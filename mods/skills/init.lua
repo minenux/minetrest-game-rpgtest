@@ -36,7 +36,7 @@ function skills.register_weapon(name, fromLevel, levels, def)
 	end
 	for i = fromLevel, levels, 1 do
 		minetest.register_tool("skills:"..name .. "_lvl_" .. tostring(i), {
-			description = def.description.."\n For Level: ".. tostring(i).. "\n Damage: " .. tostring(def.damage+ i-fromLevel) .." \n Skill: " .. def.skill,
+			description = def.description.."\n Level: ".. tostring(i).. "\n Damage: " .. tostring(def.damage+ i-fromLevel) .." \n Skill: " .. def.skill,
 			inventory_image = def.inventory_image,
 			wield_scale = def.wield_scale,
 			tool_capabilities = {
@@ -80,24 +80,42 @@ function skills.register_weapon(name, fromLevel, levels, def)
 	end
 end
 
-function skills.register_tool(name, def)
-	minetest.register_craftitem("skills:" .. name, {
-		description = def.description,
-		inventory_image = def.inventory_image,
-		wield_image = def.wield_image or def.inventory_image,
-		skill = def.skill,
-		range = def.range or 4,
-		wield_scale = def.wield_scale,
-		on_use = function(itemstack, user, pointed_thing)
-			if user == nil then return end
-			if skills.lvls[user:get_player_name()] and skills.lvls[user:get_player_name()][def.skill] > def.lvl-1 then
-				def.on_use(itemstack, user, pointed_thing)
-			else
-				cmsg.push_message_player(user, "[info] You have to be " .. def.skill .. " level "..tostring(def.lvl).. " to use this tool!")
+function skills.register_tool(name, fromLevel, levels, def)
+	for i = fromLevel, levels, 1 do
+		minetest.register_craftitem("skills:" .. name .. "_lvl_" .. tostring(i), {
+			description = def.description .. "\n Level: "..tostring(i),
+			inventory_image = def.inventory_image,
+			wield_image = def.wield_image or def.inventory_image,
+			skill = def.skill,
+			range = def.range or 4,
+			wield_scale = def.wield_scale,
+			on_use = function(itemstack, user, pointed_thing)
+				if user == nil then return end
+				if skills.lvls[user:get_player_name()] and skills.lvls[user:get_player_name()][def.skill] > i-1 then
+					def.on_use(itemstack, user, pointed_thing, i)
+				else
+					cmsg.push_message_player(user, "[info] You have to be " .. def.skill .. " level "..tostring(i).. " to use this tool!")
+				end
+				return nil
 			end
-			return nil
+		})
+
+		if i < levels then
+			minetest.register_craft({
+				output = "skills:"..name .. "_lvl_" .. tostring(i+1),
+				recipe = {
+					{"skills:"..name .. "_lvl_" .. tostring(i), "potions:upgrading"},
+				}
+			})
 		end
-	})
+	end
+
+	if def.recipe then
+		minetest.register_craft({
+			output = "skills:"..name .. "_lvl_" .. tostring(fromLevel),
+			recipe = def.recipe,
+		})
+	end
 end
 
 -- load save
@@ -210,13 +228,12 @@ skills.register_weapon("chemical_spear",5, 17, {
 	skill = "warrior"
 })
 
-skills.register_tool("shield", {
+skills.register_tool("shield", 5, 5, {
 	description = "Shield",
 	inventory_image = "skills_shield.png",
 	wield_scale = {x = 2, y=2, z = 1},
 	skill = "warrior",
-	lvl = 5,
-	on_use = function(itemstack, user, pointed_thing)
+	on_use = function(itemstack, user, pointed_thing, level)
 		user:set_armor_groups({friendly = 0})
 		user:set_physics_override({
 			speed = 0.3,
@@ -250,15 +267,14 @@ skills.register_weapon("sword",20, 30, {
 	}
 })
 
-skills.register_tool("bow", {
+skills.register_tool("bow", 1, 30, {
 	description = "Bow",
 	inventory_image = "skills_bow.png",
 	wield_image = "skills_bow_wield.png",
 	wield_scale = {x = 2.5, y=2.5, z = 1},
 	skill = "hunter",
-	lvl = 30,
 	range = 20,
-	on_use = function(itemstack, user, pointed_thing)
+	on_use = function(itemstack, user, pointed_thing, level)
 		local p = user:getpos()
 		p.y = p.y + 1.5
 		local dir = user:get_look_dir()
@@ -279,10 +295,16 @@ skills.register_tool("bow", {
 			end
 			pt:punch(user, 1.0, {
 				full_punch_interval=1.0,
-				damage_groups={fleshy=skills.get_dmg(30)},
+				damage_groups={fleshy=skills.get_dmg(level)},
 			})
 		end
-	end
+	end,
+
+	recipe = {
+		{"", "default:string_strong", "default:stick"},
+		{"default:string_strong", "", "default:stick"},
+		{"", "default:string_strong", "default:stick"},
+	}
 })
 
 
