@@ -36,7 +36,7 @@ minetest.register_craftitem("default:ruby", {
 
 
 minetest.register_craftitem("default:string_strong", {
-	description = "String (STRONG)",
+	description = "Strong String",
 	inventory_image = "default_string_strong.png",
 })
 
