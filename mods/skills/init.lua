@@ -82,8 +82,12 @@ end
 
 function skills.register_tool(name, fromLevel, levels, def)
 	for i = fromLevel, levels, 1 do
+		local damage_string = ""
+		if def.get_damage then
+			damage_string = "\n Damage: " .. tostring(def.get_damage(i))
+		end
 		minetest.register_craftitem("skills:" .. name .. "_lvl_" .. tostring(i), {
-			description = def.description .. "\n Level: "..tostring(i),
+			description = def.description .. "\n Level: "..tostring(i) .. damage_string .. "\n Skill: " .. def.skill .. "\n Range: " .. tostring(def.range or 4),
 			inventory_image = def.inventory_image,
 			wield_image = def.wield_image or def.inventory_image,
 			skill = def.skill,
@@ -210,7 +214,7 @@ skills.register_weapon("spear",1, 12, {
 	inventory_image = "skills_spear.png",
 	wield_scale = {x = 2, y=2, z = 1},
 	damage_m = 1.0,
-	damage_d = 0,
+	damage_d = -1,
 	skill = "warrior",
 	recipe = {
 		{"", "default:flint", ""},
@@ -224,7 +228,7 @@ skills.register_weapon("chemical_spear",5, 17, {
 	inventory_image = "skills_chemical_spear.png",
 	wield_scale = {x = 2, y=2, z = 1},
 	damage_m = 1.1,
-	damage_d = -1,
+	damage_d = -2,
 	skill = "warrior"
 })
 
@@ -258,7 +262,7 @@ skills.register_weapon("sword",20, 30, {
 	inventory_image = "skills_sword.png",
 	wield_scale = {x = 1.5, y=1.5, z = 1},
 	damage_m = 1.0,
-	damage_d = 0,
+	damage_d = -1,
 	skill = "warrior",
 	recipe = {
 		{"", "default:blade", ""},
@@ -295,9 +299,13 @@ skills.register_tool("bow", 1, 30, {
 			end
 			pt:punch(user, 1.0, {
 				full_punch_interval=1.0,
-				damage_groups={fleshy=skills.get_dmg(level)},
+				damage_groups={fleshy=skills.get_dmg(level)-1},
 			})
 		end
+	end,
+
+	get_damage = function(level)
+		return skills.get_dmg(level)-1
 	end,
 
 	recipe = {

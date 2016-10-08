@@ -78,7 +78,7 @@ function crafting_guide.get_item_formspec(page)
 		str = str .. "label[0,2;Weapons :]"
 		str = str .. "item_image_button[0,2.5;1,1;skills:spear_lvl_1;skills:spear_lvl_1;]"
 		str = str .. "item_image_button[1,2.5;1,1;skills:sword_lvl_20;skills:sword_lvl_20;]"
-		str = str .. "item_image_button[2,2.5;1,1;skills:bow;skills:bow;]"
+		str = str .. "item_image_button[2,2.5;1,1;skills:bow;skills:bow_lvl_1;]"
 
 		str = str .. "label[0,4;Furnace :]"
 		str = str .. "item_image_button[0,4.5;1,1;furnace:furnace;furnace:furnace;]"
