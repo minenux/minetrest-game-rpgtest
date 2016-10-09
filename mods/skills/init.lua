@@ -28,6 +28,25 @@ function skills.get_text(name)
 	return str
 end
 
+function skills.level_up(name, text)
+	if not(skills.lvls[name][text]) then
+		return false
+	end
+
+	local count = 0
+	for s,l in pairs(skills.lvls[name]) do
+		count = count + (l-1)
+	end
+	if xp.player_levels[name] > count then
+		skills.lvls[name][text] = skills.lvls[name][text] + 1
+		skills.save_skills()
+		cmsg.push_message_player(minetest.get_player_by_name(name), "[skills] " .. skills.get_text(name))
+		return true
+	else
+		return false
+	end
+end
+
 function skills.register_weapon(name, fromLevel, levels, def)
 	if not def.damage then
 		if def.damage_m and def.damage_d then
@@ -143,6 +162,38 @@ function skills.save_skills()
 		io.close(output)
 	end
 end
+
+default.player_inventory.register_tab({
+	name = "Skills",
+	type = "function",
+	get_formspec = function(name) 
+		local text = minetest.formspec_escape("If you level up your skills, you will be able\nto use better tools or weapons.")
+		text = text .. "\n"
+
+		local formspec = "size[8,7.5;]" ..
+			default.gui_colors .. 
+			default.gui_bg ..
+			"label[0,0;Skills:]"..
+			"label[2.5,0;"..text.."]"
+
+
+		local i = 0
+		for skill_name, skill_level in pairs(skills.lvls[name]) do
+			formspec = formspec .. "button[0,"..tostring(i+0.5)..";2,1;" .. skill_name .. ";" .. skill_name .. " : " .. tostring(skill_level) .. "]"
+			i = i +1
+		end
+	
+		return formspec
+	end,
+	on_event = function(player, fields)
+		local name = player:get_player_name()
+		for n,v in pairs(fields) do
+			if v then
+				skills.level_up(name, n)
+			end
+		end
+	end
+})
 
 -- cmd
 

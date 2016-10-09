@@ -81,6 +81,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		if not(default.player_inventory.tabs[default.player_inventory.contexts[name].tab]) then return end
 		if not(default.player_inventory.tabs[default.player_inventory.contexts[name].tab]).on_event then return end
 		default.player_inventory.tabs[default.player_inventory.contexts[name].tab].on_event(player, fields)
+		default.player_inventory.update(player)
 	end
 end)
 
