@@ -1,3 +1,10 @@
+furnace = {}
+furnace.recipes = {}
+
+function furnace.register_recipe(def)
+	table.insert(furnace.recipes, def)
+end
+
 local furnace_form = "size[8,9]"
 local furnace_form = furnace_form..default.gui_colors
 local furnace_form = furnace_form..default.gui_bg
@@ -38,45 +45,66 @@ minetest.register_abm({
 			local patternpos = vector.add(pos, dir)
 	
 			local pattern = minetest.get_node(patternpos).name
-			if pattern == "furnace:pattern_rod" then
-				local myinv = mymeta:get_inventory()
-				if myinv:contains_item("main", {name = "default:stone_with_iron"}) then
-					minetest.get_meta(patternpos):get_inventory():add_item("main", {name = "furnace:iron_rod"})
-					myinv:remove_item("main", {name = "default:stone_with_iron"})
-				elseif myinv:contains_item("main", {name = "default:stone_with_gold"}) then
-					minetest.get_meta(patternpos):get_inventory():add_item("main", {name = "furnace:gold_rod"})
-					myinv:remove_item("main", {name = "default:stone_with_gold"})
-				elseif myinv:contains_item("main", {name = "default:stone_with_copper"}) then
-					minetest.get_meta(patternpos):get_inventory():add_item("main", {name = "furnace:copper_rod"})
-					myinv:remove_item("main", {name = "default:stone_with_copper"})
-				end
-			end
-			if pattern == "furnace:pattern_blade" then
-				local myinv = mymeta:get_inventory()
-				if myinv:contains_item("main", {name = "default:stone_with_iron"}) then
-					minetest.get_meta(patternpos):get_inventory():add_item("main", {name = "default:blade"})
-					myinv:remove_item("main", {name = "default:stone_with_iron"})
-				end
-			end
+			local myinv = mymeta:get_inventory()
 
-			if pattern == "furnace:pattern_plate" then
-				local myinv = mymeta:get_inventory()
-				if myinv:contains_item("main", {name = "default:stone_with_iron"}) then
-					minetest.get_meta(patternpos):get_inventory():add_item("main", {name = "furnace:iron_plate"})
-					myinv:remove_item("main", {name = "default:stone_with_iron"})
-				elseif myinv:contains_item("main", {name = "default:stone_with_gold"}) then
-					minetest.get_meta(patternpos):get_inventory():add_item("main", {name = "furnace:gold_plate"})
-					myinv:remove_item("main", {name = "default:stone_with_gold"})
-				elseif myinv:contains_item("main", {name = "default:stone_with_copper"}) then
-					minetest.get_meta(patternpos):get_inventory():add_item("main", {name = "furnace:copper_plate"})
-					myinv:remove_item("main", {name = "default:stone_with_copper"})
-				elseif myinv:contains_item("main", {name = "default:sand"}) then
-					minetest.get_meta(patternpos):get_inventory():add_item("main", {name = "default:glass"})
-					myinv:remove_item("main", {name = "default:sand"})
+			for i,recipe in ipairs(furnace.recipes) do
+				if pattern == recipe.pattern
+					and myinv:contains_item("main", {name = recipe.input})  then
+					minetest.get_meta(patternpos):get_inventory():add_item("main", {name = recipe.output})
+					myinv:remove_item("main", {name = recipe.input})
+					break
 				end
 			end
 		end
 	end,
+})
+
+furnace.register_recipe({
+	pattern = "furnace:pattern_rod",
+	input = "default:stone_with_iron",
+	output = "furnace:iron_rod",
+})
+
+furnace.register_recipe({
+	pattern = "furnace:pattern_rod",
+	input = "default:stone_with_copper",
+	output = "furnace:copper_rod",
+})
+
+furnace.register_recipe({
+	pattern = "furnace:pattern_rod",
+	input = "default:stone_with_gold",
+	output = "furnace:gold_rod",
+})
+
+furnace.register_recipe({
+	pattern = "furnace:pattern_blade",
+	input = "default:stone_with_iron",
+	output = "default:blade",
+})
+
+furnace.register_recipe({
+	pattern = "furnace:pattern_plate",
+	input = "default:stone_with_iron",
+	output = "furnace:iron_plate",
+})
+
+furnace.register_recipe({
+	pattern = "furnace:pattern_plate",
+	input = "default:stone_with_copper",
+	output = "furnace:copper_plate",
+})
+
+furnace.register_recipe({
+	pattern = "furnace:pattern_plate",
+	input = "default:stone_with_gold",
+	output = "furnace:gold_plate",
+})
+
+furnace.register_recipe({
+	pattern = "furnace:pattern_plate",
+	input = "default:sand",
+	output = "default:glass",
 })
 
 local pattern_form = "size[8,9]"
