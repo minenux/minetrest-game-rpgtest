@@ -24,6 +24,8 @@ default.craft_form_v2 = default.craft_form_v2.."list[current_player;craft;2.5,0;
 default.craft_form_v2 = default.craft_form_v2..default.itemslot_bg(2.5,0,3,3)
 default.craft_form_v2 = default.craft_form_v2.."list[current_player;craftpreview;6,1;1,1;]"
 default.craft_form_v2 = default.craft_form_v2..default.itemslot_bg(6,1,1,1)
+default.craft_form_v2 = default.craft_form_v2 .."listring[current_player;main]"
+default.craft_form_v2 = default.craft_form_v2 .."listring[current_player;craft]"
 
 minetest.register_node("default:workbench_v2", {
 	description = "Stone Workbench",
@@ -32,7 +34,7 @@ minetest.register_node("default:workbench_v2", {
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec", default.craft_form_v2)
-		meta:set_string("infotext", "Workbench V2")
+		meta:set_string("infotext", "Stone Workbench")
 		local inv = meta:get_inventory()
 		inv:set_size("main", 3*2)
 	end,
@@ -313,6 +315,15 @@ minetest.register_craft({
 	output = "default:string_strong",
 	recipe = {
 		{"default:liana"},
+	}
+})
+
+minetest.register_craft({
+	output = "default:string_strong",
+	recipe = {
+		{"group:plant", "group:plant", "group:plant"},
+		{"group:plant", "group:plant", "group:plant"},
+		{"group:plant", "group:plant", "group:plant"}
 	}
 })
 

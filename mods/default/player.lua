@@ -55,7 +55,7 @@ function default.player_inventory.update(player)
 
 	local tab = default.player_inventory.contexts[name].tab or 1
 	local formspec = default.player_inventory.get_formspec(tab, name)
-	player:set_inventory_formspec(string.format(formspec, player:get_player_name()))
+	player:set_inventory_formspec(string.gsub(string.format(formspec, player:get_player_name()), "<player_name>", player:get_player_name()))
 end
 
 function default.player_inventory.get_default_inventory_formspec()
@@ -137,6 +137,8 @@ default.inv_form = default.inv_form.."list[current_player;craft;1.5,1;3,1;]"
 default.inv_form = default.inv_form..default.itemslot_bg(1.5,1,3,1)
 default.inv_form = default.inv_form.."list[current_player;craftpreview;5.5,1;1,1;]"
 default.inv_form = default.inv_form..default.itemslot_bg(5.5,1,1,1)
+default.inv_form = default.inv_form.."listring[current_player;craft]"
+default.inv_form = default.inv_form.."listring[current_player;main]"
 
 default.player_inventory.register_tab({
 	name = "Crafting",
@@ -153,6 +155,8 @@ default.craft_form = default.craft_form.."list[current_player;craft;1.5,0;3,3;]"
 default.craft_form = default.craft_form..default.itemslot_bg(1.5,0,3,3)
 default.craft_form = default.craft_form.."list[current_player;craftpreview;5,1;1,1;]"
 default.craft_form = default.craft_form..default.itemslot_bg(5,1,1,1)
+default.craft_form = default.craft_form.."listring[current_player;craft]"
+default.craft_form = default.craft_form.."listring[current_player;main]"
 
 default.player_anim = {}
 

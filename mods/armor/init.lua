@@ -77,7 +77,9 @@ end
 default.player_inventory.register_tab({
 	name = "Armor",
 	formspec = default.player_inventory.get_default_inventory_formspec() .. 
-		   "list[detached:armor_%s;main;3,0.5;2,2;]" .. 
+		   "list[detached:armor_<player_name>;main;3,0.5;2,2;]" .. 
+		   "listring[detached:armor_<player_name>;main]" .. 
+		   "listring[current_player;main]" .. 
 		   default.itemslot_bg(3,0.5,2,2)
 })
 
