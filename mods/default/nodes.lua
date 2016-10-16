@@ -350,6 +350,8 @@ minetest.register_node("default:log", {
 	tiles = {"default_log_top.png","default_log_top.png","default_log.png"},
 	groups = {choppy = 3},
 	sounds = default.sounds.wood(),
+	paramtype2 = "facedir",
+	on_place = minetest.rotate_and_place,
 })
 
 minetest.register_node("default:log_1", {
@@ -362,10 +364,12 @@ minetest.register_node("default:log_1", {
 	node_box = {
 		type = "fixed",
 		fixed = {
-				{-0.4, -0.5, -0.4, 0.4, 0.5, 0.4},
+				{-6/16, -0.5, -6/16, 6/16, 0.5, 6/16},
 			},
 	},
 	sounds = default.sounds.wood(),
+	paramtype2 = "facedir",
+	on_place = minetest.rotate_and_place,
 })
 
 minetest.register_node("default:log_2", {
@@ -378,10 +382,12 @@ minetest.register_node("default:log_2", {
 	node_box = {
 		type = "fixed",
 		fixed = {
-				{-0.3, -0.5, -0.3, 0.3, 0.5, 0.3},
+				{-4/16, -0.5, -4/16, 4/16, 0.5, 4/16},
 			},
 	},
 	sounds = default.sounds.wood(),
+	paramtype2 = "facedir",
+	on_place = minetest.rotate_and_place,
 })
 
 minetest.register_node("default:log_3", {
@@ -394,10 +400,12 @@ minetest.register_node("default:log_3", {
 	node_box = {
 		type = "fixed",
 		fixed = {
-				{-0.2, -0.5, -0.2, 0.2, 0.5, 0.2},
+				{-2/16, -0.5, -2/16, 2/16, 0.5, 2/16},
 			},
 	},
 	sounds = default.sounds.wood(),
+	paramtype2 = "facedir",
+	on_place = minetest.rotate_and_place,
 })
 
 minetest.register_node("default:jungle_tree", {
@@ -405,6 +413,8 @@ minetest.register_node("default:jungle_tree", {
 	tiles = {"default_jungle_tree_top.png", "default_jungle_tree_top.png", "default_jungle_tree.png"},
 	groups = {choppy = 3},
 	sounds = default.sounds.wood(),
+	paramtype2 = "facedir",
+	on_place = minetest.rotate_and_place,
 })
 
 -- plants
@@ -888,7 +898,7 @@ minetest.register_node("default:rail", {
 	wield_image = "default_rail.png",
 	paramtype = "light",
 	walkable = false,
-	groups = {choppy = 1, attached_node = 1},
+	groups = {choppy = 1, cracky= 1, attached_node = 1},
 })
 
 -- fences

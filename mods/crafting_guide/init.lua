@@ -7,6 +7,11 @@ crafting_guide.form_items = "size[8,7]"..default.gui_colors..default.gui_bg.."bu
 
 crafting_guide.pages = {}
 
+minetest.register_privilege("creative", {
+	description = "",
+	give_to_singleplayer = false,
+})
+
 function crafting_guide.get_formspec(crafts,back_button)
 	local str = crafting_guide.form
 	if back_button then
@@ -36,9 +41,10 @@ function crafting_guide.get_formspec(crafts,back_button)
 	return str
 end
 
-function crafting_guide.get_item_formspec(page)
+function crafting_guide.get_item_formspec(page, player)
 	page = page or 0
 	local str = crafting_guide.form_items
+	local creative_priv = minetest.get_player_privs(player:get_player_name()).creative
 
 	if page > -1 then
 		local i = 0
@@ -47,13 +53,16 @@ function crafting_guide.get_item_formspec(page)
 
 		local items = {}
 		for name,def in pairs(minetest.registered_items) do
-			table.insert(items,name)
+			if not(def.groups.not_in_creative_inventory) then
+				table.insert(items,name)
+			end
 		end
 
 		table.sort(items)
 
 		for _,name in ipairs(items) do
-			if minetest.get_all_craft_recipes(name) and i < (8*6)*(page+1) then
+			if (minetest.get_all_craft_recipes(name) or creative_priv) and 
+			   i < (8*6)*(page+1) then
 				if i > (8*6)*(page)-1 then
 					str = str .. "item_image_button["..x..","..y..";1,1;"..name..";"..name..";]"
 					x = x + 1
@@ -78,7 +87,7 @@ function crafting_guide.get_item_formspec(page)
 		str = str .. "label[0,2;Weapons :]"
 		str = str .. "item_image_button[0,2.5;1,1;skills:spear_lvl_1;skills:spear_lvl_1;]"
 		str = str .. "item_image_button[1,2.5;1,1;skills:sword_lvl_20;skills:sword_lvl_20;]"
-		str = str .. "item_image_button[2,2.5;1,1;skills:bow;skills:bow_lvl_1;]"
+		str = str .. "item_image_button[2,2.5;1,1;skills:bow_lvl_1;skills:bow_lvl_1;]"
 
 		str = str .. "label[0,4;Furnace :]"
 		str = str .. "item_image_button[0,4.5;1,1;furnace:furnace;furnace:furnace;]"
@@ -129,7 +138,7 @@ end
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if formname == "crafting_guide:book" then
 		if fields.btn_back then
-			minetest.show_formspec(player:get_player_name(), "crafting_guide:book_items", crafting_guide.get_item_formspec(crafting_guide.pages[player:get_player_name()]))
+			minetest.show_formspec(player:get_player_name(), "crafting_guide:book_items", crafting_guide.get_item_formspec(crafting_guide.pages[player:get_player_name()], player))
 		elseif fields.quit then
 			crafting_guide.pages[player:get_player_name()] = nil
 		else
@@ -144,10 +153,10 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if formname == "crafting_guide:book_items" then
 		if fields.btn_left then
 			crafting_guide.pages[player:get_player_name()] = crafting_guide.pages[player:get_player_name()] -1
-			minetest.show_formspec(player:get_player_name(), "crafting_guide:book_items", crafting_guide.get_item_formspec(crafting_guide.pages[player:get_player_name()]))
+			minetest.show_formspec(player:get_player_name(), "crafting_guide:book_items", crafting_guide.get_item_formspec(crafting_guide.pages[player:get_player_name()], player))
 		elseif fields.btn_right then
 			crafting_guide.pages[player:get_player_name()] = crafting_guide.pages[player:get_player_name()] +1
-			minetest.show_formspec(player:get_player_name(), "crafting_guide:book_items", crafting_guide.get_item_formspec(crafting_guide.pages[player:get_player_name()]))
+			minetest.show_formspec(player:get_player_name(), "crafting_guide:book_items", crafting_guide.get_item_formspec(crafting_guide.pages[player:get_player_name()], player))
 		elseif fields.btn_quests then
 			minetest.show_formspec(player:get_player_name(), "quests:show_quests", quests.get_formspec(player:get_player_name()))
 		elseif fields.quit then
@@ -155,8 +164,14 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		else
 			for i,j in pairs(fields) do
 				local crafts = minetest.get_all_craft_recipes(i)
-				if crafts then
-					minetest.show_formspec(player:get_player_name(), "crafting_guide:book", crafting_guide.get_formspec(crafts,true))
+				local has_creative_priv = minetest.get_player_privs(player:get_player_name()).creative
+				if crafts or has_creative_priv then
+					if has_creative_priv then
+						player:get_inventory():add_item("main", i .. " 99")
+						print("[crafting_guide] give " .. player:get_player_name() .. " " .. i .. " 99")
+					else
+						minetest.show_formspec(player:get_player_name(), "crafting_guide:book", crafting_guide.get_formspec(crafts,true))
+					end
 				end
 			end
 		end
@@ -185,6 +200,6 @@ minetest.register_craftitem("crafting_guide:book", {
 
 	on_use = function(itemstack, user, pointed_thing)
 		crafting_guide.pages[user:get_player_name()] = 0
-		minetest.show_formspec(user:get_player_name(), "crafting_guide:book_items", crafting_guide.get_item_formspec(0))
+		minetest.show_formspec(user:get_player_name(), "crafting_guide:book_items", crafting_guide.get_item_formspec(0, user))
 	end
 })
