@@ -5,6 +5,15 @@ function furnace.register_recipe(def)
 	table.insert(furnace.recipes, def)
 end
 
+function furnace.get_recipe(item)
+	for i,recipe in ipairs(furnace.recipes) do
+		if recipe.output == item then
+			return recipe
+		end
+	end
+	return nil
+end
+
 local furnace_form = "size[8,9]"
 local furnace_form = furnace_form..default.gui_colors
 local furnace_form = furnace_form..default.gui_bg
