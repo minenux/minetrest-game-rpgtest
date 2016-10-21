@@ -44,3 +44,12 @@ if paraglider.automatic then
 	end)
 end
 
+minetest.register_craft({
+	output = "paraglider:paraglider",
+	recipe = {
+		{"default:wool_white", "default:wool_white", "default:wool_white"},
+		{"default:string_strong", "", "default:string_strong"},
+		{"", "default:string_strong", ""},
+	}
+})
+

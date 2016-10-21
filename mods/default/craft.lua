@@ -327,6 +327,14 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craft({
+	output = "default:wool_white",
+	recipe = {
+		{"default:string_strong", "default:string_strong"},
+		{"default:string_strong", "default:string_strong"},
+	}
+})
+
 -- rope
 
 minetest.register_craft({
