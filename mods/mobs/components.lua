@@ -33,6 +33,31 @@ mobs.register_component("walk", {
 	end
 })
 
+mobs.register_component("teleport", {
+	action = function(self, params, def)
+		if self.destination then	
+			local destination = self.destination
+			if self.destination and self.destination.is_player and self.destination:is_player() then
+				destination = self.destination:getpos()
+			end
+			if not(destination) then
+				return 0
+			end
+
+			local pos = self.object:getpos()
+			local distance = (params.distance or 0)
+			if vector.distance(pos,destination) > distance then
+				local x = vector.new(math.random(-3, 3),2,math.random(-3, 3))
+				self.object:setpos(vector.add(destination, x))
+				return 3
+			else
+				return 0
+			end
+		end
+		return 0
+	end
+})
+
 mobs.register_component("find_player", {
 	action = function(self, params, def)
 		local all_objects = minetest.get_objects_inside_radius(self.object:getpos(), params.range or def.range or 10)

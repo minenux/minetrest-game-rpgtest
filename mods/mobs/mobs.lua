@@ -12,7 +12,7 @@ mobs.register_mob("mobs:slime", {
 	},
 	collisionbox = {-0.4, -0.5, -0.4, 0.4, 0.5, 0.4},
 	description = "Slime",
-	range = 3,
+	range = 3
 })
 
 mobs.register_mob("mobs:big_slime", {

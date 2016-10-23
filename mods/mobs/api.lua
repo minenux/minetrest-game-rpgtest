@@ -41,8 +41,8 @@ function mobs.register_mob(name, def)
 	def.behaviour = def.behaviour or {
 		{
 			name = "walk",
-			speed = 3,
-			distance = 3
+			speed = 4,
+			distance = 3,
 		}, {
 			name = "attack"
 		}, {
