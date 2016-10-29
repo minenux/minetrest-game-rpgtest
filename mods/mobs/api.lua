@@ -43,6 +43,7 @@ function mobs.register_mob(name, def)
 			name = "walk",
 			speed = 4,
 			distance = 3,
+			gravity = -2
 		}, {
 			name = "attack"
 		}, {

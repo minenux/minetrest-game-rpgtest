@@ -92,3 +92,66 @@ mobs.register_component("randomize_destination", {
 		return 1
 	end
 })
+
+mobs.register_component("particlespawner", {
+	action = function(self, params, def)
+		local pos = self.object:getpos()
+
+		if(params.spawn_at_destination) then
+			local destination = self.destination
+			if self.destination and self.destination.is_player and self.destination:is_player() then
+				destination = self.destination:getpos()
+			end
+			if not(destination) then
+				return 0
+			end
+			pos = destination
+		end
+
+		if not(pos) then
+			return 0
+		end
+
+		if params.spawner then
+			if not(params.spawner.minpos) or not(params.spawner.maxpos) then
+				return 0
+			end
+			params.spawner.minpos = vector.add(params.spawner.minpos, pos)
+			params.spawner.maxpos = vector.add(params.spawner.maxpos, pos)
+			minetest.add_particlespawner(params.spawner)
+		else
+			local range = params.range or 2
+			local time = params.time or 1
+			local amount = params.amount or 30
+
+			local minsize = params.minsize or 1
+			local maxsize = params.maxsize or 1
+
+			local collisiondetection = params.collisiondetection or false
+			local texture = params.texture
+
+			local minvel = params.minvel or {x=-2, y=-2, z=-2}
+			local maxvel = params.maxvel or {x=2, y=2, z=2}
+
+			minetest.add_particlespawner({
+				amount = amount,
+				time = time,
+				minpos = {x=pos.x-range, y=pos.y-range, z=pos.z-range},
+				maxpos = {x=pos.x+range, y=pos.y+range, z=pos.z+range},
+				minvel = minvel,
+				maxvel = maxvel,
+				minacc = {x=0, y=0, z=0},
+				maxacc = {x=0, y=0, z=0},
+				minexptime = time,
+				maxexptime = time,
+				minsize = minsize,
+				maxsize = maxsize,
+				collisiondetection = collisiondetection,
+				vertical = false,
+				texture = texture,
+			})
+		end
+
+		return 1
+	end
+})
