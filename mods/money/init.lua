@@ -50,10 +50,20 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if formname == "money:shop" then
 		if fields.btn_next then
 			money.shop.page[player:get_player_name()] = money.shop.page[player:get_player_name()] + 1
+			
+			if money.shop.page[player:get_player_name()] > #money.shop.offers then
+				money.shop.page[player:get_player_name()] = #money.shop.offers
+			end
+
 			minetest.show_formspec(player:get_player_name(), "money:shop", money.shop.get_formspec(money.shop.page[player:get_player_name()]))
 		end
 		if fields.btn_back then
 			money.shop.page[player:get_player_name()] = money.shop.page[player:get_player_name()] - 1
+
+			if money.shop.page[player:get_player_name()] < 1 then
+				money.shop.page[player:get_player_name()] = 1
+			end
+
 			minetest.show_formspec(player:get_player_name(), "money:shop", money.shop.get_formspec(money.shop.page[player:get_player_name()]))
 		end
 		if fields.btn_trade then
@@ -67,18 +77,9 @@ end)
 
 minetest.register_node("money:shop", {
 	description = "Shop",
-	tiles = {"money_shop_top.png","money_shop.png","money_shop.png"},
+	tiles = {"money_shop_top.png", "money_shop_bottom.png", "money_shop.png","money_shop.png"},
 	groups = {choppy = 3},
-
-	paramtype = "light",
 	paramtype2 = "facedir",
-	drawtype = "nodebox",
-	node_box = {
-		type = "fixed",
-		fixed = {
-				{-6/16, -0.5, -6/16, 6/16,4/16, 6/16},
-			},
-	},
 	
 	on_rightclick = function(pos, node, player, pointed_thing)
 		money.shop.page[player:get_player_name()] = 1

@@ -226,7 +226,7 @@ function quests.update_hud(player,name)
 
 	local txt = ""
 	for _, quest in pairs(player_quests) do
-		if not(quest.done) then
+		if not(quest.done) and not(quest.hidden) then
 			txt = txt .. " -> " .. (quest.title or "[NO TITLE]") .. "\n"
 			for _, goal in pairs(quest.goals) do
 				if (not goal.requires or goal.requires.done) and not(goal.done) then
@@ -385,6 +385,7 @@ minetest.register_on_newplayer(function(player)
 		q5.xp = xp.get_xp(5, 1)
 
 		quest.xp = 0
+		quest.hidden = true
 		quests.add_quest(name, quest)
 	end
 end)

@@ -897,8 +897,16 @@ minetest.register_node("default:rail", {
 	inventory_image = "default_rail.png",
 	wield_image = "default_rail.png",
 	paramtype = "light",
-	walkable = false,
+	walkable = true,
 	groups = {choppy = 1, cracky= 1, attached_node = 1},
+	collision_box = {
+		type = "fixed",
+		fixed = {-0.5, -0.5, -0.5, 0.5, -7/16, 0.5}
+	},
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.5, -0.5, -0.5, 0.5, -7/16, 0.5}
+	},
 })
 
 -- fences
