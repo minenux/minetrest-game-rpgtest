@@ -53,6 +53,7 @@ function skills.register_weapon(name, fromLevel, levels, def)
 			def.damage = math.floor(skills.get_dmg(fromLevel)*def.damage_m-def.damage_d)
 		end
 	end
+
 	for i = fromLevel, levels, 1 do
 		minetest.register_tool("skills:"..name .. "_lvl_" .. tostring(i), {
 			description = def.description.."\n Level: ".. tostring(i).. "\n Damage: " .. tostring(def.damage+ i-fromLevel) .." \n Skill: " .. def.skill,
@@ -77,11 +78,13 @@ function skills.register_weapon(name, fromLevel, levels, def)
 				end
 			end
 		})
+
 		minetest.register_craft({
 			output = "skills:"..name .. "_lvl_" .. tostring(i),
 			recipe = {"skills:"..name .. "_lvl_" .. tostring(i), "skills:"..name .. "_lvl_" ..tostring(i)},
 			type = "toolrepair",
 		})
+
 		if i < levels then
 			minetest.register_craft({
 				output = "skills:"..name .. "_lvl_" .. tostring(i+1),
@@ -91,6 +94,7 @@ function skills.register_weapon(name, fromLevel, levels, def)
 			})
 		end
 	end
+
 	if def.recipe then
 		minetest.register_craft({
 			output = "skills:"..name .. "_lvl_" .. tostring(fromLevel),
@@ -289,7 +293,7 @@ skills.register_tool("shield", 5, 5, {
 	wield_scale = {x = 2, y=2, z = 1},
 	skill = "warrior",
 	on_use = function(itemstack, user, pointed_thing, level)
-		user:set_armor_groups({friendly = 0})
+		user:set_armor_groups({friendly = 30})
 		user:set_physics_override({
 			speed = 0.3,
 		})
@@ -308,7 +312,7 @@ skills.register_tool("shield", 5, 5, {
 	end
 })
 
-skills.register_weapon("sword",20, 30, {
+skills.register_weapon("sword", 10, 20, {
 	description = "Sword",
 	inventory_image = "skills_sword.png",
 	wield_scale = {x = 1.5, y=1.5, z = 1},
@@ -322,8 +326,22 @@ skills.register_weapon("sword",20, 30, {
 	}
 })
 
+skills.register_weapon("sword_copper", 17, 30, {
+	description = "Copper Sword",
+	inventory_image = "skills_sword_copper.png",
+	wield_scale = {x = 1.5, y=1.5, z = 1},
+	damage_m = 1.0,
+	damage_d = -1,
+	skill = "warrior",
+	recipe = {
+		{"", "default:blade", ""},
+		{"", "default:string_strong", ""},
+		{"", "furnace:copper_rod", ""},
+	}
+})
+
 skills.register_tool("bow", 1, 30, {
-	description = "Bow",
+	description = "Wooden Bow",
 	inventory_image = "skills_bow.png",
 	wield_image = "skills_bow_wield.png",
 	wield_scale = {x = 2.5, y=2.5, z = 1},

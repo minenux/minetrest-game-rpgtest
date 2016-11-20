@@ -888,7 +888,6 @@ minetest.register_node("default:quartz", {
 
 -- rail
 
-
 minetest.register_node("default:rail", {
 	description = "Rail",
 	drawtype = "raillike",
