@@ -50,16 +50,17 @@ minetest.register_node("furnace:anvil", {
 		
 		if listname == "main" then
 			local item = inv:get_list("main")[1]:get_name()
+			local count = inv:get_list("main")[1]:get_count()
 			local items = {}
 			
 			for name, def in pairs(furnace.anvil.materials) do
 				if item == def.items.rod or
 				   item == def.items.plate or
 				   item == (def.items.blade or "none") then
-					table.insert(items, def.items.rod)
-					table.insert(items, def.items.plate)
+					table.insert(items, def.items.rod .. " " .. tostring(count))
+					table.insert(items, def.items.plate .. " " .. tostring(count))
 					if def.items.blade then
-						table.insert(items, def.items.blade)
+						table.insert(items, def.items.blade .. " " .. tostring(count))
 					end
 				end
 			end
