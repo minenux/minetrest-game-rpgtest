@@ -49,3 +49,10 @@ minetest.register_craftitem("default:twig", {
 	description = "Twig",
 	inventory_image = "default_twig.png",
 })
+
+-- blade
+
+minetest.register_craftitem("default:blade", {
+	description = "Blade",
+	inventory_image = "default_blade.png",
+})

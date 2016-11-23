@@ -110,20 +110,6 @@ minetest.register_tool("default:shovel", {
 	}
 })
 
--- blade
-
-minetest.register_tool("default:blade", {
-	description = "Blade",
-	inventory_image = "default_blade.png",
-	tool_capabilities = {
-		max_drop_level=3,
-		groupcaps= {
-			leaves={times={[1]=0.50}, uses=1000, maxlevel=1}
-		},
-		damage_groups = {fleshy=5},
-	}
-})
-
 -- copper
 
 minetest.register_tool("default:pick_copper", {

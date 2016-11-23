@@ -37,6 +37,19 @@ function default.drop_items(pos, oldnode, oldmetadata, digger)
 	end
 end
 
+function default.drop_inv(names)
+	return (function (pos, oldnode, oldmetadata, digger)
+		local meta = minetest.get_meta(pos)
+		meta:from_table(oldmetadata)
+		local inv = meta:get_inventory()
+		for _, n in ipairs(names) do
+			for i = 1, inv:get_size(n) do
+				default.drop_item(pos,inv:get_stack(n, i))
+			end
+		end
+	end)
+end
+
 function default.register_fence(name,def)
 	def.description = def.description or minetest.registered_nodes[def.material].description .. " Fence"
 	def.tiles = def.tiles or minetest.registered_nodes[def.material].tiles

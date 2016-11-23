@@ -216,8 +216,8 @@ minetest.register_node("default:treasure_chest", {
 	drop = "default:box",
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
 		local items = default.treasure_chest_items
-		minetest.add_item(pos, {name = items[math.random(#items)], count = math.random(1,3)})
-		minetest.add_item(pos, {name = items[math.random(#items)], count = math.random(1,3)})
+		minetest.add_item(pos, {name = items[math.random(#items)], count = math.random(1, 3)})
+		minetest.add_item(pos, {name = items[math.random(#items)], count = math.random(1, 3)})
 	end
 })
 
