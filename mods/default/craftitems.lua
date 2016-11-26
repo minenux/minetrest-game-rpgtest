@@ -1,6 +1,39 @@
-minetest.register_craftitem("default:string", {
+minetest.register_node("default:string", {
 	description = "String",
-	inventory_image = "default_string.png",
+	tiles = {"default_string_top.png", "default_string_top.png", "default_string.png"},
+	drawtype = "nodebox",
+	paramtype = "light",
+	paramtype2 = "facedir",
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{-2/16, -3/16, -2/16, 2/16, 4/16, 2/16},
+			{-3/16, -4/16, -3/16, 3/16, -3/16, 3/16},
+			{-3/16, 4/16, -3/16, 3/16, 5/16, 3/16}
+		}
+	},
+	placeable = false,
+	groups = {cracky = 3, snappy = 3},
+	on_place = minetest.rotate_and_place,
+})
+
+minetest.register_node("default:string_strong", {
+	description = "Strong String",
+	tiles = {"default_string_top.png", "default_string_top.png", "default_string_strong.png"},
+	drawtype = "nodebox",
+	paramtype = "light",
+	paramtype2 = "facedir",
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{-2/16, -3/16, -2/16, 2/16, 4/16, 2/16},
+			{-3/16, -4/16, -3/16, 3/16, -3/16, 3/16},
+			{-3/16, 4/16, -3/16, 3/16, 5/16, 3/16}
+		}
+	},
+	placeable = false,
+	groups = {cracky = 3, snappy = 3},
+	on_place = minetest.rotate_and_place,
 })
 
 minetest.register_craftitem("default:stone_item", {
@@ -32,12 +65,6 @@ minetest.register_craftitem("default:diamond", {
 minetest.register_craftitem("default:ruby", {
 	description = "Ruby",
 	inventory_image = "default_ruby.png",
-})
-
-
-minetest.register_craftitem("default:string_strong", {
-	description = "Strong String",
-	inventory_image = "default_string_strong.png",
 })
 
 minetest.register_craftitem("default:stick", {
