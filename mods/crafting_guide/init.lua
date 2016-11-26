@@ -106,13 +106,33 @@ function crafting_guide.get_item_formspec(page, player)
 
 		str = str .. "label[0,4;Furnace :]"
 		str = str .. "item_image_button[0,4.5;1,1;furnace:furnace;furnace:furnace;]"
-		str = str .. "item_image_button[1,4.5;1,1;furnace:pattern_rod;furnace:pattern_rod;]"
-		str = str .. "item_image_button[2,4.5;1,1;default:coalblock_glowing;default:coalblock_glowing;]"
+		str = str .. "item_image_button[1,4.5;1,1;furnace:anvil;furnace:anvil;]"
+		str = str .. "item_image_button[2,4.5;1,1;default:coalblock;default:coalblock;]"
 
 		str = str .. "label[4,4;Workbench :]"
 		str = str .. "item_image_button[4,4.5;1,1;default:workbench;default:workbench;]"
 		str = str .. "item_image_button[5,4.5;1,1;default:workbench_v2;default:workbench_v2;]"
 	elseif page == -2 then
+		str = str .. "label[0,0;Logs :]"
+		str = str .. "item_image_button[0,0.5;1,1;default:log;default:log;]"
+		str = str .. "item_image_button[1,0.5;1,1;default:jungle_tree;default:jungle_tree;]"
+		str = str .. "item_image_button[2,0.5;1,1;default:log_birch;default:log_birch;]"
+		
+		str = str .. "label[0,1.5;Wood :]"
+		str = str .. "item_image_button[0,2;1,1;default:wood;default:wood;]"
+		str = str .. "item_image_button[1,2;1,1;default:jungle_wood;default:jungle_wood;]"
+		str = str .. "item_image_button[2,2;1,1;default:birch_wood;default:birch_wood;]"
+
+		str = str .. "label[0,3;Wooden Planks :]"
+		str = str .. "item_image_button[0,3.5;1,1;default:wooden_planks;default:wooden_planks;]"
+		str = str .. "item_image_button[1,3.5;1,1;default:wooden_planks_2;default:wooden_planks_2;]"
+		
+		str = str .. "item_image_button[2,3.5;1,1;default:wooden_planks_jungle;default:wooden_planks_jungle;]"
+		str = str .. "item_image_button[0,4.5;1,1;default:wooden_planks_2_jungle;default:wooden_planks_2_jungle;]"
+		
+		str = str .. "item_image_button[1,4.5;1,1;default:wooden_planks_birch;default:wooden_planks_birch;]"
+		str = str .. "item_image_button[2,4.5;1,1;default:wooden_planks_2_birch;default:wooden_planks_2_birch;]"
+	elseif page == -3 then
 		local x = 0
 		local y = 0
 		str = str .. "label[0,0;Mobs :]"

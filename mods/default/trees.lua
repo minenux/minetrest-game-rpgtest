@@ -49,14 +49,14 @@ minetest.register_node("default:birch_wood", {
 	sounds = default.sounds.wood(),
 })
 
-minetest.register_node("default:wooden_planks_jungle", {
+minetest.register_node("default:wooden_planks_birch", {
 	description = "Wooden Planks (Birch Wood)",
 	tiles = {"default_wooden_planks_birch.png"},
 	groups = {choppy = 3},
 	sounds = default.sounds.wood(),
 })
 
-minetest.register_node("default:wooden_planks_2_jungle", {
+minetest.register_node("default:wooden_planks_2_birch", {
 	description = "Wooden Planks (Birch Wood)",
 	tiles = {"default_wooden_planks_2_birch.png"},
 	groups = {choppy = 3},
