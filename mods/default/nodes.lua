@@ -130,6 +130,16 @@ minetest.register_node("default:leaves_4", {
 	climbable = true,
 })
 
+minetest.register_node("default:leaves_5", {
+	description = "Leaves",
+	paramtype = "light",
+	drawtype = "allfaces",
+	tiles = {"default_leaves_5.png"},
+	groups = {crumbly = 3, leaves = 1},
+	walkable = false,
+	climbable = true,
+})
+
 minetest.register_node("default:stones_on_floor", {
 	description = "Stones on Floor",
 	tiles = {"default_stones_on_floor.png"},
