@@ -145,7 +145,6 @@ default.player_inventory.register_tab({
 	formspec = default.inv_form
 })
 
-
 default.craft_form = "size[8,7.5;]"
 default.craft_form = default.craft_form..default.gui_colors
 default.craft_form = default.craft_form..default.gui_bg

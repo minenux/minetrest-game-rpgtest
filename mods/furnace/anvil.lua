@@ -32,7 +32,19 @@ minetest.register_node("furnace:anvil", {
 	description = "Anvil",
 	tiles = {"missing.png"},
 	groups = {cracky = 2},
+	paramtype = "light",
 	paramtype2 = "facedir",
+	
+	drawtype = "nodebox",
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{-6/16, -8/16, -5/16, 6/16, -6/16, 5/16},
+			{-5/16, -6/16, -3/16, 5/16, 0, 3/16},
+			{-7/16, -2/16, -4/16, 7/16, 4/16, 4/16}
+		}
+	},
+	
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec",anvil_form)

@@ -146,6 +146,27 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craft({
+	output = "default:birch_wood 2",
+	recipe = {
+		{"default:log_birch"},
+	}
+})
+
+minetest.register_craft({
+	output = "default:wooden_planks_birch",
+	recipe = {
+		{"default:frame", "default:birch_wood"},
+	}
+})
+
+minetest.register_craft({
+	output = "default:wooden_planks_2_birch",
+	recipe = {
+		{"default:frame", "default:birch_wood", "default:birch_wood"},
+	}
+})
+
 --box
 minetest.register_craft({
 	output = "default:box 4",
