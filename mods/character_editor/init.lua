@@ -13,7 +13,7 @@ function character_editor.update_character(player)
 		visual = "mesh",
 		visual_size = {x=1, y=1},
 	})
-	print(table.concat(character_editor.characters[name], "^"))
+	print("[character_editor] skin : " .. table.concat(character_editor.characters[name], "^"))
 end
 
 function character_editor.set_mesh(player, mesh)
@@ -29,7 +29,6 @@ function character_editor.set_texture(player, pos, texture)
 	end
 
 	character_editor.characters[name][pos] = texture
-	print(character_editor.characters[name][pos])
 	character_editor.update_character(player)
 end
 

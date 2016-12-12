@@ -10,24 +10,31 @@ function armor.register_armor(name, def)
 		inventory_image = def.tex .. "_chestplate.png",
 		protection = def.protection,
 		skin = def.skin .. "_chestplate.png",
+		skin_pos = 0,
 	})
+	
 	minetest.register_craftitem("armor:" .. name .. "_boots", {
 		description = def.description .. " Boots",
 		inventory_image = def.tex .. "_boots.png",
 		protection = def.protection,
 		skin = def.skin .. "_boots.png",
+		skin_pos = 3,
 	})
+	
 	minetest.register_craftitem("armor:" .. name .. "_leggings", {
 		description = def.description .. " Leggings",
 		inventory_image = def.tex .. "_leggings.png",
 		protection = def.protection,
 		skin = def.skin .. "_leggings.png",
+		skin_pos = 2,
 	})
+	
 	minetest.register_craftitem("armor:" .. name .. "_helm", {
 		description = def.description .. " Helm",
 		inventory_image = def.tex .. "_helm.png",
 		protection = def.protection,
 		skin = def.skin .. "_helm.png",
+		skin_pos = 1,
 	})
 
 	blueprint.register_blueprint("armor_" .. name .. "_chestplate", {
@@ -62,13 +69,27 @@ end
 function armor.update_armor(name, pl)
 	local a = armor.invs[name]:get_list("main")
 	local p = 100
+	local skin = {}
+	
 	for k,v in pairs(a) do
 		if v:get_definition() and v:get_definition().protection then
 			p = p - v:get_definition().protection
 		end
+		
+		if v:get_definition() and v:get_definition().skin then
+			table.insert(skin, v:get_definition().skin)
+		end
+		
 		armor.data[name][k] = v:to_string() 
-		print(armor.data[name][k])
+		print("[armor] " .. armor.data[name][k])
 	end
+	
+	if #skin == 0 then
+		character_editor.set_texture(pl, 2, nil)
+	else
+		character_editor.set_texture(pl, 2, table.concat(skin, "^"))
+	end
+	
 	pl:set_armor_groups({friendly = p})
 	armor.save_armor()
 end
