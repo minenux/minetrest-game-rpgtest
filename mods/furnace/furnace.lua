@@ -177,6 +177,11 @@ minetest.register_craftitem("furnace:copper_plate", {
 	inventory_image = "furnace_copper_plate.png",
 })
 
+minetest.register_craftitem("furnace:diamond_plate", {
+	description = "Diamond Plate",
+	inventory_image = "furnace_diamond_plate.png",
+})
+
 -- blocks
 
 minetest.register_node("furnace:iron_block", {
@@ -239,6 +244,13 @@ minetest.register_node("furnace:steel_frame", {
 minetest.register_craft({
 	output = "furnace:diamond_rod",
 	recipe = {
-		{"furnace:iron_rod", "default:diamond"},
+		{"furnace:iron_rod", "default:diamond", "default:diamond"},
+	}
+})
+
+minetest.register_craft({
+	output = "furnace:diamond_plate",
+	recipe = {
+		{"furnace:iron_plate", "default:diamond", "default:diamond"},
 	}
 })

@@ -415,15 +415,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "default:shovel",
-	recipe = {
-		{"", "furnace:iron_plate", ""},
-		{"", "default:string_strong", ""},
-		{"", "default:stick", ""},
-	}
-})
-
-minetest.register_craft({
 	output = "default:flint_pick",
 	recipe = {
 		{"default:flint", "default:flint", "default:flint"},
@@ -431,6 +422,8 @@ minetest.register_craft({
 		{"", "default:stick", ""},
 	}
 })
+
+-- pick
 
 minetest.register_craft({
 	output = "default:pick",
@@ -459,6 +452,8 @@ minetest.register_craft({
 	}
 })
 
+-- axe
+
 minetest.register_craft({
 	output = "default:axe",
 	recipe = {
@@ -467,6 +462,55 @@ minetest.register_craft({
 		{"", "default:stick", ""},
 	}
 })
+
+minetest.register_craft({
+	output = "default:axe_copper",
+	recipe = {
+		{"default:blade", "furnace:copper_plate", ""},
+		{"", "default:string_strong", ""},
+		{"", "default:stick", ""},
+	}
+})
+
+minetest.register_craft({
+	output = "default:axe_diamond",
+	recipe = {
+		{"default:blade", "furnace:diamond_plate", ""},
+		{"", "default:string_strong", ""},
+		{"", "default:stick", ""},
+	}
+})
+
+-- shovel
+
+minetest.register_craft({
+	output = "default:shovel",
+	recipe = {
+		{"", "furnace:iron_plate", ""},
+		{"", "default:string_strong", ""},
+		{"", "default:stick", ""},
+	}
+})
+
+minetest.register_craft({
+	output = "default:shovel_copper",
+	recipe = {
+		{"", "furnace:copper_plate", ""},
+		{"", "default:string_strong", ""},
+		{"", "default:stick", ""},
+	}
+})
+
+minetest.register_craft({
+	output = "default:shovel_diamond",
+	recipe = {
+		{"", "furnace:diamond_plate", ""},
+		{"", "default:string_strong", ""},
+		{"", "default:stick", ""},
+	}
+})
+
+-- shears
 
 minetest.register_craft({
 	output = "default:shears",

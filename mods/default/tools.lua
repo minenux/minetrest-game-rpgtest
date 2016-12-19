@@ -67,7 +67,7 @@ minetest.register_tool("default:axe", {
 	tool_capabilities = {
 		max_drop_level=3,
 		groupcaps= {
-			choppy={times={[1]=1.00, [2]=0.40, [3]=0.30}, uses=70, maxlevel=1}
+			choppy={times={[1]=1.00, [2]=0.40, [3]=0.30}, uses=90, maxlevel=1}
 		},
 		damage_groups = {fleshy=2},
 	}
@@ -126,6 +126,42 @@ minetest.register_tool("default:pick_copper", {
 	}
 })
 
+minetest.register_tool("default:axe_copper", {
+	description = "Copper Axe",
+	inventory_image = "default_axe_copper.png",
+	tool_capabilities = {
+		max_drop_level=3,
+		groupcaps= {
+			choppy={times={[1]=0.90, [2]=0.20, [3]=0.10}, uses=150, maxlevel=1}
+		},
+		damage_groups = {fleshy=2},
+	}
+})
+
+minetest.register_tool("default:shovel_copper", {
+	description = "Copper Shovel",
+	inventory_image = "default_shovel_copper.png",
+	tool_capabilities = {
+		max_drop_level=3,
+		groupcaps= {
+			crumbly={times={[1]=0.70, [2]=0.30, [3]=0.10}, uses=100, maxlevel=1}
+		},
+		damage_groups = {fleshy=1},
+	}
+})
+
+minetest.register_tool("default:saw_copper", {
+	description = "Copper Saw",
+	inventory_image = "default_saw_copper.png",
+	tool_capabilities = {
+		max_drop_level=3,
+		groupcaps= {
+			choppy={times={[1]=0.20, [2]=0.20, [3]=0.10}, uses=120, maxlevel=1}
+		},
+		damage_groups = {fleshy=1},
+	}
+})
+
 -- diamond
 
 minetest.register_tool("default:pick_diamond", {
@@ -139,6 +175,42 @@ minetest.register_tool("default:pick_diamond", {
 			choppy={times={[2]=3.50, [3]=1.10}, uses=100, maxlevel=1}
 		},
 		damage_groups = {fleshy=3},
+	}
+})
+
+minetest.register_tool("default:axe_diamond", {
+	description = "Diamond Axe",
+	inventory_image = "default_axe_diamond.png",
+	tool_capabilities = {
+		max_drop_level=3,
+		groupcaps= {
+			choppy={times={[1]=0.30, [2]=0.20, [3]=0.10}, uses=150, maxlevel=1}
+		},
+		damage_groups = {fleshy=2},
+	}
+})
+
+minetest.register_tool("default:shovel_diamond", {
+	description = "Diamond Shovel",
+	inventory_image = "default_shovel_diamond.png",
+	tool_capabilities = {
+		max_drop_level=3,
+		groupcaps= {
+			crumbly={times={[1]=0.30, [2]=0.20, [3]=0.10}, uses=100, maxlevel=1}
+		},
+		damage_groups = {fleshy=1},
+	}
+})
+
+minetest.register_tool("default:saw_diamond", {
+	description = "Diamond Saw",
+	inventory_image = "default_saw_diamond.png",
+	tool_capabilities = {
+		max_drop_level=3,
+		groupcaps= {
+			choppy={times={[1]=0.10, [2]=0.10, [3]=0.10}, uses=120, maxlevel=1}
+		},
+		damage_groups = {fleshy=1},
 	}
 })
 
