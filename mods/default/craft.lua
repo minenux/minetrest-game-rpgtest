@@ -95,6 +95,13 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	output = "default:wood 4",
+	recipe = {
+		{"default:log"},
+	}
+})
+
+minetest.register_craft({
 	output = "default:wooden_planks",
 	recipe = {
 		{"default:frame", "default:wood"},
