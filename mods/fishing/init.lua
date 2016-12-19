@@ -47,6 +47,8 @@ minetest.register_craft({
 	}
 })
 
+-- fish
+
 fishing.register_fish("fishing:fish", {
 	description = "Fish",
 	inventory_image = "fishing_fish.png",
@@ -63,4 +65,17 @@ fishing.register_fish("fishing:fish_2", {
 	description = "Fish",
 	inventory_image = "fishing_fish_2.png",
 	on_use = minetest.item_eat(2),
+})
+
+-- cooked fish
+
+fishing.register_fish("fishing:cooked_fish", {
+	description = "Cooked Fish",
+	inventory_image = "fishing_cooked_fish.png",
+	on_use = minetest.item_eat(6),
+})
+
+furnace.register_recipe({
+	input = "fishing:fish",
+	output = "fishing:cooked_fish",
 })

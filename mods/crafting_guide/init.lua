@@ -50,7 +50,6 @@ function crafting_guide.get_furnace_formspec(recipe,back_button)
 	str = str .. "label[0,0;Furnace:]"
 
 	str = str .. "item_image_button[0,1;1,1;" .. recipe.input .. ";" .. recipe.input .. ";]"
-	str = str .. "item_image_button[1,1;1,1;" .. recipe.pattern .. ";" .. recipe.pattern .. ";]"
 	str = str .. "item_image_button[2,1;1,1;" .. recipe.output .. ";" .. recipe.output .. ";]"
 	
 	return str

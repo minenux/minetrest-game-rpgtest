@@ -30,7 +30,7 @@ local anvil_form = anvil_form.."listring[current_player;main]"
 
 minetest.register_node("furnace:anvil", {
 	description = "Anvil",
-	tiles = {"missing.png"},
+	tiles = {"furnace_anvil_top.png", "furnace_anvil_top.png", "furnace_anvil_front.png", "furnace_anvil_front.png", "furnace_anvil_side.png", "furnace_anvil_side.png"},
 	groups = {cracky = 2},
 	paramtype = "light",
 	paramtype2 = "facedir",
