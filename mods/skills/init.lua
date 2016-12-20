@@ -171,19 +171,19 @@ default.player_inventory.register_tab({
 	name = "Skills",
 	type = "function",
 	get_formspec = function(name) 
-		local text = minetest.formspec_escape("If you level up your skills, you will be able\nto use better tools or weapons.")
-		text = text .. "\n"
-
 		local formspec = "size[8,7.5;]" ..
 			default.gui_colors .. 
 			default.gui_bg ..
-			"label[0,0;Skills:]"..
-			"label[2.5,0;"..text.."]"
+			"label[0,0;Skills:]"
 
 
 		local i = 0
 		for skill_name, skill_level in pairs(skills.lvls[name]) do
 			formspec = formspec .. "button[0,"..tostring(i+0.5)..";2,1;" .. skill_name .. ";" .. skill_name .. " : " .. tostring(skill_level) .. "]"
+			
+			if skills.all_skills[skill_name] then
+				formspec = formspec .. "label[2.5,"..tostring(i+0.75)..";" .. skills.all_skills[skill_name].description .. "]"
+			end
 			i = i +1
 		end
 	
@@ -251,16 +251,30 @@ minetest.register_chatcommand("reset_skills", {
 	end,
 })
 
-skills.register_skill = function(name)
-	skills.all_skills[name] = true
+skills.register_skill = function(name, def)
+	skills.all_skills[name] = def or {description = ""}
 end
 
 
-skills.register_skill("farmer")
-skills.register_skill("warrior")
-skills.register_skill("cook")
-skills.register_skill("miner")
-skills.register_skill("hunter")
+skills.register_skill("farmer", {
+	description = "You will get more xp for farming."
+})
+
+skills.register_skill("warrior", {
+	description = "You will be able to use better weapons."
+})
+
+skills.register_skill("miner", {
+	description = "You will get more xp for mining."
+})
+
+skills.register_skill("hunter", {
+	description = "You will be able to use better weapons."
+})
+
+skills.register_skill("builder", {
+	description = "-"
+})
 
 skills.load_skills()
 
