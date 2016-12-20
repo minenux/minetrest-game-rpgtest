@@ -402,7 +402,7 @@ skills.register_tool("bow", 1, 30, {
 minetest.override_item("default:stone_with_coal", {
 	on_dig = function(pos, node, player)
 		if skills.lvls[player:get_player_name()] then
-			xp.add_xp(player,xp.get_xp(xp.player_levels[player:get_player_name()], 50)*(skills.lvls[player:get_player_name()]["miner"]-1))
+			xp.add_xp(player, (skills.lvls[player:get_player_name()]["miner"]-1))
 		end
 		minetest.node_dig(pos, node, player)
 	end,

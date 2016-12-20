@@ -82,12 +82,14 @@ minetest.register_abm({
 			end
 		end
 		
-		for i,recipe in ipairs(furnace.recipes) do
-			if inv:contains_item("main", {name = recipe.input})  then
-				inv:add_item("output", {name = recipe.output})	-- add output to inventory
-				inv:remove_item("main", {name = recipe.input})	-- remove input
-				meta:set_int("fuel", fuel-1)	-- decrease fuel level
-				break
+		if fuel > 0 then
+			for i,recipe in ipairs(furnace.recipes) do
+				if inv:contains_item("main", {name = recipe.input})  then
+					inv:add_item("output", {name = recipe.output})	-- add output to inventory
+					inv:remove_item("main", {name = recipe.input})	-- remove input
+					fuel = fuel - 1
+					break
+				end
 			end
 		end
 		

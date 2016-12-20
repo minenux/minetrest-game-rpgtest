@@ -116,7 +116,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "default:frame 2",
+	output = "default:frame 6",
 	recipe = {
 		{"default:stick", "default:stick", "default:stick"},
 		{"default:stick", "default:stick", "default:stick"},

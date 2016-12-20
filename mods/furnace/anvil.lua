@@ -115,3 +115,12 @@ furnace.anvil.register_material("gold", {
 		rod = "furnace:gold_rod"
 	}
 })
+
+minetest.register_craft({
+	output = "furnace:anvil",
+	recipe = {
+		{"default:stonebrick", "default:stonebrick", "default:stonebrick"},
+		{"", "default:stonebrick", ""},
+		{"default:stonebrick", "default:stonebrick", "default:stonebrick"},
+	}
+})
