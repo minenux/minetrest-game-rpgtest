@@ -214,7 +214,7 @@ minetest.register_decoration({
 	deco_type = "schematic",
 	place_on = {"default:grass"},
 	sidelen = 16,
-	fill_ratio = 0.02,
+	fill_ratio = 0.01,
 	biomes = {"forest"},
 	y_min = 1,
 	y_max = 31000,
@@ -226,7 +226,7 @@ minetest.register_decoration({
 	deco_type = "schematic",
 	place_on = {"default:grass"},
 	sidelen = 16,
-	fill_ratio = 0.005,
+	fill_ratio = 0.004,
 	biomes = {"forest"},
 	y_min = 1,
 	y_max = 31000,
@@ -245,6 +245,19 @@ minetest.register_decoration({
 	schematic = minetest.get_modpath("default").."/schematics/tree3.mts",
 	flags = "place_center_x, place_center_z",
 })
+
+minetest.register_decoration({
+	deco_type = "schematic",
+	place_on = {"default:grass"},
+	sidelen = 16,
+	fill_ratio = 0.005,
+	biomes = {"forest"},
+	y_min = 1,
+	y_max = 31000,
+	schematic = minetest.get_modpath("default").."/schematics/birchtree1.mts",
+	flags = "place_center_x, place_center_z",
+})
+
 
 minetest.register_decoration({
 	deco_type = "schematic",
