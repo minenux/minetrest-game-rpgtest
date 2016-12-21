@@ -379,9 +379,9 @@ minetest.register_on_newplayer(function(player)
 		q2.xp = 15
 		q3.reward = "default:pick"
 		q3.xp = 30
-		q4.reward = "default:torch 99"
+		q4.reward = "torch:torch 99"
 		q4.xp = 40
-		q5.reward = "default:torch 99"
+		q5.reward = "torch:torch 99"
 		q5.xp = xp.get_xp(5, 1)
 
 		quest.xp = 0
