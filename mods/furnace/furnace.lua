@@ -142,6 +142,11 @@ furnace.register_recipe({
 	output = "default:glass",
 })
 
+furnace.register_recipe({
+	input = "default:cobble",
+	output = "default:stone",
+})
+
 -- items
 
 minetest.register_craftitem("furnace:iron_rod", {

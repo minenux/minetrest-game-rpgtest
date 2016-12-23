@@ -91,28 +91,45 @@ function doors.register_door(name, def)
 			end
 		end,
 	})
+	
+	minetest.register_craft({
+		output = name .. " 8",
+		recipe = {
+			{def.material, def.material},
+			{def.material, def.material},
+			{def.material, def.material}
+		}
+	})
 end
 
 doors.register_door("doors:wood", {
 	description = "Wooden Door",
 	tiles = {"default_wooden_planks.png"},
 	groups = {choppy = 3},
+	
+	material = "default:wooden_planks"
 })
 
 doors.register_door("doors:jungle_wood", {
 	description = "Jungle Wood Door",
 	tiles = {"default_wooden_planks_jungle.png"},
 	groups = {choppy = 3},
+	
+	material = "default:wooden_planks_jungle"
 })
 
 doors.register_door("doors:glass", {
 	description = "Glass Door",
 	tiles = {"default_glass.png"},
 	groups = {snappy = 3},
+	
+	material = "default:glass"
 })
 
 doors.register_door("doors:stonebrick", {
 	description = "Stonebrick Door",
 	tiles = {"default_stonebrick.png"},
 	groups = {cracky = 3},
+	
+	material = "default:stonebrick"
 })

@@ -12,3 +12,17 @@ minetest.register_decoration({
 	flags = "place_center_x, place_center_z",
 	rotation = "random",
 })
+
+minetest.register_decoration({
+	deco_type = "schematic",
+	place_on = {"default:dry_grass"},
+	fill_ratio = 0.0005,
+	biomes = {
+		"savanna"
+	},
+	y_min = 6,
+	y_max = 20,
+	schematic = minetest.get_modpath("village").."/schematics/house2.mts",
+	flags = "place_center_x, place_center_z",
+	rotation = "random",
+})

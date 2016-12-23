@@ -20,20 +20,29 @@ function crafting_guide.get_formspec(crafts,back_button)
 	local x = 1
 	local y = 1
 	local j = 1
-	for i=1,9 do
+	
+	local w = crafts[1].width
+	if w == 0 or w == nil then
+		w = 3
+	end
+	
+	local h = 3
+	
+	for i=1,w*h do
 		if (string.find((crafts[1].items[j] or ""),"group:") or 0) == 1 then
-			if crafts[1].items[j] then
+			if crafts[1].items[j] and crafts[1].items[j] ~= "" then
 				str = str .. ("button["..(x-1)..","..(y-1)..";1,1;group_"..i..";"..string.sub(crafts[1].items[j], 7).."]")
 			else
-				str = str .. ("button["..(x-1)..","..(y-1)..";1,1;;]")
+				--str = str .. ("button["..(x-1)..","..(y-1)..";1,1;;]")
 			end
-		else
+		elseif crafts[1].items[j] and crafts[1].items[j] ~= "" then
 			str = str .. ("item_image_button["..(x-1)..","..(y-1)..";1,1;"..(crafts[1].items[j] or "")..";"..(crafts[1].items[j] or "")..";]")
 		end
 		j = j + 1
 
 		x = x+1
-		if x > 3 then
+		
+		if x > w then
 			x = 1
 			y = y+1
 		end
