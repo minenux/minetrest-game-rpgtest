@@ -35,6 +35,7 @@ function farming.register_plant(name, steps, def)
 			end,
 		})
 	end
+	
 	minetest.register_craftitem(def.drop, {
 		description = def.drop_description,
 		inventory_image = def.drop_texture,
@@ -53,9 +54,19 @@ end
 farming.register_plant("wheat", 5, {
 	description = "Wheat",
 	texture = "farming_wheat",
+	
 	drop = "farming:wheat_seeds",
 	drop_description = "Wheat Seeds",
 	drop_texture = "farming_wheat_seeds.png",
+})
+
+farming.register_plant("carrot", 3, {
+	description = "Carrot",
+	texture = "farming_carrot",
+	
+	drop = "farming:carrot",
+	drop_description = "Carrot",
+	drop_texture = "farming_carrot.png",
 })
 
 minetest.override_item("default:plant_grass", {drop = {

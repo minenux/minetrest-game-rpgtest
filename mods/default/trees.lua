@@ -3,7 +3,7 @@
 minetest.register_node("default:wood", {
 	description = "Wood",
 	tiles = {"default_wood.png"},
-	groups = {choppy = 3},
+	groups = {choppy = 3, oddly_breakable_by_hand=1},
 	sounds = default.sounds.wood(),
 })
 
