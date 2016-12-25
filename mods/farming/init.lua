@@ -69,6 +69,19 @@ farming.register_plant("carrot", 3, {
 	drop_texture = "farming_carrot.png",
 })
 
+minetest.register_decoration({
+	deco_type = "simple",
+	place_on = {"default:grass"},
+	sidelen = 16,
+	fill_ratio = 0.005,
+	biomes = {
+		"grassland", "forest"
+	},
+	y_min = 0,
+	y_max = 31000,
+	decoration = "farming:carrot_3",
+})
+
 minetest.override_item("default:plant_grass", {drop = {
 	max_items = 1,
 	items = {

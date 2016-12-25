@@ -172,10 +172,13 @@ minetest.register_abm({
 		minetest.set_node(pos, {name = "air"})
 		if math.random(2) == 1 then
 			local path = minetest.get_modpath("default") .. "/schematics/tree2.mts"
-			minetest.place_schematic({x = pos.x - 1, y = pos.y - 0, z = pos.z - 1}, path, 0, nil, false)
-		else
+			minetest.place_schematic({x = pos.x - 1, y = pos.y - 1, z = pos.z - 1}, path, 0, nil, false)
+		elseif math.random(2) == 1 then
 			local path = minetest.get_modpath("default") .. "/schematics/tree1.mts"
-			minetest.place_schematic({x = pos.x - 2, y = pos.y - 0, z = pos.z - 2}, path, 0, nil, false)
+			minetest.place_schematic({x = pos.x - 2, y = pos.y - 1, z = pos.z - 2}, path, 0, nil, false)
+		else
+			local path = minetest.get_modpath("default") .. "/schematics/tree3.mts"
+			minetest.place_schematic({x = pos.x - 2, y = pos.y - 1, z = pos.z - 2}, path, 0, nil, false)
 		end
 	end,
 })
