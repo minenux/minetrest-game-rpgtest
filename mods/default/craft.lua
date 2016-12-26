@@ -316,6 +316,13 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	output = "default:workbench",
+	recipe = {
+		{"default:birch_wood", "default:birch_wood", "default:birch_wood"},
+	}
+})
+
+minetest.register_craft({
 	output = "default:workbench_v2",
 	recipe = {
 		{"default:stone_tile", "default:stone_tile", "default:stone_tile"},

@@ -32,38 +32,38 @@ function character_editor.set_texture(player, pos, texture)
 	character_editor.update_character(player)
 end
 
-default.player_inventory.register_tab({
-	name = "Settings",
-	type = "normal",
-	formspec = "size[8,7.5;]" ..
-			default.gui_colors .. 
-			default.gui_bg .. 
-			"label[0,0;Language:]" ..
-			"button[0,0.5;1,1;lang_EN;EN]" .. 
-			"button[1,0.5;1,1;lang_DE;DE]" .. 
-			"button[2,0.5;1,1;lang_FR;FR]" .. 
-			"button[3,0.5;1,1;lang_ID;ID]" .. 
-			"button[4,0.5;1,1;lang_TR;TR]",
-	on_event = function(player, fields)
-		local name = player:get_player_name()
-		if fields["lang_EN"] then
-			print("EN")
-			character_editor.language[name] = ""
-		elseif fields["lang_DE"] then
-			print("DE")
-			character_editor.language[name] = "de/"
-		elseif fields["lang_FR"] then
-			print("FR")
-			character_editor.language[name] = "fr/"
-		elseif fields["lang_ID"] then
-			print("ID")
-			character_editor.language[name] = "id/"
-		elseif fields["lang_TR"] then
-			print("TR")
-			character_editor.language[name] = "tr/"
-		end
-	end
-})
+--default.player_inventory.register_tab({
+--	name = "Settings",
+--	type = "normal",
+--	formspec = "size[8,7.5;]" ..
+--			default.gui_colors .. 
+--			default.gui_bg .. 
+--			"label[0,0;Language:]" ..
+--			"button[0,0.5;1,1;lang_EN;EN]" .. 
+--			"button[1,0.5;1,1;lang_DE;DE]" .. 
+--			"button[2,0.5;1,1;lang_FR;FR]" .. 
+--			"button[3,0.5;1,1;lang_ID;ID]" .. 
+--			"button[4,0.5;1,1;lang_TR;TR]",
+--	on_event = function(player, fields)
+--		local name = player:get_player_name()
+--		if fields["lang_EN"] then
+--			print("EN")
+--			character_editor.language[name] = ""
+--		elseif fields["lang_DE"] then
+--			print("DE")
+--			character_editor.language[name] = "de/"
+--		elseif fields["lang_FR"] then
+--			print("FR")
+--			character_editor.language[name] = "fr/"
+--		elseif fields["lang_ID"] then
+--			print("ID")
+--			character_editor.language[name] = "id/"
+--		elseif fields["lang_TR"] then
+--			print("TR")
+--			character_editor.language[name] = "tr/"
+--		end
+--	end
+--})
 
 minetest.register_chatcommand("shirt", {
 	params = "<name>",
