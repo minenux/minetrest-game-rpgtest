@@ -304,6 +304,13 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "default:workbench",
 	recipe = {
+		{"default:wood_tutorial", "default:wood_tutorial", "default:wood_tutorial"},
+	}
+})
+
+minetest.register_craft({
+	output = "default:workbench",
+	recipe = {
 		{"default:wood", "default:wood", "default:wood"},
 	}
 })

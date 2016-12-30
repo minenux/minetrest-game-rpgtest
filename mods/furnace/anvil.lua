@@ -67,12 +67,18 @@ minetest.register_node("furnace:anvil", {
 			
 			for name, def in pairs(furnace.anvil.materials) do
 				if item == def.items.rod or
-				   item == def.items.plate or
-				   item == (def.items.blade or "none") then
+				   item == def.items.plates or
+				   item == (def.items.blade or "none") or
+				   item == (def.items.other or "none") then
+
 					table.insert(items, def.items.rod .. " " .. tostring(count))
 					table.insert(items, def.items.plate .. " " .. tostring(count))
 					if def.items.blade then
 						table.insert(items, def.items.blade .. " " .. tostring(count))
+					end
+					
+					if def.items.other then
+						table.insert(items, def.items.other .. " " .. tostring(count))
 					end
 				end
 			end
@@ -84,10 +90,43 @@ minetest.register_node("furnace:anvil", {
 	on_metadata_inventory_take = function(pos, listname, index, stack, player)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
+		local count = stack:get_count()
 		
 		if listname == "output" then
-			inv:set_list("main", {})
+			local c = inv:get_list("main")[1]:get_count() - count
+			local my_item = inv:get_list("main")[1]
+			my_item:set_count(c)
+			inv:set_list("main", {my_item})
 			inv:set_list("output", {})
+			
+			if c > 0 then
+				print(c)
+				
+				local item = inv:get_list("main")[1]:get_name()
+				local items = {}
+				for name, def in pairs(furnace.anvil.materials) do
+					if item == def.items.rod or
+					   item == def.items.plates or
+					   item == (def.items.blade or "none") or
+					   item == (def.items.other or "none") then
+
+						table.insert(items, def.items.rod .. " " .. tostring(c))
+						table.insert(items, def.items.plate .. " " .. tostring(c))
+						if def.items.blade then
+							table.insert(items, def.items.blade .. " " .. tostring(c))
+						end
+					
+						if def.items.other then
+							table.insert(items, def.items.other .. " " .. tostring(c))
+						end
+					end
+				end
+				
+				inv:set_list("output", items)
+			else
+				inv:set_list("main", {})
+			end
+			
 		elseif listname == "main" then
 			inv:set_list("output", {})
 		end
@@ -98,7 +137,8 @@ furnace.anvil.register_material("iron", {
 	items = {
 		plate = "furnace:iron_plate",
 		rod = "furnace:iron_rod",
-		blade = "default:blade"
+		blade = "default:blade",
+		other = "stairs:chisel"
 	}
 })
 

@@ -346,7 +346,7 @@ minetest.register_on_newplayer(function(player)
 		local q9 = quests.add_dig_goal(quest, "Mine Iron", {"default:stone_with_iron"}, 2, "Your Flint Pick is strong enough to mine Iron.", "Great! You should be on level 2 now.\nEvery time you level up you can upgrade on of your skills.\nTry out /skill warrior or /skill miner\n")
 		
 
-		q3.reward = "default:wood 3"
+		q3.reward = "default:wood_tutorial 3"
 		q4.reward = "crafting_guide:book"
 
 		q2.requires = q1

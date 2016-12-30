@@ -119,8 +119,8 @@ minetest.register_tool("default:pick_copper", {
 		max_drop_level=3,
 		groupcaps= {
 			cracky={times={[1]=1.00, [2]=0.30, [3]=0.20}, uses=150, maxlevel=1},
-			hard={times={[2]=2.30, [3]=1.50}, uses=50, maxlevel=100},
-			choppy={times={[2]=3.50, [3]=1.10}, uses=50, maxlevel=50}
+			hard={times={[2]=2.5, [3]=1.50}, uses=50, maxlevel=1},
+			choppy={times={[2]=3.50, [3]=1.10}, uses=50, maxlevel=1}
 		},
 		damage_groups = {fleshy=3},
 	}
