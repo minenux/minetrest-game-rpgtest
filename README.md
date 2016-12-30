@@ -24,7 +24,7 @@ To run rpgtest you need to download the minetest engine from http://www.minetest
 * Wuzzy (@Wuzzy2 - central_message mod)
 * rubenwardy (dialogue mod + many other things)
 
-
+#####Removed features
 * celeron55 + minetest community (creative mod)
 * mahmutelmas06 (Turkish translation)
 * farfadet46 (French translation)
