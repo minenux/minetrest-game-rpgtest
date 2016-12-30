@@ -1,29 +1,30 @@
-#RPGtest
-RPGtest is an open source sandbox survival mmorpg in minetest.
-It is a mixture out of survival, crafting, fighting, exploring and building.
-There are different classes (warrior, engineer, farmer...) and many tools/weapons. Every class has own weapons + tools. There are also some rare and legendary items/weapons.
-There will be a story and many quests.
+#rpgtest
+"rpgtest" is an open source sandbox survival rpg for the minetest game engine.
 
 ##License
-Take a look at the mods!
-
+Take a look at the mods! You can find them in the folder called "mods".
 ##Installation
+To run rpgtest you need to download the minetest engine from http://www.minetest.net/
+
 1. go to the games folder in your minetest folder
 2. open the terminal from there
 3. run git clone https://github.com/cdqwertz/rpgtest.git rpgtest
 
-##URLs
-GitHub : https://github.com/cdqwertz/rpgtest
+##Websites
+* GitHub : https://github.com/cdqwertz/rpgtest
+* Forum : https://forum.minetest.net/viewtopic.php?f=50&t=13761
 
-Website : http://cdqwertz.github.io/
-
-Minetest : http://www.minetest.net/
+* My Website : http://cdqwertz.github.io/
+* Minetest : http://www.minetest.net/
 
 ##Thanks to
-* farfadet46 (dog/wolf model + French translation)
+* farfadet46 (dog/wolf model)
 * ExcaliburZero (cleaning up my code)
-* mahmutelmas06 (Turkish translation)
 * srifqi (Indonesian translation)
 * Wuzzy (@Wuzzy2 - central_message mod)
+* rubenwardy (dialogue mod + many other things)
+
+
 * celeron55 + minetest community (creative mod)
-* rubenwardy (fix mobs crash on no XP found + cleanups of classes and story)
+* mahmutelmas06 (Turkish translation)
+* farfadet46 (French translation)
