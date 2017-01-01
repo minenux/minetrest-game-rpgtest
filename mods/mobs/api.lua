@@ -16,9 +16,9 @@ function mobs.update_components(components, self, def)
 	for i,v in ipairs(components) do
 		if v.name and mobs.components[v.name] then
 			local output = mobs.components[v.name].action(self, v, def)
-			print("[mobs] call : " .. v.name .. " -> " .. output)
+			-- print("[mobs] call : " .. v.name .. " -> " .. output)
 			if output == 0 and v.failure then
-				print("[mobs] FAILURE")
+				-- print("[mobs] FAILURE")
 				mobs.update_components(v.failure, self, def)
 			elseif output == 1 and v.success then
 				mobs.update_components(v.success, self, def)
@@ -97,7 +97,7 @@ function mobs.register_mob(name, def)
 		on_step = function(self, dtime)
 			self.time = self.time + dtime
 			if self.time > 1 then
-				print("[mobs] -----------------")
+				-- print("[mobs] -----------------")
 				mobs.update_components(def.behaviour, self, def)
 				self.time = 0
 			end
@@ -158,7 +158,7 @@ minetest.register_globalstep(function(dtime)
 	if timer >= 10 then
 		print("[mobs] mob count = " .. tostring(mobs.count))
 		if mobs.count > (#minetest.get_connected_players())*2 then
-			print("[mobs] canceled spawning")
+			-- print("[mobs] canceled spawning")
 			timer = 0	
 			return
 		end

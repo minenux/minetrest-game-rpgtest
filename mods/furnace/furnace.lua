@@ -105,17 +105,12 @@ minetest.register_abm({
 
 furnace.register_fuel({
 	item = "default:coalblock",
-	fuel = 100
+	fuel = 20
 })
 
 furnace.register_fuel({
 	item = "default:coal_lump",
-	fuel = 10
-})
-
-furnace.register_fuel({
-	item = "default:coal_dust",
-	fuel = 1
+	fuel = 2
 })
 
 

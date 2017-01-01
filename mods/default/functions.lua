@@ -94,13 +94,13 @@ end
 function default.sounds.stone(t)
 	t = t or {}
 	t.dig = table.dug or
-			{name = "default_stone_2", gain = 0.08}
+			{name = "default_stone_2", gain = 0.03}
 	t.dug = table.dug or
-			{name = "default_stone_2", gain = 0.2}
+			{name = "default_stone_2", gain = 0.08}
 	t.place = table.place or
 			{name = "default_stone_1", gain = 0.5}
 	t.footstep = t.footstep or
-			{name = "default_stone_2", gain = 0.2}
+			{name = "default_stone_2", gain = 0.05}
 	return t
 end
 

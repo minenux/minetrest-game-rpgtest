@@ -24,8 +24,13 @@ minetest.register_craftitem("blueprint:empty", {
 	description = "Empty Blueprint",
 	inventory_image = "blueprint_empty.png",
 	on_place = function(itemstack, placer, pointed_thing)
-		placer:get_inventory():add_item("main", blueprint.all[math.random(#blueprint.all)])
-		itemstack:take_item()
+		local item = blueprint.all[math.random(#blueprint.all)]
+		if placer:get_inventory():room_for_item("main", item) then
+			placer:get_inventory():add_item("main", item)
+			itemstack:take_item()
+		else
+			cmsg.push_message_player(placer, "[info] You don't have any free space in your inventory.")	
+		end
 		return itemstack
 	end
 })

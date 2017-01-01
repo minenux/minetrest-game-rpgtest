@@ -75,8 +75,13 @@ minetest.register_craftitem("skills:ability_book", {
 	inventory_image = "skills_abilities_book.png",
 	on_use = function(itemstack, user, pointed_thing)
 		if user == nil then return end
-		user:get_inventory():add_item("main", skills.abilities.all[math.random(#skills.abilities.all)])
-		itemstack:take_item()
+		local item = skills.abilities.all[math.random(#skills.abilities.all)]
+		if user:get_inventory():room_for_item("main", item) then
+			user:get_inventory():add_item("main", item)
+			itemstack:take_item()
+		else
+			cmsg.push_message_player(user, "[info] You don't have any free space in your inventory.")	
+		end
 		return itemstack
 	end
 })

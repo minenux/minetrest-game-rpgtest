@@ -171,10 +171,16 @@ default.player_inventory.register_tab({
 	name = "Skills",
 	type = "function",
 	get_formspec = function(name) 
+		local count = 0
+		for s,l in pairs(skills.lvls[name]) do
+			count = count + (l-1)
+		end
+	
 		local formspec = "size[8,7.5;]" ..
 			default.gui_colors .. 
 			default.gui_bg ..
-			"label[0,0;Skills:]"
+			"label[0,0;Skills:]" ..
+			"label[7,0;" .. tostring(xp.player_levels[name] - count) .. "]"
 
 
 		local i = 0

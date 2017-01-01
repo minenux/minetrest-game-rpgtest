@@ -266,6 +266,15 @@ function quests.get_formspec(name)
 	return s
 end
 
+default.player_inventory.register_tab({
+	name = "Quests",
+	type = "function",
+	get_formspec = function(name) 
+		local formspec = quests.get_formspec(name)
+		return formspec
+	end
+})
+
 minetest.register_chatcommand("quests", {
 	params = "",
 	description = "Shows your quests",
