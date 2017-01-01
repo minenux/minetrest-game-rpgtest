@@ -352,7 +352,7 @@ minetest.register_on_newplayer(function(player)
 		local q6 = quests.add_dig_goal(quest, "Harvest Logs", {"default:log","default:log_1","default:log_2","default:log_3", "default:jungle_tree"}, 20, "You can use the Stone Axe to harvest logs.")
 		local q7 = quests.add_dig_goal(quest, "Mine Stone", {"default:stone"}, 20, "You can also mine Stone with your Stone Axe.")
 		local q8 = quests.add_craft_goal(quest, "Craft a Flint Pick", {"default:flint_pick"}, 1, "Craft a Flint Pick!", "You can use the flint pick to dig harder blocks.")
-		local q9 = quests.add_dig_goal(quest, "Mine Iron", {"default:stone_with_iron"}, 2, "Your Flint Pick is strong enough to mine Iron.", "Great! You should be on level 2 now.\nEvery time you level up you can upgrade on of your skills.\nTry out /skill warrior or /skill miner\n")
+		local q9 = quests.add_dig_goal(quest, "Mine Iron", {"default:stone_with_iron"}, 2, "Your Flint Pick is strong enough to mine Iron.", "Great! It is time to upgrade your skills now!\nGoto the skills tab in your inventory\nand level up a skill!")
 		
 
 		q3.reward = "default:wood_tutorial 3"

@@ -8,6 +8,14 @@ function default.player_inventory.register_tab(def)
 	table.insert(default.player_inventory.tabs, def)
 end
 
+function default.player_inventory.get_tab(name)
+	for i,v in ipairs(default.player_inventory.tabs) do
+		if v.name == name then
+			return v
+		end
+	end
+end
+
 function default.player_inventory.get_formspec(tab, name)
 	if not(default.player_inventory.tabs[tab]) then
 		return ""
@@ -139,6 +147,7 @@ default.inv_form = default.inv_form.."list[current_player;craftpreview;5.5,1;1,1
 default.inv_form = default.inv_form..default.itemslot_bg(5.5,1,1,1)
 default.inv_form = default.inv_form.."listring[current_player;craft]"
 default.inv_form = default.inv_form.."listring[current_player;main]"
+default.inv_form = default.inv_form.."button[0,2.5;1,1;crafting_guide;?]"
 
 default.player_inventory.register_tab({
 	name = "Crafting",

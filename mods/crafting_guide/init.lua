@@ -256,3 +256,11 @@ minetest.register_craftitem("crafting_guide:book", {
 		minetest.show_formspec(user:get_player_name(), "crafting_guide:book_items", crafting_guide.get_item_formspec(0, user))
 	end
 })
+
+
+default.player_inventory.get_tab("Crafting").on_event = function(player, fields)
+	if fields.crafting_guide then
+		crafting_guide.pages[player:get_player_name()] = 0
+		minetest.show_formspec(player:get_player_name(), "crafting_guide:book_items", crafting_guide.get_item_formspec(0, player))
+	end
+end
