@@ -34,7 +34,7 @@ legendary_items.register_rare_weapon = function(name, level, def)
 
 	table.insert(def.materials, "default:ruby")
 	blueprint.register_blueprint(name, {
-		description = def.description .. "\n Level: ".. tostring(level).. "\n Damage: " .. tostring(def.damage+skills.get_dmg(level)) .. "\n Rare Item",
+		description = def.description .. "\n Level: ".. tostring(level).. "\n Damage: " .. tostring(def.damage) .. "\n Rare Item",
 		materials = def.materials,
 		out = "legendary_items:"..name,
 		color = "yellow"

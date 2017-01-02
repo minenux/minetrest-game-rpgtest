@@ -181,7 +181,7 @@ armor.register_armor("copper", {
 	protection = 15,
 	skin = "armor_skin_copper",
 
-	material = "furnace:iron_plate",
+	material = "furnace:copper_plate",
 })
 
 armor.register_armor("diamond", {

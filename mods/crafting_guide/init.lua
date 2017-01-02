@@ -77,7 +77,9 @@ function crafting_guide.get_item_formspec(page, player)
 		local items = {}
 		for name,def in pairs(minetest.registered_items) do
 			if not(def.groups.not_in_creative_inventory) then
-				table.insert(items,name)
+				if name ~= "" then
+					table.insert(items,name)
+				end
 			end
 		end
 

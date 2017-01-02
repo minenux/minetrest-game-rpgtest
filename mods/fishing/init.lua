@@ -79,3 +79,13 @@ furnace.register_recipe({
 	input = "fishing:fish",
 	output = "fishing:cooked_fish",
 })
+
+furnace.register_recipe({
+	input = "fishing:fish_1",
+	output = "fishing:cooked_fish",
+})
+
+furnace.register_recipe({
+	input = "fishing:fish_2",
+	output = "fishing:cooked_fish",
+})
