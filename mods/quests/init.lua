@@ -35,7 +35,7 @@ end
 function quests.show_text(text, player)
 	local parts = text:split("\n")
 	for i,txt in ipairs(parts) do
-		minetest.after(2.9*i, function (txt, player)
+		minetest.after(2.9*(i-1), function (txt, player)
 			if not(minetest.get_player_by_name(player)) then return end
 			cmsg.push_message_player(minetest.get_player_by_name(player), txt)
 		end, txt, player)
@@ -59,6 +59,16 @@ function quests.add_quest(player, quest)
 	end
 
 	return #quests.player_quests[player]
+end
+
+function quests.has_quest(name, title)
+	for i,def in ipairs(quests.player_quests[name]) do
+		if def.title == title then
+			return true
+		end
+	end
+	
+	return false
 end
 
 function quests.finish_quest(player, quest)
