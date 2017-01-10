@@ -38,12 +38,31 @@ function npcs.register_npc(name, def)
 			
 			
 			for i, q in ipairs(my_quests) do
-				print(q.title)
 				if not(quests.has_quest(player:get_player_name(), q.title)) then
 					d:add_option(q.title, function(name)
 						quests.add_quest(name, q)
 					end)
 				end
+			end
+			
+			d:show(player:get_player_name())
+		end
+	elseif def.npc_type == "shop" then
+		def.on_rightclick = function(pos, node, player, itemstack, pt)
+			local d = dialogue.new(def.npc_text)
+			
+			
+			for i, item in ipairs(def.npc_items) do
+				d:add_option(item.text, function(name)
+					if player then
+						local inv = player:get_inventory()
+						
+						if inv:contains_item("main", item.input) and inv:room_for_item("main", item.output) then
+							inv:remove_item("main", item.input)
+							inv:add_item("main", item.output)	
+						end
+					end
+				end)
 			end
 			
 			d:show(player:get_player_name())
@@ -55,7 +74,7 @@ end
 
 --TEST
 npcs.register_npc("npcs:farmer", {
-	npc_type = "quests",
+	npc_type = "shop",
 	npc_text = "Hi!",
 	npc_quest_title = "Test",
 	npc_get_quest = function(pos, player)
@@ -80,4 +99,11 @@ npcs.register_npc("npcs:farmer", {
 		
 		return my_quests
 	end,
+	npc_items = {
+		{
+			input = "default:stone_item",
+			output = "default:pick",
+			text = "Stone -> Pick",
+		}
+	},
 })
