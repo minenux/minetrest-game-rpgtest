@@ -52,7 +52,7 @@ minetest.register_chatcommand("add_place", {
 	end,
 })
 
-minetest.register_chatcommand("goto_place", {
+minetest.register_chatcommand("goto", {
 	params = "<name>",
 	description = "Goto a place",
 	privs = {},
@@ -67,6 +67,24 @@ minetest.register_chatcommand("goto_place", {
 		player:setpos(places.pos[text])
 
 		return true, "Teleported to " .. text
+	end,
+})
+
+minetest.register_chatcommand("list_places", {
+	params = "",
+	description = "Shows a list of all places",
+	privs = {server=true},
+	func = function(name, text)
+		if not(places.pos) then 
+			return false, "Error"
+		end	
+		
+		local my_places = {}
+		for name, pos in pairs(places.pos) do
+			table.insert(my_places, name)
+		end
+		
+		return true, table.concat(my_places, ", ")
 	end,
 })
 

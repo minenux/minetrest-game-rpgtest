@@ -51,7 +51,7 @@ minetest.register_node("default:grass_flowers", {
 minetest.register_node("default:grass", {
 	description = "Grass",
 	tiles = {"default_grass.png"},
-	groups = {crumbly = 3},
+	groups = {crumbly = 3, grass = 1},
 	sounds = default.sounds.dirt(),
 	drop = {
 		max_items = 1,
@@ -319,7 +319,7 @@ minetest.register_node("default:plant_grass", {
 	inventory_image = "default_plant_grass.png",
 	buildable_to = true,
 	walkable = false,
-	groups = {crumbly = 3, plant = 1},
+	groups = {crumbly = 3, plant = 1, grass = 1},
 	selection_box = {
 		type = "fixed",
 		fixed = {-0.5, -0.5, -0.5, 0.5, -0.4, 0.5},
@@ -334,7 +334,7 @@ minetest.register_node("default:plant_grass_2", {
 	inventory_image = "default_plant_grass_2.png",
 	buildable_to = true,
 	walkable = false,
-	groups = {crumbly = 3, plant = 1},
+	groups = {crumbly = 3, plant = 1, grass = 1},
 	drop = "default:plant_grass",
 	selection_box = {
 		type = "fixed",
@@ -350,7 +350,7 @@ minetest.register_node("default:plant_grass_3", {
 	inventory_image = "default_plant_grass_3.png",
 	buildable_to = true,
 	walkable = false,
-	groups = {crumbly = 3, plant = 1},
+	groups = {crumbly = 3, plant = 1, grass = 1},
 	drop = "default:plant_grass",
 	selection_box = {
 		type = "fixed",
@@ -366,7 +366,7 @@ minetest.register_node("default:plant_grass_4", {
 	inventory_image = "default_plant_grass_4.png",
 	buildable_to = true,
 	walkable = false,
-	groups = {crumbly = 3, plant = 1},
+	groups = {crumbly = 3, plant = 1, grass = 1},
 	drop = "default:plant_grass",
 	selection_box = {
 		type = "fixed",
@@ -406,12 +406,27 @@ minetest.register_node("default:flower_1", {
 })
 
 minetest.register_node("default:flower_2", {
-	description = "Flower (glowing)",
+	description = "Yellow Flower",
 	tiles = {"default_flower_2.png"},
 	drawtype = "plantlike",
 	paramtype = "light",
 	inventory_image = "default_flower_2.png",
 	light_source = 10,
+	buildable_to = true,
+	walkable = false,
+	groups = {crumbly = 3, plant = 1},
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.5, -0.5, -0.5, 0.5, -0.4, 0.5},
+	},
+})
+
+minetest.register_node("default:flower_3", {
+	description = "Red Flower",
+	tiles = {"default_flower_3.png"},
+	drawtype = "plantlike",
+	paramtype = "light",
+	inventory_image = "default_flower_3.png",
 	buildable_to = true,
 	walkable = false,
 	groups = {crumbly = 3, plant = 1},
@@ -500,12 +515,19 @@ minetest.register_node("default:glass", {
 })
 
 -- wool
-
 default.register_wool = function(color)
 	minetest.register_node("default:wool_"..color, {
 		description = color.." Wool",
 		tiles = {"default_wool.png^[colorize:"..color..":150"},
-		groups = {crumbly=3},
+		groups = {crumbly=3, wool = 1},
+	})
+	
+	minetest.register_craft({
+		type = "shapeless",
+		output = "default:wool_"..color,
+		recipe = {
+			"group:wool", "default:dye_" .. color
+		},
 	})
 end
 
