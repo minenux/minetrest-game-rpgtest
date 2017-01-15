@@ -28,7 +28,9 @@ function xp.add_xp(player, num)
 		end
 	end
 
-	cmsg.push_message_player(player, "You got "..tostring(num).. " xp!")
+	if num > 0 then
+		cmsg.push_message_player(player, "[xp] +"..tostring(num))
+	end
 
 	if xp.player_levels[player:get_player_name()] then
 		if xp.player_xp[player:get_player_name()] > xp.lvl*xp.player_levels[player:get_player_name()] then

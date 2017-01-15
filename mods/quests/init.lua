@@ -62,8 +62,12 @@ function quests.add_quest(player, quest)
 end
 
 function quests.has_quest(name, title)
+	if not(quests.player_quests[name]) then
+		return false
+	end
+
 	for i,def in ipairs(quests.player_quests[name]) do
-		if def.title == title then
+		if def.title .. (def.id or "") == title then
 			return true
 		end
 	end
@@ -184,6 +188,42 @@ function quests.add_craft_goal(quest, title, item, number, description, ending)
 	return goal
 end
 
+function quests.add_talk_goal(quest, title, pos, description, ending)
+	local goal = {
+		title = title,
+		type = "talk",
+		pos = pos,
+		progress = 0,
+		max = 1,
+		done = false,
+		xp = 0,
+
+		description = description or "",
+		ending = ending or nil
+	}
+	table.insert(quest.goals, goal)
+	return goal
+end
+
+function quests.add_give_goal(quest, title, pos, item, number, description, ending)
+	local goal = {
+		title = title,
+		type = "give",
+		pos = pos,
+		item = item,
+		node = item,
+		max = number,
+		progress = 0,
+		done = false,
+		xp = 0,
+
+		description = description or "",
+		ending = ending or nil
+	}
+	table.insert(quest.goals, goal)
+	return goal
+end
+
 function quests.process_node_count_goals(player, type, node, count)
 	count = count or 1
 	local player_quests = quests.player_quests[player]
@@ -209,6 +249,55 @@ function quests.process_node_count_goals(player, type, node, count)
 			end
 		end)
 	end)
+end
+
+function quests.process_npc_goals(player, type, pos, count)
+	local found = false
+	count = count or 1
+	local player_quests = quests.player_quests[player]
+	if not(player_quests) or #player_quests == 0 then return end
+	table.foreach(player_quests, function(_, quest)
+		if not(quest.goals) or #quest.goals == 0 then return end
+		table.foreach(quest.goals, function(_, goal)
+			if (not goal.requires or goal.requires.done) and
+					goal.type == type then
+				print("-> talk")
+				if vector.equals(pos, (goal.pos or vector.new(0, 0, 0))) then
+					if goal.type == "give" then
+						for i=1,#goal.node do
+							if goal.node[i] == node then
+								goal.progress = goal.progress + count
+								if goal.progress >= goal.max then
+									goal.progress = goal.max
+
+									quests.finish_goal(player, quest, goal)
+									goal.done = true
+								end
+								quests.update_hud(minetest.get_player_by_name(player),player)
+								quests.save()
+								
+								found = true
+							end
+						end
+					elseif goal.type == "talk" then
+						goal.progress = goal.progress + count
+						if goal.progress >= goal.max then
+							goal.progress = goal.max
+
+							quests.finish_goal(player, quest, goal)
+							goal.done = true
+						end
+						quests.update_hud(minetest.get_player_by_name(player),player)
+						quests.save()
+						
+						found = true
+					end
+				end
+			end
+		end)
+	end)
+	
+	return found
 end
 
 quests.show_quests_form = "size[8,7.5;]" .. default.gui_colors ..
