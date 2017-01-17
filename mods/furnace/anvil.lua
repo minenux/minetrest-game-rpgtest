@@ -4,6 +4,28 @@ function furnace.anvil.register_material(name, def)
 	furnace.anvil.materials[name] = def
 end
 
+function furnace.anvil.get_recipe(item)
+	-- search recipe for item
+	for i,recipe in pairs(furnace.anvil.materials) do
+		if item == recipe.items.rod then
+			return nil						-- return nil
+		end
+		
+		if item == recipe.items.plate then
+			return {input = recipe.items.rod, output = item}	-- return recipe for item
+		end
+		
+		if item == (recipe.items.blade or "none") then
+			return {input = recipe.items.rod, output = item}	-- return recipe for item
+		end
+		
+		if item == (recipe.items.other or "none") then
+			return {input = recipe.items.rod, output = item}	-- return recipe for item
+		end
+	end
+	return nil	-- no recipe found
+end
+
 -- formspec
 
 local anvil_form = "size[8,9]"

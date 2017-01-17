@@ -17,7 +17,7 @@ money.shop.offers = {
 	{input="money:silver_coin 2", output="default:box"},
 	{input="money:coin 1", output="default:pick"},
 	{input="money:silver_coin 4", output="dungeons:custom_treasure_chest"},
-	{input="default:stone_item 891", output="money:silver_coin 5"}
+	{input="default:stone_item 999", output="money:silver_coin 5"}
 }
 
 function money.shop.get_formspec(page)

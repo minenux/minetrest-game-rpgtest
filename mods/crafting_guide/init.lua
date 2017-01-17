@@ -50,13 +50,27 @@ function crafting_guide.get_formspec(crafts,back_button)
 	return str
 end
 
-function crafting_guide.get_furnace_formspec(recipe,back_button)
+function crafting_guide.get_furnace_formspec(recipe, back_button)
 	local str = crafting_guide.form
 	if back_button then
 		str = crafting_guide.form_back
 	end
 
 	str = str .. "label[0,0;Furnace:]"
+
+	str = str .. "item_image_button[0,1;1,1;" .. recipe.input .. ";" .. recipe.input .. ";]"
+	str = str .. "item_image_button[2,1;1,1;" .. recipe.output .. ";" .. recipe.output .. ";]"
+	
+	return str
+end
+
+function crafting_guide.get_anvil_formspec(recipe, back_button)
+	local str = crafting_guide.form
+	if back_button then
+		str = crafting_guide.form_back
+	end
+
+	str = str .. "label[0,0;Anvil:]"
 
 	str = str .. "item_image_button[0,1;1,1;" .. recipe.input .. ";" .. recipe.input .. ";]"
 	str = str .. "item_image_button[2,1;1,1;" .. recipe.output .. ";" .. recipe.output .. ";]"
@@ -86,7 +100,7 @@ function crafting_guide.get_item_formspec(page, player)
 		table.sort(items)
 
 		for _,name in ipairs(items) do
-			if ((minetest.get_all_craft_recipes(name) or furnace.get_recipe(name)) or creative_priv) and 
+			if ((minetest.get_all_craft_recipes(name) or furnace.get_recipe(name) or furnace.anvil.get_recipe(name)) or creative_priv) and 
 			   i < (8*6)*(page+1) then
 				if i > (8*6)*(page)-1 then
 					str = str .. "item_image_button["..x..","..y..";1,1;"..name..";"..name..";]"
@@ -193,6 +207,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 					minetest.show_formspec(player:get_player_name(), "crafting_guide:book", crafting_guide.get_formspec(crafts,true))
 				elseif furnace.get_recipe(i) then
 					minetest.show_formspec(player:get_player_name(), "crafting_guide:book", crafting_guide.get_furnace_formspec(furnace.get_recipe(i),true))
+				elseif furnace.anvil.get_recipe(i) then
+					minetest.show_formspec(player:get_player_name(), "crafting_guide:book", crafting_guide.get_anvil_formspec(furnace.anvil.get_recipe(i),true))
 				end
 			end
 		end
@@ -227,6 +243,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 					minetest.show_formspec(player:get_player_name(), "crafting_guide:book", crafting_guide.get_formspec(crafts,true))
 				elseif furnace.get_recipe(i) then
 					minetest.show_formspec(player:get_player_name(), "crafting_guide:book", crafting_guide.get_furnace_formspec(furnace.get_recipe(i),true))
+				elseif furnace.anvil.get_recipe(i) then
+					minetest.show_formspec(player:get_player_name(), "crafting_guide:book", crafting_guide.get_anvil_formspec(furnace.anvil.get_recipe(i),true))
 				end
 			end
 		end

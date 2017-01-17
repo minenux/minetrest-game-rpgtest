@@ -50,6 +50,15 @@ function npcs.register_npc(name, def)
 			local name = player:get_player_name()
 			quests.show_text(def.npc_text, name)
 		end
+	elseif def.npc_type == "texts" then
+		def.on_rightclick = function(pos, node, player, itemstack, pt)
+			if quests.process_npc_goals(player:get_player_name(), "talk", pt.under) then
+				return
+			end
+			
+			local name = player:get_player_name()
+			quests.show_text(def.npc_texts[math.random(#def.npc_texts)], name)
+		end
 	elseif def.npc_type == "quests" then
 		def.on_rightclick = function(pos, node, player, itemstack, pt)
 			if quests.process_npc_goals(player:get_player_name(), "talk", pt.under) then
@@ -115,17 +124,52 @@ minetest.register_abm({
 
 npcs.register_npc("npcs:farmer_1", {
 	tiles = {"npc_1.png"},
-	npc_type = "quest",
-	npc_get_quest = function(pos, player)
-		local quest = quests.new(nil, "Test", "Test")
-		quest.id = tostring(minetest.get_day_count()) .. " " .. minetest.pos_to_string(pos)
-		local goal_1 = quests.add_place_goal(quest, "Place dirt", {"default:dirt"}, 1, "Place some dirt blocks!")
-		local goal_2 = quests.add_talk_goal(quest, "Talk", pos, "Place some dirt blocks!")
-		
-		goal_2.requires = goal_1
-		
-		return quest
-	end,
+	npc_type = "shop",
+	npc_text = "Hi! Do you want to buy an item?",
+	npc_items = {
+		{
+			input = "money:silver_coin",
+			output = "farming:apple 9",
+			text = "1 Silver Coin -> 8 Apple",
+		}, {
+			input = "money:silver_coin 1",
+			output = "farming:slice_of_bread 9",
+			text = "4 Silver Coin -> 4 Slice of Bread",
+		}, {
+			input = "money:silver_coin 1",
+			output = "default:mushroom 2",
+			text = "1 Silver Coin -> 2 Mushroom",
+		}
+	},
+})
+
+npcs.register_npc("npcs:miner_1", {
+	tiles = {"npc_3.png"},
+	npc_type = "shop",
+	npc_text = "Hi! Do you want to buy an item?",
+	npc_items = {
+		{
+			input = "money:silver_coin 10",
+			output = "furnace:furnace",
+			text = "10 Silver Coin -> 1 Furnace",
+		}, {
+			input = "money:silver_coin 10",
+			output = "furnace:anvil",
+			text = "10 Silver Coin -> 1 Anvil",
+		}, {
+			input = "money:silver_coin",
+			output = "torch:torch 4",
+			text = "1 Silver Coin -> 4 Torch",
+		}, {
+			input = "money:coin",
+			output = "default:pick",
+			text = "1 Gold Coin -> 1 Iron Pick",
+		}, {
+			input = "default:stone_item 999",
+			output = "money:silver_coin 5",
+			text = "999 Stone -> 5 Silver Coin",
+		}
+	},
 })
 
 npcs.register_npc("npcs:hunter_1", {
@@ -141,6 +185,20 @@ npcs.register_npc("npcs:hunter_1", {
 		
 		return quest
 	end,
+})
+
+npcs.register_npc("npcs:builder_1", {
+	tiles = {"npc_4.png"},
+	npc_type = "texts",
+	npc_texts = {
+		"Hello!",
+		"Hi!",
+		"Hey!",
+		
+		"Hello.\nHow are you?",
+		"Hi.\nHow are you?",
+		"Hey.\nHow are you?",
+	},
 })
 
 --TEST
