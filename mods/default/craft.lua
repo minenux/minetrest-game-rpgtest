@@ -13,6 +13,20 @@ minetest.register_node("default:workbench", {
 	end,
 })
 
+minetest.register_node("default:placeholder_workbench", {
+	description = "Placeholder",
+	drawtype = "airlike",
+})
+
+minetest.register_abm({
+	nodenames = {"default:placeholder_workbench"},
+	interval = 5.0,
+	chance = 1,
+	action = function(pos, node, active_object_count, active_object_count_wider)
+		minetest.set_node(pos, {name = "default:workbench"})
+	end,
+})
+
 default.craft_form_v2 = "size[8,7.5;]"
 default.craft_form_v2 = default.craft_form_v2..default.gui_colors
 default.craft_form_v2 = default.craft_form_v2..default.gui_bg

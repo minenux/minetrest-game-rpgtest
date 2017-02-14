@@ -165,7 +165,7 @@ minetest.register_node("default:rope", {
 	node_box = {
 		type = "connected",
 		fixed = {{-2/16, -2/16, -2/16, 2/16, 2/16, 2/16},},
-		
+
 		connect_front = {{-2/16, -2/16, -0.5, 2/16, 2/16, 2/16}},
 		connect_back = {{-2/16, -2/16, -2/16, 2/16, 2/16, 0.5}},
 
@@ -186,11 +186,11 @@ minetest.register_node("default:rope", {
 local box_form = "size[8,9]"
 local box_form = box_form..default.gui_colors
 local box_form = box_form..default.gui_bg
-local box_form = box_form.."list[current_name;main;0,0.3;8,4;]" 
+local box_form = box_form.."list[current_name;main;0,0.3;8,4;]"
 local box_form = box_form..default.itemslot_bg(0,0.3,8,4)
-local box_form = box_form.."list[current_player;main;0,4.85;8,1;]" 
+local box_form = box_form.."list[current_player;main;0,4.85;8,1;]"
 local box_form = box_form..default.itemslot_bg(0,4.85,8,1)
-local box_form = box_form.."list[current_player;main;0,6.08;8,3;8]" 
+local box_form = box_form.."list[current_player;main;0,6.08;8,3;8]"
 local box_form = box_form..default.itemslot_bg(0,6.08,8,3)
 local box_form = box_form.."listring[current_name;main]"
 local box_form = box_form.."listring[current_player;main]"
@@ -521,7 +521,7 @@ default.register_wool = function(color)
 		tiles = {"default_wool.png^[colorize:"..color..":150"},
 		groups = {crumbly=3, wool = 1},
 	})
-	
+
 	minetest.register_craft({
 		type = "shapeless",
 		output = "default:wool_"..color,
