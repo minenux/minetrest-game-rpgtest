@@ -39,7 +39,7 @@ minetest.register_globalstep(function(dtime)
 				skills.abilities.change_energy(player, 1)
 				if skills.abilities.energy[player:get_player_name()] > 39 then
 					cmsg.push_message_player(player, "[energy] Your energy is full!")
-				end	
+				end
 			end
 		end
 		timer = 0
@@ -58,15 +58,15 @@ function skills.abilities.register_ability(name, def)
 					def.on_use(itemstack, user, pointed_thing)
 					skills.abilities.change_energy(user, -def.energy)
 				else
-					cmsg.push_message_player(user, "[WARNING] You dont have enought energy to use this ability!")	
+					cmsg.push_message_player(user, "[WARNING] You dont have enought energy to use this ability!")
 				end
 			else
-				cmsg.push_message_player(user, "[info] You have to be " .. def.skill .. " level "..tostring(def.lvl).. " to use this ability!")	
-			end					
+				cmsg.push_message_player(user, "[info] You have to be " .. def.skill .. " level "..tostring(def.lvl).. " to use this ability!")
+			end
 			return nil
 		end
 	})
-	
+
 	table.insert(skills.abilities.all, "skills:ability_" .. name)
 end
 
@@ -80,7 +80,7 @@ minetest.register_craftitem("skills:ability_book", {
 			user:get_inventory():add_item("main", item)
 			itemstack:take_item()
 		else
-			cmsg.push_message_player(user, "[info] You don't have any free space in your inventory.")	
+			cmsg.push_message_player(user, "[info] You don't have any free space in your inventory.")
 		end
 		return itemstack
 	end
@@ -98,7 +98,7 @@ skills.abilities.register_ability("super_jump", {
 			gravity = 0.1,
 		})
 		cmsg.push_message_player(user, "[ability] + super jump")
-		
+
 		minetest.after(7.0, function(player)
 			if not player or not player:is_player() then
 				return
@@ -122,7 +122,7 @@ skills.abilities.register_ability("lift", {
 			gravity = -0.5,
 		})
 		cmsg.push_message_player(user, "[ability] + lift")
-		
+
 		minetest.after(2.0, function(player)
 			if not player or not player:is_player() then
 				return
@@ -146,7 +146,7 @@ skills.abilities.register_ability("run", {
 			speed = 2,
 		})
 		cmsg.push_message_player(user, "[ability] + run")
-		
+
 		minetest.after(5.0, function(player)
 			if not player or not player:is_player() then
 				return
@@ -170,7 +170,7 @@ skills.abilities.register_ability("sprint", {
 			speed = 3,
 		})
 		cmsg.push_message_player(user, "[ability] + sprint")
-		
+
 		minetest.after(5.0, function(player)
 			if not player or not player:is_player() then
 				return
@@ -202,13 +202,14 @@ skills.abilities.register_ability("grow", {
 	lvl = 3,
 	energy = 30,
 	on_use = function(itemstack, user, pointed_thing)
-		if minetest.get_node(pointed_thing.under).name == "default:dirt" then
-			minetest.set_node(pointed_thing.under, {name = "default:grass"})
-		elseif minetest.get_node(pointed_thing.under).name == "default:dry_grass" then
-			minetest.set_node(pointed_thing.under, {name = "default:grass"})
-		elseif minetest.get_node(pointed_thing.above).name == "air" then
-			minetest.set_node(pointed_thing.above, {name = "default:plant_grass_5"})
+		if pointed_thing.type == "node" then
+			if minetest.get_node(pointed_thing.under).name == "default:dirt" then
+				minetest.set_node(pointed_thing.under, {name = "default:grass"})
+			elseif minetest.get_node(pointed_thing.under).name == "default:dry_grass" then
+				minetest.set_node(pointed_thing.under, {name = "default:grass"})
+			elseif minetest.get_node(pointed_thing.above).name == "air" then
+				minetest.set_node(pointed_thing.above, {name = "default:plant_grass_5"})
+			end
 		end
 	end
 })
-
