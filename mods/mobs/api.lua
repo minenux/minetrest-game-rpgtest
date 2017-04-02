@@ -159,18 +159,22 @@ minetest.register_globalstep(function(dtime)
 		print("[mobs] mob count = " .. tostring(mobs.count))
 		if mobs.count > (#minetest.get_connected_players())*2 then
 			-- print("[mobs] canceled spawning")
-			timer = 0	
+			timer = 0
 			return
 		end
-		
+
 		for _, player in pairs(minetest.get_connected_players()) do
 			local p = player:getpos()
 			local a = {-1, 1}
 			local x = math.random(20, 40)*a[math.random(1,2)] + p.x
 			local z = math.random(20, 40)*a[math.random(1,2)] + p.z
-			if minetest.get_node(vector.new(x, p.y+2, z)).name == "air" then
-				local n = mobs.get_mob(xp.player_levels[player:get_player_name()])
-				minetest.add_entity(vector.new(x, p.y+2, z), n)
+
+			local nodes_under_air = minetest.find_nodes_in_area_under_air({x=x-10, y=p.y-20, z = p.z-10}, {x=x+10, y=p.y+20, z = p.z+10}, {"group:cracky", "group:crumbly", "group:choppy"})
+			if #nodes_under_air > 0 then
+				local spawn_pos = nodes_under_air[math.random(#nodes_under_air)]
+
+				local spawn_mob = mobs.get_mob(xp.player_levels[player:get_player_name()])
+				minetest.add_entity(spawn_pos, spawn_mob)
 				mobs.count = mobs.count +1
 			end
 		end
