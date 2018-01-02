@@ -2,7 +2,7 @@
 mobs.register_mob("mobs:slime", {
 	textures = {"mobs_slime.png",},
 	lvl = 3,
-	hits = 6,
+	hits = 3,
 	dmg = {
 		full_punch_interval = 0.9,
 		max_drop_level = 0,
