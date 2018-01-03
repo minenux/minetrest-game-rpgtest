@@ -170,14 +170,14 @@ end
 default.player_inventory.register_tab({
 	name = "Skills",
 	type = "function",
-	get_formspec = function(name) 
+	get_formspec = function(name)
 		local count = 0
 		for s,l in pairs(skills.lvls[name]) do
 			count = count + (l-1)
 		end
-	
+
 		local formspec = "size[8,7.5;]" ..
-			default.gui_colors .. 
+			default.gui_colors ..
 			default.gui_bg ..
 			"label[0,0;Skills:]" ..
 			"label[7,0;" .. tostring(xp.player_levels[name] - count) .. "]"
@@ -186,13 +186,13 @@ default.player_inventory.register_tab({
 		local i = 0
 		for skill_name, skill_level in pairs(skills.lvls[name]) do
 			formspec = formspec .. "button[0,"..tostring(i+0.5)..";2,1;" .. skill_name .. ";" .. skill_name .. " : " .. tostring(skill_level) .. "]"
-			
+
 			if skills.all_skills[skill_name] then
 				formspec = formspec .. "label[2.5,"..tostring(i+0.75)..";" .. skills.all_skills[skill_name].description .. "]"
 			end
 			i = i +1
 		end
-	
+
 		return formspec
 	end,
 	on_event = function(player, fields)
@@ -413,7 +413,7 @@ skills.register_tool("bow", 1, 30, {
 -- 		minetest.node_dig(pos, node, player)
 -- 	end,
 -- })
--- 
+--
 -- minetest.override_item("default:stone_with_diamond", {
 -- 	on_dig = function(pos, node, player)
 -- 		if skills.lvls[player:get_player_name()] and skills.lvls[player:get_player_name()]["miner"] > 5 then
@@ -422,7 +422,7 @@ skills.register_tool("bow", 1, 30, {
 -- 		minetest.node_dig(pos, node, player)
 -- 	end,
 -- })
--- 
+--
 -- minetest.override_item("default:stone", {
 -- 	on_dig = function(pos, node, player)
 -- 		if skills.lvls[player:get_player_name()] and skills.lvls[player:get_player_name()]["miner"] then
@@ -434,8 +434,8 @@ skills.register_tool("bow", 1, 30, {
 -- 		end
 -- 		minetest.node_dig(pos, node, player)
 -- 	end,
--- 	
--- 	
+--
+--
 -- })
 
 local modpath = minetest.get_modpath("skills")

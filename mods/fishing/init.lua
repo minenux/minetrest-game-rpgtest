@@ -21,7 +21,7 @@ minetest.register_tool("fishing:fishing_rod", {
 	on_use = function(itemstack, user, pointed_thing)
 		if pointed_thing.above then
 			if minetest.get_node(pointed_thing.under).name == "default:water_source" then
-				itemstack:add_wear(400)
+				itemstack:add_wear(1200)
 				if skills.lvls[user:get_player_name()] and
 				   (skills.lvls[user:get_player_name()]["hunter"] and
 				   skills.lvls[user:get_player_name()]["hunter"] > 3) or
