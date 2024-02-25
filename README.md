@@ -5,7 +5,7 @@
 Take a look at the mods! You can find them in the folder called "mods".
 
 ## Installation
-To run rpgtest you need to download the minetest engine from http://www.minetest.net/
+To run rpgtest you need to download the minetest engine from http://www.minetest.org/
 
 1. go to the games folder in your minetest folder
 2. open the terminal from there
