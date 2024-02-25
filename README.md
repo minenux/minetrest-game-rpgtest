@@ -9,14 +9,12 @@ To run rpgtest you need to download the minetest engine from http://www.minetest
 
 1. go to the games folder in your minetest folder
 2. open the terminal from there
-3. run git clone https://github.com/cdqwertz/rpgtest.git rpgtest
+3. run git clone https://git.minetest.io/minetest-stuffs/minetrest-game-rpgtest
 
 ## Websites
-* GitHub : https://github.com/cdqwertz/rpgtest
 * Forum : https://forum.minetest.net/viewtopic.php?f=50&t=13761
 
-* My Website : http://cdqwertz.github.io/
-* Minetest : http://www.minetest.net/
+* Minetest : http://www.minetest.org/
 
 ## Thanks to
 * farfadet46 (dog/wolf model)
